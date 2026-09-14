@@ -42,17 +42,17 @@ export default function DestinationCard({ destination }) {
         </div>
 
         <div className="destination-bottom">
-          <strong>
-            {destination.duration}
-          </strong>
 
           <Link
-            to="/travel-plans"
+            to={`/travel-plans?destination=${encodeURIComponent(
+              destination.name
+            )}`}
             className="card-button"
           >
             View Plans
             <ArrowRight size={16} />
           </Link>
+
         </div>
 
       </div>

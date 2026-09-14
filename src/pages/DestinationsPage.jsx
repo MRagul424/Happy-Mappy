@@ -14,9 +14,9 @@ export default function DestinationsPage() {
   ];
 
   const filteredDestinations = useMemo(() => {
-    return destinations.filter((destination) => {
-      const searchText = search.toLowerCase();
+    const searchText = search.toLowerCase().trim();
 
+    const filtered = destinations.filter((destination) => {
       const matchesSearch =
         destination.name.toLowerCase().includes(searchText) ||
         destination.state.toLowerCase().includes(searchText) ||
@@ -28,11 +28,27 @@ export default function DestinationsPage() {
 
       return matchesSearch && matchesCategory;
     });
+
+    // Sort destinations by trip duration:
+    // 1 Day -> 2 Days -> 3 Days
+    return [...filtered].sort((a, b) => {
+      const daysA = parseInt(a.duration, 10);
+      const daysB = parseInt(b.duration, 10);
+
+      // First sort by number of days
+      if (daysA !== daysB) {
+        return daysA - daysB;
+      }
+
+      // If duration is same, sort alphabetically
+      return a.name.localeCompare(b.name);
+    });
   }, [search, category]);
 
   return (
     <main>
 
+      {/* PAGE HEADER */}
       <section className="page-header">
 
         <div className="page-header-content">
@@ -55,9 +71,10 @@ export default function DestinationsPage() {
 
       </section>
 
+      {/* DESTINATIONS SECTION */}
       <section className="section">
 
-        {/* SEARCH */}
+        {/* SEARCH AND CATEGORY FILTERS */}
         <div className="destination-tools">
 
           <div className="search-box">
@@ -96,12 +113,13 @@ export default function DestinationsPage() {
 
         </div>
 
-        {/* RESULT */}
+        {/* RESULT COUNT */}
         <div className="results-count">
           Showing {filteredDestinations.length} destination
           {filteredDestinations.length !== 1 ? "s" : ""}
         </div>
 
+        {/* DESTINATION CARDS */}
         <div className="destination-grid">
 
           {filteredDestinations.map((destination) => (
@@ -113,6 +131,7 @@ export default function DestinationsPage() {
 
         </div>
 
+        {/* EMPTY RESULT */}
         {filteredDestinations.length === 0 && (
           <div className="empty-state">
 

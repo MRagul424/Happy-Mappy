@@ -118,7 +118,10 @@ export const destinations = [
     name: "Chennai",
     state: "Tamil Nadu",
     category: "City",
-    duration: "2 Days",
+
+    // Changed from 2 Days to 1 Day
+    duration: "1 Day",
+
     description:
       "A vibrant coastal city with beaches, temples, food and cultural attractions.",
     image:
@@ -137,7 +140,10 @@ export const destinations = [
     name: "Mahabalipuram",
     state: "Tamil Nadu",
     category: "Heritage",
-    duration: "2 Days",
+
+    // Changed from 2 Days to 1 Day
+    duration: "1 Day",
+
     description:
       "Ancient coastal town famous for UNESCO World Heritage monuments.",
     image:
@@ -156,7 +162,10 @@ export const destinations = [
     name: "Madurai",
     state: "Tamil Nadu",
     category: "Spiritual",
-    duration: "2 Days",
+
+    // Changed from 2 Days to 1 Day
+    duration: "1 Day",
+
     description:
       "One of India's oldest cities, famous for temples and Tamil culture.",
     image:
@@ -190,6 +199,11 @@ export const destinations = [
   },
 ];
 
+
+// ---------------------------------------------------------
+// TRAVEL PLANS
+// ---------------------------------------------------------
+
 export const plans = [
   {
     id: 1,
@@ -202,7 +216,11 @@ export const plans = [
     image:
       "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1200&q=80",
     highlights: ["Tea Gardens", "Houseboat", "Fort Kochi"],
-    places: ["Munnar Tea Gardens", "Alleppey Houseboat", "Fort Kochi"],
+    places: [
+      "Munnar Tea Gardens",
+      "Alleppey Houseboat",
+      "Fort Kochi",
+    ],
     itinerary: [
       {
         day: 1,
@@ -309,17 +327,15 @@ export const plans = [
         title: "Explore Madurai",
         activities: [
           "Nayakkar Palace",
-          "Gandhi Museum",
-          "Local markets",
+          "Gandhi Memorial Museum",
         ],
       },
       {
         day: 6,
-        title: "Madurai Exploration",
+        title: "Madurai Culture",
         activities: [
-          "Temple visit",
-          "Traditional food",
-          "Shopping",
+          "Vandiyur Mariamman Teppakulam",
+          "Local market",
         ],
       },
       {
@@ -327,7 +343,7 @@ export const plans = [
         title: "Departure",
         activities: [
           "Breakfast",
-          "Souvenir shopping",
+          "Shopping",
           "Departure",
         ],
       },
@@ -336,80 +352,54 @@ export const plans = [
 
   {
     id: 3,
-    title: "Karnataka Explorer",
-    destination: "Bengaluru • Mysore • Coorg • Hampi",
-    days: 7,
-    nights: 6,
-    category: "Heritage",
-    price: 23500,
+    title: "Kerala Backwater Experience",
+    destination: "Alleppey • Kochi",
+    days: 4,
+    nights: 3,
+    category: "Backwaters",
+    price: 14000,
     image:
-      "https://images.unsplash.com/photo-1592639296346-560c37a0f711?auto=format&fit=crop&w=1200&q=80",
-    highlights: ["Royal Palaces", "Coffee Estates", "Hampi Ruins"],
+      "https://images.unsplash.com/photo-1605538883669-825200433431?auto=format&fit=crop&w=1200&q=80",
+    highlights: ["Houseboat", "Backwaters", "Fort Kochi"],
     places: [
-      "Bangalore Palace",
-      "Mysore Palace",
-      "Abbey Falls",
-      "Hampi Ruins",
+      "Alleppey Backwaters",
+      "Houseboat Cruise",
+      "Fort Kochi",
     ],
     itinerary: [
       {
         day: 1,
-        title: "Bengaluru",
+        title: "Arrival in Alleppey",
         activities: [
-          "Bangalore Palace",
-          "Cubbon Park",
-          "Vidhana Soudha",
+          "Houseboat check-in",
+          "Backwater cruise",
+          "Sunset view",
         ],
       },
       {
         day: 2,
-        title: "Bengaluru to Mysore",
+        title: "Explore Alleppey",
         activities: [
-          "Mysore Palace",
-          "Devaraja Market",
+          "Kuttanad",
+          "Alappuzha Beach",
+          "Village walk",
         ],
       },
       {
         day: 3,
-        title: "Mysore",
+        title: "Alleppey to Kochi",
         activities: [
-          "Chamundi Hills",
-          "Mysore Zoo",
-          "Brindavan Gardens",
+          "Travel to Kochi",
+          "Fort Kochi",
+          "Chinese Fishing Nets",
         ],
       },
       {
         day: 4,
-        title: "Mysore to Coorg",
+        title: "Kochi Departure",
         activities: [
-          "Coffee plantations",
-          "Raja's Seat",
-          "Resort stay",
-        ],
-      },
-      {
-        day: 5,
-        title: "Coorg",
-        activities: [
-          "Abbey Falls",
-          "Dubare",
-          "Coffee experience",
-        ],
-      },
-      {
-        day: 6,
-        title: "Coorg to Hampi",
-        activities: [
-          "Hampi Bazaar",
-          "Virupaksha Temple",
-        ],
-      },
-      {
-        day: 7,
-        title: "Hampi and Departure",
-        activities: [
-          "Vittala Temple",
-          "Matanga Hill",
+          "Mattancherry Palace",
+          "Jew Town",
           "Departure",
         ],
       },
@@ -419,14 +409,14 @@ export const plans = [
   {
     id: 4,
     title: "Wayanad Adventure",
-    destination: "Wayanad • Kalpetta • Vythiri",
+    destination: "Wayanad",
     days: 3,
     nights: 2,
     category: "Adventure",
-    price: 10500,
+    price: 11000,
     image:
       "https://images.unsplash.com/photo-1596176530529-78163a4f7af2?auto=format&fit=crop&w=1200&q=80",
-    highlights: ["Caves", "Waterfalls", "Mountains"],
+    highlights: ["Edakkal Caves", "Waterfalls", "Mountain Views"],
     places: [
       "Edakkal Caves",
       "Soochipara Falls",
@@ -438,17 +428,17 @@ export const plans = [
         title: "Wayanad Arrival",
         activities: [
           "Hotel check-in",
-          "Banasura Sagar Dam",
-          "Vythiri",
+          "Edakkal Caves",
+          "Evening leisure",
         ],
       },
       {
         day: 2,
         title: "Adventure Day",
         activities: [
-          "Edakkal Caves",
           "Soochipara Falls",
-          "Forest views",
+          "Banasura Sagar Dam",
+          "Nature walk",
         ],
       },
       {
@@ -456,7 +446,7 @@ export const plans = [
         title: "Departure",
         activities: [
           "Breakfast",
-          "Local shopping",
+          "Shopping",
           "Departure",
         ],
       },
@@ -465,19 +455,19 @@ export const plans = [
 
   {
     id: 5,
-    title: "Ooty Hill Escape",
-    destination: "Ooty • Coonoor",
+    title: "Ooty Hill Station Escape",
+    destination: "Ooty",
     days: 3,
     nights: 2,
-    category: "Relaxation",
-    price: 9500,
+    category: "Hill Station",
+    price: 10500,
     image:
       "https://images.unsplash.com/photo-1597074866923-dc0589150358?auto=format&fit=crop&w=1200&q=80",
-    highlights: ["Tea Gardens", "Lake", "Toy Train"],
+    highlights: ["Ooty Lake", "Botanical Garden", "Tea Estates"],
     places: [
       "Ooty Lake",
+      "Botanical Garden",
       "Doddabetta Peak",
-      "Nilgiri Mountain Railway",
     ],
     itinerary: [
       {
