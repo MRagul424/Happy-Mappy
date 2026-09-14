@@ -6,6 +6,7 @@ export default function DestinationCard({ destination }) {
     <article className="destination-card">
 
       <div className="destination-image">
+
         <img
           src={destination.image}
           alt={destination.name}
@@ -14,32 +15,45 @@ export default function DestinationCard({ destination }) {
         <span className="destination-category">
           {destination.category}
         </span>
+
       </div>
+
 
       <div className="destination-content">
 
         <div className="destination-location">
+
           <MapPin size={15} />
+
           {destination.state}
+
         </div>
+
 
         <h3>
           {destination.name}
         </h3>
 
+
         <p>
           {destination.description}
         </p>
 
+
         <div className="card-places">
+
           {destination.places
             .slice(0, 3)
             .map((place) => (
+
               <span key={place}>
                 ✓ {place}
               </span>
+
             ))}
+
         </div>
+
 
         <div className="destination-bottom">
 
@@ -49,13 +63,19 @@ export default function DestinationCard({ destination }) {
             )}`}
             className="card-button"
           >
+
             View Plans
-            <ArrowRight size={16} />
+
+            <ArrowRight
+              size={16}
+            />
+
           </Link>
 
         </div>
 
       </div>
+
     </article>
   );
 }
