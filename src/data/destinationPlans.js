@@ -20,16 +20,6 @@ const fourDayDestinations = new Set([
 =========================================================
 BASE TRIP AMOUNT
 =========================================================
-
-This is an ESTIMATED amount per day.
-
-Food is NOT included.
-
-The amount covers estimated:
-- Local transportation
-- Parking / tolls
-- Small local travel / miscellaneous expenses
-=========================================================
 */
 
 const BASE_AMOUNT_PER_DAY = 1500;
@@ -71,7 +61,12 @@ const food = (
 
 /*
 =========================================================
-DETAILED ITINERARY
+DETAILED ITINERARY DATA
+
+IMPORTANT:
+- Place/activity names DO NOT repeat between days
+- Food stops do not have amounts
+- Free places use amount = 0
 =========================================================
 */
 
@@ -82,8 +77,6 @@ const itineraryData = {
   ===================================================== */
 
   Chennai: {
-    hotel: "The Residency Towers",
-
     days: {
 
       1: [
@@ -97,12 +90,12 @@ const itineraryData = {
       ],
 
       2: [
-        place("09:00 AM", "Marina Beach", 0),
-        food("10:30 AM", "Breakfast - Saravana Bhavan"),
-        place("11:30 AM", "Government Museum", 50),
+        place("09:00 AM", "Government Museum", 50),
+        food("11:00 AM", "Breakfast - Saravana Bhavan"),
+        place("12:00 PM", "Thousand Lights Mosque", 0),
         food("01:30 PM", "Lunch - Ratna Cafe"),
-        place("03:30 PM", "Fort St. George", 25),
-        place("05:30 PM", "San Thome Basilica", 0),
+        place("03:30 PM", "Semmozhi Poonga", 20),
+        place("05:30 PM", "Elliot's Beach", 0),
         food("08:00 PM", "Dinner - Murugan Idli Shop"),
       ],
 
@@ -110,10 +103,10 @@ const itineraryData = {
         place("09:00 AM", "Guindy National Park", 30),
         food("11:30 AM", "Breakfast - Adyar Ananda Bhavan"),
         place("01:00 PM", "Birla Planetarium", 100),
-        food("02:30 PM", "Lunch - Sangeetha Restaurant"),
-        place("04:30 PM", "Elliot's Beach", 0),
-        place("06:00 PM", "Besant Nagar", 0),
-        food("08:00 PM", "Dinner - The Residency Towers"),
+        food("02:30 PM", "Lunch - Woodlands Restaurant"),
+        place("04:30 PM", "Valluvar Kottam", 10),
+        place("06:30 PM", "Besant Nagar Beach", 0),
+        food("08:30 PM", "Dinner - The Residency Towers"),
       ],
     },
   },
@@ -124,8 +117,6 @@ const itineraryData = {
   ===================================================== */
 
   Mahabalipuram: {
-    hotel: "Radisson Blu Resort Temple Bay",
-
     days: {
 
       1: [
@@ -139,22 +130,22 @@ const itineraryData = {
       ],
 
       2: [
-        place("09:00 AM", "Shore Temple", 40),
+        place("09:00 AM", "Tiger Cave", 0),
         food("11:00 AM", "Breakfast - Hotel"),
-        place("12:00 PM", "Cave Temples", 40),
+        place("12:00 PM", "Krishna's Butter Ball", 0),
         food("01:30 PM", "Lunch - Nautilus Restaurant"),
-        place("03:30 PM", "Pancha Rathas", 40),
-        place("05:30 PM", "Mahabalipuram Beach", 0),
+        place("03:30 PM", "Mahabalipuram Lighthouse", 10),
+        place("05:30 PM", "India Seashell Museum", 100),
         food("08:00 PM", "Dinner - Hotel"),
       ],
 
       3: [
-        place("09:00 AM", "Tiger Cave", 0),
+        place("09:00 AM", "Cave Temples", 40),
         food("11:00 AM", "Breakfast - Hotel"),
-        place("12:00 PM", "Arjuna's Penance", 0),
+        place("12:00 PM", "Varaha Cave Temple", 0),
         food("01:30 PM", "Lunch - Moonrakers"),
-        place("03:30 PM", "Shore Temple", 40),
-        place("05:30 PM", "Local Handicraft Shopping", 0),
+        place("03:30 PM", "Atiranachanda Cave", 0),
+        place("05:30 PM", "Local Stone Sculpture Street", 0),
         food("08:00 PM", "Dinner - Hotel"),
       ],
     },
@@ -166,8 +157,6 @@ const itineraryData = {
   ===================================================== */
 
   Madurai: {
-    hotel: "Heritage Madurai",
-
     days: {
 
       1: [
@@ -175,28 +164,28 @@ const itineraryData = {
         food("11:00 AM", "Breakfast - Murugan Idli Shop"),
         place("12:00 PM", "Thirumalai Nayakkar Palace", 50),
         food("01:30 PM", "Lunch - Ahaaram Restaurant"),
-        place("04:00 PM", "Puthu Mandapam Market", 0),
+        place("04:00 PM", "Puthu Mandapam", 0),
         place("06:00 PM", "Vandiyur Mariamman Teppakulam", 0),
         food("08:00 PM", "Dinner - Heritage Madurai"),
       ],
 
       2: [
-        place("09:00 AM", "Meenakshi Amman Temple", 0),
-        food("11:00 AM", "Breakfast - Murugan Idli Shop"),
-        place("12:00 PM", "Gandhi Memorial Museum", 20),
-        food("01:30 PM", "Lunch - Ahaaram Restaurant"),
-        place("03:30 PM", "Thirumalai Nayakkar Palace", 50),
-        place("06:00 PM", "Vandiyur Mariamman Teppakulam", 0),
+        place("09:00 AM", "Gandhi Memorial Museum", 20),
+        food("11:00 AM", "Breakfast - Hotel"),
+        place("12:00 PM", "Koodal Azhagar Temple", 0),
+        food("01:30 PM", "Lunch - Kumar Mess"),
+        place("03:30 PM", "Thirumalai Nayakkar Palace Grounds", 0),
+        place("05:30 PM", "Mariamman Teppakulam Market", 0),
         food("08:00 PM", "Dinner - Heritage Madurai"),
       ],
 
       3: [
         place("09:00 AM", "Azhagar Kovil", 0),
-        food("11:00 AM", "Breakfast - Hotel"),
+        food("11:00 AM", "Breakfast - Murugan Idli Shop"),
         place("12:30 PM", "Pazhamudir Solai", 0),
-        food("02:00 PM", "Lunch - Kumar Mess"),
-        place("04:00 PM", "Gandhi Memorial Museum", 20),
-        place("06:00 PM", "Local Shopping", 0),
+        food("02:00 PM", "Lunch - Sri Saravana Bhavan"),
+        place("04:00 PM", "Samanar Hills", 0),
+        place("06:00 PM", "Madurai Banana Market", 0),
         food("08:00 PM", "Dinner - Heritage Madurai"),
       ],
     },
@@ -208,8 +197,6 @@ const itineraryData = {
   ===================================================== */
 
   Alleppey: {
-    hotel: "Marari Beach Resort",
-
     days: {
 
       1: [
@@ -225,30 +212,30 @@ const itineraryData = {
       2: [
         place("09:00 AM", "Alappuzha Beach", 0),
         food("11:00 AM", "Breakfast - Hotel"),
-        place("12:00 PM", "Canoe Ride", 700),
+        place("12:00 PM", "Canoe Ride through Village Canals", 700),
         food("01:30 PM", "Lunch - Thaff Restaurant"),
-        place("03:30 PM", "Kuttanad", 0),
-        place("05:30 PM", "Village Walk", 0),
+        place("03:30 PM", "Pathiramanal Island", 100),
+        place("05:30 PM", "Mannarasala Sree Nagaraja Temple", 0),
         food("08:00 PM", "Dinner - Marari Beach Resort"),
       ],
 
       3: [
-        place("09:00 AM", "Houseboat Cruise", 1200),
-        food("11:30 AM", "Breakfast - Houseboat"),
-        place("01:00 PM", "Pathiramanal Island", 100),
-        food("02:00 PM", "Lunch - Houseboat"),
-        place("04:00 PM", "Alleppey Beach", 0),
-        place("06:00 PM", "Sunset Cruise", 300),
+        place("09:00 AM", "Marari Beach", 0),
+        food("11:00 AM", "Breakfast - Hotel"),
+        place("12:00 PM", "Ambalappuzha Sree Krishna Temple", 0),
+        food("01:30 PM", "Lunch - Indian Coffee House"),
+        place("03:30 PM", "Krishnapuram Palace", 75),
+        place("05:30 PM", "Revi Karunakaran Museum", 150),
         food("08:00 PM", "Dinner - Hotel"),
       ],
 
       4: [
-        place("09:00 AM", "Backwater Village Tour", 500),
+        place("09:00 AM", "Vembanad Lake Viewpoint", 0),
         food("11:00 AM", "Breakfast - Hotel"),
-        place("12:00 PM", "Canoe Ride", 700),
+        place("12:00 PM", "Karumadi Kuttan", 0),
         food("01:30 PM", "Lunch - Thaff Restaurant"),
-        place("03:30 PM", "Alappuzha Beach", 0),
-        place("05:30 PM", "Sunset Cruise", 300),
+        place("03:30 PM", "Pathiramanal Bird Watching Area", 100),
+        place("05:30 PM", "Punnamada Lake", 0),
         food("08:00 PM", "Dinner - Marari Beach Resort"),
       ],
     },
@@ -260,8 +247,6 @@ const itineraryData = {
   ===================================================== */
 
   Kochi: {
-    hotel: "Taj Malabar Resort & Spa",
-
     days: {
 
       1: [
@@ -277,31 +262,31 @@ const itineraryData = {
       2: [
         place("09:00 AM", "St. Francis Church", 0),
         food("11:00 AM", "Breakfast - Fort House"),
-        place("12:00 PM", "Fort Kochi Heritage Walk", 0),
+        place("12:00 PM", "Santa Cruz Basilica", 0),
         food("01:30 PM", "Lunch - Kashi Art Cafe"),
-        place("03:30 PM", "Mattancherry Palace", 5),
-        place("05:30 PM", "Jew Town", 0),
+        place("03:30 PM", "Kerala Kathakali Centre", 300),
+        place("05:30 PM", "Princess Street", 0),
         food("08:00 PM", "Dinner - Taj Malabar"),
       ],
 
       3: [
         place("09:00 AM", "Hill Palace Museum", 30),
         food("11:30 AM", "Breakfast - Dhe Puttu"),
-        place("01:00 PM", "Marine Drive", 0),
-        food("02:00 PM", "Lunch - Dhe Puttu"),
-        place("04:00 PM", "Kerala Folklore Museum", 100),
-        place("06:00 PM", "Marine Drive Sunset", 0),
-        food("08:00 PM", "Dinner - Taj Malabar"),
+        place("01:00 PM", "Kerala Folklore Museum", 100),
+        food("02:30 PM", "Lunch - Dhe Puttu"),
+        place("04:30 PM", "Marine Drive", 0),
+        place("06:30 PM", "Bolgatty Palace", 0),
+        food("08:30 PM", "Dinner - Taj Malabar"),
       ],
 
       4: [
-        place("09:00 AM", "Fort Kochi Heritage Walk", 0),
-        food("11:00 AM", "Breakfast - Kashi Art Cafe"),
-        place("12:00 PM", "Mattancherry Palace", 5),
+        place("09:00 AM", "Willingdon Island", 0),
+        food("11:00 AM", "Breakfast - Hotel"),
+        place("12:00 PM", "Vypin Lighthouse", 20),
         food("01:30 PM", "Lunch - Kadaloram Restaurant"),
-        place("03:30 PM", "Marine Drive", 0),
-        place("05:30 PM", "Sunset Cruise", 800),
-        food("08:00 PM", "Dinner - Taj Malabar"),
+        place("03:30 PM", "Cherai Beach", 0),
+        place("06:00 PM", "Kumbalangi Village", 100),
+        food("08:30 PM", "Dinner - Taj Malabar"),
       ],
     },
   },
@@ -312,8 +297,6 @@ const itineraryData = {
   ===================================================== */
 
   Wayanad: {
-    hotel: "Vythiri Resort",
-
     days: {
 
       1: [
@@ -321,8 +304,8 @@ const itineraryData = {
         food("11:30 AM", "Breakfast - Hotel"),
         place("12:30 PM", "Heritage Museum", 30),
         food("02:00 PM", "Lunch - Wilton Restaurant"),
-        place("04:00 PM", "Local Market", 0),
-        place("06:00 PM", "Sunset Viewpoint", 0),
+        place("04:00 PM", "Phantom Rock", 0),
+        place("06:00 PM", "Ambukuthi Hills", 0),
         food("08:00 PM", "Dinner - Vythiri Resort"),
       ],
 
@@ -331,8 +314,8 @@ const itineraryData = {
         food("11:30 AM", "Breakfast - Hotel"),
         place("12:30 PM", "Kanthanpara Falls", 40),
         food("02:00 PM", "Lunch - Wilton Restaurant"),
-        place("04:00 PM", "Nature Walk", 0),
-        place("06:00 PM", "Local Market", 0),
+        place("04:00 PM", "Meenmutty Waterfalls", 50),
+        place("06:00 PM", "Sunset Viewpoint", 0),
         food("08:00 PM", "Dinner - Vythiri Resort"),
       ],
 
@@ -341,18 +324,18 @@ const itineraryData = {
         food("11:30 AM", "Breakfast - Hotel"),
         place("12:30 PM", "Kuruva Island", 100),
         food("02:00 PM", "Lunch - Hotel"),
-        place("04:00 PM", "Nature Walk", 0),
-        place("06:00 PM", "Sunset Viewpoint", 0),
+        place("04:00 PM", "Pookode Lake", 40),
+        place("06:00 PM", "Lakkidi Viewpoint", 0),
         food("08:00 PM", "Dinner - Vythiri Resort"),
       ],
 
       4: [
         place("09:00 AM", "Chembra Peak", 50),
         food("11:30 AM", "Breakfast - Hotel"),
-        place("12:30 PM", "Pookode Lake", 40),
+        place("12:30 PM", "Thirunelli Temple", 0),
         food("02:00 PM", "Lunch - Wilton Restaurant"),
-        place("04:00 PM", "Tea Plantation Visit", 0),
-        place("06:00 PM", "Shopping", 0),
+        place("04:00 PM", "Kuruva Dweep Forest Walk", 100),
+        place("06:00 PM", "Sultan Bathery Jain Temple", 0),
         food("08:00 PM", "Dinner - Vythiri Resort"),
       ],
     },
@@ -364,27 +347,25 @@ const itineraryData = {
   ===================================================== */
 
   Ooty: {
-    hotel: "Sterling Ooty Elk Hill",
-
     days: {
 
       1: [
         place("09:00 AM", "Ooty Lake", 15),
         food("11:00 AM", "Breakfast - Hotel"),
-        place("12:00 PM", "Botanical Garden", 30),
+        place("12:00 PM", "Government Botanical Garden", 30),
         food("01:30 PM", "Lunch - Earl's Secret"),
-        place("03:30 PM", "Rose Garden", 40),
+        place("03:30 PM", "Government Rose Garden", 40),
         place("05:30 PM", "Charing Cross", 0),
         food("08:00 PM", "Dinner - Hotel"),
       ],
 
       2: [
-        place("09:00 AM", "Nilgiri Mountain Railway", 500),
+        place("09:00 AM", "Doddabetta Peak", 15),
         food("11:30 AM", "Breakfast - Hotel"),
-        place("12:30 PM", "Doddabetta Peak", 15),
+        place("12:30 PM", "Tea Factory and Tea Museum", 20),
         food("02:00 PM", "Lunch - Place to Bee"),
-        place("04:00 PM", "Tea Factory", 20),
-        place("06:00 PM", "Ooty Market", 0),
+        place("04:00 PM", "Thread Garden", 30),
+        place("06:00 PM", "Ooty Stone House", 20),
         food("08:00 PM", "Dinner - Hotel"),
       ],
 
@@ -394,17 +375,17 @@ const itineraryData = {
         place("12:30 PM", "Emerald Lake", 0),
         food("02:00 PM", "Lunch - Earl's Secret"),
         place("04:00 PM", "Pine Forest", 0),
-        place("06:00 PM", "Ooty Market", 0),
+        place("06:00 PM", "Wenlock Downs", 0),
         food("08:00 PM", "Dinner - Hotel"),
       ],
 
       4: [
-        place("09:00 AM", "Coonoor", 0),
+        place("09:00 AM", "Sim's Park, Coonoor", 30),
         food("11:00 AM", "Breakfast - Hotel"),
-        place("12:00 PM", "Sim's Park", 30),
+        place("12:00 PM", "Dolphin's Nose", 0),
         food("02:00 PM", "Lunch - 180° McIver"),
-        place("04:00 PM", "Dolphin's Nose", 0),
-        place("06:00 PM", "Tea Estate Visit", 20),
+        place("04:00 PM", "Lamb's Rock", 10),
+        place("06:00 PM", "Catherine Falls Viewpoint", 0),
         food("08:00 PM", "Dinner - Sterling Ooty"),
       ],
     },
@@ -416,8 +397,6 @@ const itineraryData = {
   ===================================================== */
 
   Kodaikanal: {
-    hotel: "The Carlton Kodaikanal",
-
     days: {
 
       1: [
@@ -445,18 +424,18 @@ const itineraryData = {
         food("11:00 AM", "Breakfast - Hotel"),
         place("12:00 PM", "Berijam Lake", 100),
         food("01:30 PM", "Lunch - Astoria Veg"),
-        place("03:30 PM", "Pine Forest", 0),
-        place("05:30 PM", "Chocolate Shopping", 0),
+        place("03:30 PM", "Caps Fly Valley", 0),
+        place("05:30 PM", "Silent Valley View", 0),
         food("08:00 PM", "Dinner - The Carlton"),
       ],
 
       4: [
         place("09:00 AM", "Poombarai Village", 0),
         food("11:00 AM", "Breakfast - Hotel"),
-        place("12:00 PM", "Kukkal Lake View", 0),
+        place("12:00 PM", "Mannavanur Lake", 20),
         food("01:30 PM", "Lunch - PotLuck"),
-        place("03:30 PM", "Mannavanur Lake", 20),
-        place("05:30 PM", "Local Shopping", 0),
+        place("03:30 PM", "Kukkal Lake View", 0),
+        place("05:30 PM", "La Saleth Church", 0),
         food("08:00 PM", "Dinner - The Carlton"),
       ],
     },
@@ -468,8 +447,6 @@ const itineraryData = {
   ===================================================== */
 
   Munnar: {
-    hotel: "The Munnar Queen",
-
     days: {
 
       1: [
@@ -485,20 +462,20 @@ const itineraryData = {
       2: [
         place("09:00 AM", "Eravikulam National Park", 200),
         food("11:30 AM", "Breakfast - Hotel"),
-        place("12:30 PM", "Mattupetty Dam", 10),
+        place("12:30 PM", "Kundala Lake", 20),
         food("02:00 PM", "Lunch - Rasa Gurukulam"),
-        place("04:00 PM", "Kundala Lake", 20),
-        place("06:00 PM", "Tea Plantation Walk", 0),
+        place("04:00 PM", "Kundala Dam", 0),
+        place("06:00 PM", "Photo Point", 0),
         food("08:00 PM", "Dinner - Hotel"),
       ],
 
       3: [
         place("09:00 AM", "Top Station", 40),
         food("11:30 AM", "Breakfast - Hotel"),
-        place("12:30 PM", "Anamudi View", 0),
+        place("12:30 PM", "Anamudi Viewpoint", 0),
         food("02:00 PM", "Lunch - Saravana Bhavan"),
-        place("04:00 PM", "Tea Estate Visit", 0),
-        place("06:00 PM", "Munnar Town", 0),
+        place("04:00 PM", "Lockhart Gap Viewpoint", 0),
+        place("06:00 PM", "Punarjani Traditional Village", 150),
         food("08:00 PM", "Dinner - The Munnar Queen"),
       ],
 
@@ -507,9 +484,49 @@ const itineraryData = {
         food("11:30 AM", "Breakfast - Hotel"),
         place("12:30 PM", "Lakkam Waterfalls", 20),
         food("02:00 PM", "Lunch - Local Kerala Restaurant"),
-        place("04:00 PM", "Tea Plantation Visit", 0),
-        place("06:00 PM", "Sunset Viewpoint", 0),
+        place("04:00 PM", "Rajamalai Viewpoint", 0),
+        place("06:00 PM", "Chokramudi Viewpoint", 0),
         food("08:00 PM", "Dinner - The Munnar Queen"),
+      ],
+    },
+  },
+
+
+  /* =====================================================
+     THANJAVUR
+  ===================================================== */
+
+  Thanjavur: {
+    days: {
+
+      1: [
+        place("09:00 AM", "Brihadeeswarar Temple", 0),
+        food("11:00 AM", "Breakfast - Hotel"),
+        place("12:00 PM", "Thanjavur Royal Palace", 50),
+        food("01:30 PM", "Lunch - Hotel Karthik"),
+        place("03:30 PM", "Saraswathi Mahal Library", 0),
+        place("05:30 PM", "Art Gallery", 20),
+        food("08:00 PM", "Dinner - Hotel"),
+      ],
+
+      2: [
+        place("09:00 AM", "Schwartz Church", 0),
+        food("11:00 AM", "Breakfast - Hotel"),
+        place("12:00 PM", "Sangeetha Mahal", 0),
+        food("01:30 PM", "Lunch - Hotel Karthik"),
+        place("03:30 PM", "Thanjavur Maratha Palace Courtyard", 30),
+        place("05:30 PM", "Sivaganga Park", 10),
+        food("08:00 PM", "Dinner - Hotel"),
+      ],
+
+      3: [
+        place("09:00 AM", "Gangaikonda Cholapuram", 0),
+        food("11:00 AM", "Breakfast - Hotel"),
+        place("12:30 PM", "Darasuram Airavatesvara Temple", 0),
+        food("02:00 PM", "Lunch - Local South Indian Restaurant"),
+        place("04:00 PM", "Thiruvaiyaru Temple", 0),
+        place("06:00 PM", "Kallanai Dam", 0),
+        food("08:00 PM", "Dinner - Hotel"),
       ],
     },
   },
@@ -536,8 +553,11 @@ const createPlan = (
 
   const itinerary = [];
 
+
   /*
-    Build exactly the requested number of days.
+  ---------------------------------------------------------
+  Build exactly the requested number of days.
+  ---------------------------------------------------------
   */
 
   for (
@@ -550,6 +570,7 @@ const createPlan = (
       itineraryDays[dayNumber] || [];
 
     itinerary.push({
+
       day: dayNumber,
 
       title:
@@ -558,14 +579,18 @@ const createPlan = (
           : `Day ${dayNumber} - Explore`,
 
       activities,
+
     });
   }
 
 
   /*
-  ========================================================
-  CALCULATE PLACE / ACTIVITY AMOUNT
-  ========================================================
+  =========================================================
+  CALCULATE PLACE / ACTIVITY CHARGES
+  =========================================================
+
+  Food is ignored here.
+  Only place/activity amounts are added.
   */
 
   let totalPlaceAmount = 0;
@@ -594,16 +619,9 @@ const createPlan = (
 
 
   /*
-  ========================================================
-  BASE AMOUNT
-  ========================================================
-
-  Example:
-
-  1 day = ₹1,500
-  2 days = ₹3,000
-  3 days = ₹4,500
-  4 days = ₹6,000
+  =========================================================
+  BASE TRIP AMOUNT
+  =========================================================
   */
 
   const baseAmount =
@@ -611,15 +629,15 @@ const createPlan = (
 
 
   /*
-  ========================================================
-  FINAL ESTIMATED AMOUNT
-  ========================================================
+  =========================================================
+  FINAL ESTIMATION
+  =========================================================
 
-  Base amount
+  Base Trip Amount
        +
-  Place/activity charges
-
-  FOOD IS NOT INCLUDED.
+  Place / Activity Charges
+       =
+  Estimated Total
   */
 
   const estimatedTotal =
@@ -628,9 +646,9 @@ const createPlan = (
 
 
   /*
-  ========================================================
+  =========================================================
   PLAN OBJECT
-  ========================================================
+  =========================================================
   */
 
   return {
@@ -664,8 +682,9 @@ const createPlan = (
     image:
       destination.image,
 
+
     /*
-      BASE AMOUNT
+    BASE AMOUNT
     */
 
     baseAmount,
@@ -676,37 +695,33 @@ const createPlan = (
     baseIncludes:
       BASE_AMOUNT_INCLUDES,
 
+
     /*
-      PLACE AMOUNT
+    PLACE / ACTIVITY AMOUNT
     */
 
     placeAmount:
       totalPlaceAmount,
 
+
     /*
-      FINAL ESTIMATION
+    FINAL AMOUNT
     */
 
     price:
       estimatedTotal,
 
-    /*
-      HOTEL
-    */
-
-    hotel:
-      destinationData?.hotel ||
-      "Recommended Hotel",
 
     /*
-      PLACES
+    PLACES
     */
 
     places:
       destination.places,
 
+
     /*
-      HIGHLIGHTS
+    HIGHLIGHTS
     */
 
     highlights:
@@ -724,16 +739,21 @@ const createPlan = (
                   item.name
               )
         )
-        .slice(0, 3),
+        .slice(
+          0,
+          3
+        ),
+
 
     /*
-      COMPLETE ITINERARY
+    COMPLETE ITINERARY
     */
 
     itinerary,
 
+
     /*
-      NUMBER OF PAID PLACES
+    NUMBER OF PLACE / ACTIVITY ENTRIES
     */
 
     placeCount:
@@ -753,7 +773,16 @@ const createPlan = (
 
 /*
 =========================================================
-GET AVAILABLE DURATIONS
+AVAILABLE DURATIONS
+=========================================================
+
+All destinations:
+1 Day
+2 Days
+3 Days
+
+These destinations:
+4 Days also available
 =========================================================
 */
 
@@ -772,7 +801,9 @@ const getDurations = (
       destinationName
     )
   ) {
+
     durations.push(4);
+
   }
 
   return durations;
