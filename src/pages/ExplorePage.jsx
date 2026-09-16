@@ -12,7 +12,7 @@ export default function ExplorePage() {
   return (
     <main>
 
-      <section className="page-header">
+      <section className="page-header explore-page-header">
 
         <div className="page-header-content">
 

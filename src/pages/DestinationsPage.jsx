@@ -10,71 +10,131 @@ export default function DestinationsPage() {
 
   const categories = [
     "All",
-    ...new Set(destinations.map((item) => item.category)),
+    ...new Set(
+      destinations.map(
+        (item) => item.category
+      )
+    ),
   ];
 
   const filteredDestinations = useMemo(() => {
-    const searchText = search.toLowerCase().trim();
+    const searchText =
+      search.toLowerCase().trim();
 
-    const filtered = destinations.filter((destination) => {
-      const matchesSearch =
-        destination.name.toLowerCase().includes(searchText) ||
-        destination.state.toLowerCase().includes(searchText) ||
-        destination.category.toLowerCase().includes(searchText);
+    const filtered =
+      destinations.filter(
+        (destination) => {
 
-      const matchesCategory =
-        category === "All" ||
-        destination.category === category;
+          const matchesSearch =
+            destination.name
+              .toLowerCase()
+              .includes(searchText) ||
 
-      return matchesSearch && matchesCategory;
-    });
+            destination.state
+              .toLowerCase()
+              .includes(searchText) ||
 
-    // Sort destinations by trip duration:
-    // 1 Day -> 2 Days -> 3 Days
-    return [...filtered].sort((a, b) => {
-      const daysA = parseInt(a.duration, 10);
-      const daysB = parseInt(b.duration, 10);
+            destination.category
+              .toLowerCase()
+              .includes(searchText);
 
-      // First sort by number of days
-      if (daysA !== daysB) {
-        return daysA - daysB;
+          const matchesCategory =
+            category === "All" ||
+            destination.category ===
+              category;
+
+          return (
+            matchesSearch &&
+            matchesCategory
+          );
+        }
+      );
+
+    /*
+      Sort destinations by duration:
+
+      1 Day
+      2 Days
+      3 Days
+    */
+
+    return [...filtered].sort(
+      (a, b) => {
+
+        const daysA =
+          parseInt(
+            a.duration,
+            10
+          );
+
+        const daysB =
+          parseInt(
+            b.duration,
+            10
+          );
+
+        if (
+          daysA !== daysB
+        ) {
+          return (
+            daysA - daysB
+          );
+        }
+
+        return a.name.localeCompare(
+          b.name
+        );
       }
+    );
 
-      // If duration is same, sort alphabetically
-      return a.name.localeCompare(b.name);
-    });
-  }, [search, category]);
+  }, [
+    search,
+    category,
+  ]);
 
   return (
     <main>
 
-      {/* PAGE HEADER */}
-      <section className="page-header">
+      {/* ==================================================
+          PAGE HEADER
+      ================================================== */}
+
+      <section className="page-header destinations-page-header">
 
         <div className="page-header-content">
 
           <span className="section-label">
+
             <MapPin size={17} />
+
             Explore
+
           </span>
+
 
           <h1>
             Discover destinations
           </h1>
 
+
           <p>
-            Explore our collection of beautiful destinations and
-            find your next place to visit.
+            Explore our collection of beautiful
+            destinations and find your next place to visit.
           </p>
 
         </div>
 
       </section>
 
-      {/* DESTINATIONS SECTION */}
+
+      {/* ==================================================
+          DESTINATIONS
+      ================================================== */}
+
       <section className="section">
 
-        {/* SEARCH AND CATEGORY FILTERS */}
+        {/* SEARCH + CATEGORY */}
+
         <div className="destination-tools">
 
           <div className="search-box">
@@ -86,63 +146,98 @@ export default function DestinationsPage() {
               placeholder="Search destinations..."
               value={search}
               onChange={(event) =>
-                setSearch(event.target.value)
+                setSearch(
+                  event.target.value
+                )
               }
             />
 
           </div>
 
+
           <div className="category-buttons">
 
-            {categories.map((item) => (
-              <button
-                key={item}
-                type="button"
-                className={
-                  category === item
-                    ? "category-button active"
-                    : "category-button"
-                }
-                onClick={() => setCategory(item)}
-              >
-                {item}
-              </button>
-            ))}
+            {categories.map(
+              (item) => (
+
+                <button
+                  key={item}
+                  type="button"
+                  className={
+                    category === item
+                      ? "category-button active"
+                      : "category-button"
+                  }
+                  onClick={() =>
+                    setCategory(
+                      item
+                    )
+                  }
+                >
+                  {item}
+                </button>
+
+              )
+            )}
 
           </div>
 
         </div>
 
+
         {/* RESULT COUNT */}
+
         <div className="results-count">
-          Showing {filteredDestinations.length} destination
-          {filteredDestinations.length !== 1 ? "s" : ""}
+
+          Showing{" "}
+          {filteredDestinations.length}{" "}
+          destination
+          {filteredDestinations.length !==
+          1
+            ? "s"
+            : ""}
+
         </div>
+
 
         {/* DESTINATION CARDS */}
+
         <div className="destination-grid">
 
-          {filteredDestinations.map((destination) => (
-            <DestinationCard
-              key={destination.id}
-              destination={destination}
-            />
-          ))}
+          {filteredDestinations.map(
+            (destination) => (
+
+              <DestinationCard
+                key={destination.id}
+                destination={
+                  destination
+                }
+              />
+
+            )
+          )}
 
         </div>
 
+
         {/* EMPTY RESULT */}
-        {filteredDestinations.length === 0 && (
+
+        {filteredDestinations.length ===
+          0 && (
+
           <div className="empty-state">
 
-            <Search size={40} />
+            <Search
+              size={40}
+            />
 
             <h3>
               No destinations found
             </h3>
 
             <p>
-              Try another destination or category.
+              Try another destination
+              or category.
             </p>
 
             <button
@@ -156,6 +251,7 @@ export default function DestinationsPage() {
             </button>
 
           </div>
+
         )}
 
       </section>

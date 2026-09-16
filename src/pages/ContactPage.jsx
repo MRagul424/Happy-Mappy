@@ -1,43 +1,439 @@
-import React from 'react';
+import React, { useState } from "react";
+
+import {
+  MapPin,
+  Mail,
+  Phone,
+  Clock,
+  Send,
+  MessageCircle,
+} from "lucide-react";
+
 
 const ContactPage = () => {
+
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
+
+
+  const handleChange = (event) => {
+
+    const {
+      name,
+      value,
+    } = event.target;
+
+    setForm((current) => ({
+      ...current,
+      [name]: value,
+    }));
+
+  };
+
+
+  const handleSubmit = (event) => {
+
+    event.preventDefault();
+
+    alert(
+      "Thank you for contacting TravelPlanner. We will get back to you soon."
+    );
+
+    setForm({
+      name: "",
+      email: "",
+      subject: "",
+      message: "",
+    });
+
+  };
+
+
   return (
-    <div style={{ maxWidth: '800px', margin: '3rem auto', padding: '0 1.5rem' }}>
-      <h1 style={{ fontSize: '2rem', marginBottom: '1rem', color: '#1a202c' }}>
-        Contact Us
-      </h1>
-      <p style={{ color: '#4a5568', marginBottom: '2rem' }}>
-        Get in touch with the TravelPlanner team for any inquiries, partnerships, or support.
-      </p>
+    <main className="contact-page">
 
-      <div style={{ display: 'grid', gap: '1.5rem', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))' }}>
-        <div style={{ background: '#f8fafc', padding: '1.5rem', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
-          <h3 style={{ margin: '0 0 0.5rem 0', color: '#2d3748' }}>🏨 Address : </h3>
-          <p style={{ margin: 0, color: '#4a5568', lineHeight: '1.5' }}>
-            2/6 Nalligoundapalayam<br />
-            Vadambacherry, Kamanaikenpalayam<br />
-            Coimbatore, Tamil Nadu 641659<br />
+      {/* ==================================================
+          PAGE HEADER
+      ================================================== */}
+
+      <section className="page-header contact-page-header">
+
+        <div className="page-header-content">
+
+          <span className="section-label">
+
+            <MessageCircle size={17} />
+
+            Get In Touch
+
+          </span>
+
+
+          <h1>
+            Contact Us
+          </h1>
+
+
+          <p>
+            Have a question about TravelPlanner?
+            Get in touch with our team and
+            we will be happy to help.
           </p>
+
         </div>
 
-        <div style={{ background: '#f8fafc', padding: '1.5rem', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
-          <h3 style={{ margin: '0 0 0.5rem 0', color: '#2d3748' }}>📧 Email Us : </h3>
-          <p style={{ margin: 0, color: '#4a5568', lineHeight: '1.5' }}>
-            <strong>Support:</strong>ragulm43421@gmail.com<br />
-            <strong>Business:</strong>travelplanner@gmail.com
-          </p>
+      </section>
+
+
+      {/* ==================================================
+          CONTACT SECTION
+      ================================================== */}
+
+      <section className="section">
+
+        <div className="contact-layout">
+
+
+          {/* =================================================
+              LEFT SIDE - CONTACT DETAILS
+          ================================================= */}
+
+          <div className="contact-information">
+
+            <div className="contact-heading">
+
+              <span className="section-label">
+
+                Contact Information
+
+              </span>
+
+
+              <h2>
+                We are here to help
+              </h2>
+
+
+              <p>
+                Reach out to us for travel
+                inquiries, support, partnerships
+                or general questions.
+              </p>
+
+            </div>
+
+
+            {/* ADDRESS */}
+
+            <div className="contact-info-card">
+
+              <div className="contact-info-icon">
+
+                <MapPin size={21} />
+
+              </div>
+
+
+              <div>
+
+                <h3>
+                  Address
+                </h3>
+
+
+                <p>
+                  11 ABC Street<br />
+                  XYZ City<br />
+                  Coimbatore, Tamil Nadu 641659
+                </p>
+
+              </div>
+
+            </div>
+
+
+            {/* EMAIL */}
+
+            <div className="contact-info-card">
+
+              <div className="contact-info-icon">
+
+                <Mail size={21} />
+
+              </div>
+
+
+              <div>
+
+                <h3>
+                  Email
+                </h3>
+
+
+                <p>
+
+                  <strong>
+                    Support:
+                  </strong>{" "}
+                  ragulm43421@gmail.com
+
+                  <br />
+
+                  <strong>
+                    Business:
+                  </strong>{" "}
+                  travelplanner@gmail.com
+
+                </p>
+
+              </div>
+
+            </div>
+
+
+            {/* PHONE */}
+
+            <div className="contact-info-card">
+
+              <div className="contact-info-icon">
+
+                <Phone size={21} />
+
+              </div>
+
+
+              <div>
+
+                <h3>
+                  Phone
+                </h3>
+
+
+                <p>
+                  +91 9876543210
+                </p>
+
+              </div>
+
+            </div>
+
+
+            {/* HOURS */}
+
+            <div className="contact-info-card">
+
+              <div className="contact-info-icon">
+
+                <Clock size={21} />
+
+              </div>
+
+
+              <div>
+
+                <h3>
+                  Working Hours
+                </h3>
+
+
+                <p>
+                  Monday - Friday
+                  <br />
+                  9:00 AM - 6:00 PM
+                </p>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          {/* =================================================
+              RIGHT SIDE - CONTACT FORM
+          ================================================= */}
+
+          <div className="contact-form-card">
+
+            <div className="contact-form-heading">
+
+              <span className="section-label">
+
+                <Send size={16} />
+
+                Send a Message
+
+              </span>
+
+
+              <h2>
+                How can we help?
+              </h2>
+
+
+              <p>
+                Fill in the form below and
+                send us your message.
+              </p>
+
+            </div>
+
+
+            <form
+              className="contact-form"
+              onSubmit={handleSubmit}
+            >
+
+
+              {/* NAME */}
+
+              <div className="contact-form-group">
+
+                <label htmlFor="contact-name">
+                  Full Name
+                </label>
+
+
+                <input
+                  id="contact-name"
+                  type="text"
+                  name="name"
+                  placeholder="Enter your name"
+                  value={form.name}
+                  onChange={handleChange}
+                  required
+                />
+
+              </div>
+
+
+              {/* EMAIL */}
+
+              <div className="contact-form-group">
+
+                <label htmlFor="contact-email">
+                  Email Address
+                </label>
+
+
+                <input
+                  id="contact-email"
+                  type="email"
+                  name="email"
+                  placeholder="Enter your email"
+                  value={form.email}
+                  onChange={handleChange}
+                  required
+                />
+
+              </div>
+
+
+              {/* SUBJECT */}
+
+              <div className="contact-form-group">
+
+                <label htmlFor="contact-subject">
+                  Subject
+                </label>
+
+
+                <input
+                  id="contact-subject"
+                  type="text"
+                  name="subject"
+                  placeholder="What is your message about?"
+                  value={form.subject}
+                  onChange={handleChange}
+                  required
+                />
+
+              </div>
+
+
+              {/* MESSAGE */}
+
+              <div className="contact-form-group">
+
+                <label htmlFor="contact-message">
+                  Message
+                </label>
+
+
+                <textarea
+                  id="contact-message"
+                  name="message"
+                  placeholder="Write your message here..."
+                  value={form.message}
+                  onChange={handleChange}
+                  rows="6"
+                  required
+                />
+
+              </div>
+
+
+              {/* SUBMIT */}
+
+              <button
+                type="submit"
+                className="primary-button contact-submit"
+              >
+
+                Send Message
+
+                <Send size={17} />
+
+              </button>
+
+            </form>
+
+          </div>
+
         </div>
 
-        <div style={{ background: '#f8fafc', padding: '1.5rem', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
-          <h3 style={{ margin: '0 0 0.5rem 0', color: '#2d3748' }}>📞 Phone & Hours : </h3>
-          <p style={{ margin: 0, color: '#4a5568', lineHeight: '1.5' }}>
-            <strong>Phone:</strong> +91 9876543210<br />
-            <strong>Hours:</strong> Mon - Fri, 9:00 AM - 6:00 PM 
-          </p>
+      </section>
+
+
+      {/* ==================================================
+          BOTTOM SUPPORT SECTION
+      ================================================== */}
+
+      <section className="contact-support">
+
+        <div className="contact-support-content">
+
+          <div className="contact-support-icon">
+
+            <MessageCircle size={24} />
+
+          </div>
+
+
+          <div>
+
+            <h2>
+              Need travel support?
+            </h2>
+
+            <p>
+              Our team is available Monday to
+              Friday from 9:00 AM to 6:00 PM.
+            </p>
+
+          </div>
+
         </div>
-      </div>
-    </div>
+
+      </section>
+
+    </main>
   );
 };
+
 
 export default ContactPage;
