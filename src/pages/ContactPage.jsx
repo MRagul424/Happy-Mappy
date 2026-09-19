@@ -65,8 +65,8 @@ const ContactPage = () => {
 
           <p>
             Have a question about TravelPlanner?
-            Get in touch with our team and we will
-            be happy to help.
+            Get in touch with our team and share your
+            feedback with us.
           </p>
         </div>
       </section>
@@ -77,6 +77,7 @@ const ContactPage = () => {
 
       <section className="section">
         <div className="contact-layout">
+
           {/* =================================================
               LEFT SIDE - CONTACT DETAILS
           ================================================= */}
@@ -170,21 +171,21 @@ const ContactPage = () => {
           </div>
 
           {/* =================================================
-              RIGHT SIDE - CONTACT FORM
+              RIGHT SIDE - FEEDBACK FORM
           ================================================= */}
 
           <div className="contact-form-card">
             <div className="contact-form-heading">
               <span className="section-label">
-                <Send size={16} />
-                Send a Message
+                <MessageCircle size={16} />
+                Feedback About Us
               </span>
 
-              <h2>How can we help?</h2>
+              <h2>How was your experience?</h2>
 
               <p>
-                Fill in the form below and send us
-                your message.
+                Share your feedback with us and help
+                us improve TravelPlanner.
               </p>
             </div>
 
@@ -192,6 +193,7 @@ const ContactPage = () => {
               className="contact-form"
               onSubmit={handleSubmit}
             >
+
               {/* NAME */}
 
               <div className="contact-form-group">
@@ -232,31 +234,31 @@ const ContactPage = () => {
 
               <div className="contact-form-group">
                 <label htmlFor="contact-subject">
-                  Subject
+                  Feedback Subject
                 </label>
 
                 <input
                   id="contact-subject"
                   type="text"
                   name="subject"
-                  placeholder="What is your message about?"
+                  placeholder="What is your feedback about?"
                   value={form.subject}
                   onChange={handleChange}
                   required
                 />
               </div>
 
-              {/* MESSAGE */}
+              {/* FEEDBACK */}
 
               <div className="contact-form-group">
                 <label htmlFor="contact-message">
-                  Message
+                  Your Feedback
                 </label>
 
                 <textarea
                   id="contact-message"
                   name="message"
-                  placeholder="Write your message here..."
+                  placeholder="Write your feedback here..."
                   value={form.message}
                   onChange={handleChange}
                   rows="6"
@@ -270,7 +272,7 @@ const ContactPage = () => {
                 type="submit"
                 className="primary-button contact-submit"
               >
-                Send Message
+                Submit Feedback
                 <Send size={17} />
               </button>
             </form>
@@ -279,7 +281,7 @@ const ContactPage = () => {
       </section>
 
       {/* ==================================================
-          BOTTOM SUPPORT SECTION
+          BOTTOM FEEDBACK SECTION
       ================================================== */}
 
       <section className="contact-support">
@@ -289,11 +291,11 @@ const ContactPage = () => {
           </div>
 
           <div>
-            <h2>Need travel support?</h2>
+            <h2>We value your feedback</h2>
 
             <p>
-              Our team is available Monday to Friday
-              from 9:00 AM to 6:00 PM.
+              Your feedback helps us improve TravelPlanner
+              and provide a better travel planning experience.
             </p>
           </div>
         </div>
@@ -315,6 +317,7 @@ const ContactPage = () => {
           }}
         >
           <div className="contact-success-popup">
+
             <button
               type="button"
               className="contact-success-close"
@@ -328,11 +331,12 @@ const ContactPage = () => {
               <CheckCircle size={42} />
             </div>
 
-            <h2>Message Sent Successfully</h2>
+            <h2>Feedback Submitted Successfully</h2>
 
             <p>
-              Thank you for contacting TravelPlanner.
-              We will get back to you soon.
+              Thank you for sharing your feedback
+              with TravelPlanner. Your feedback is
+              valuable to us.
             </p>
 
             <button
@@ -342,6 +346,7 @@ const ContactPage = () => {
             >
               Done
             </button>
+
           </div>
         </div>
       )}

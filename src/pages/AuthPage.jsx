@@ -13,7 +13,11 @@ import {
   X,
 } from "lucide-react";
 
-import { Link } from "react-router-dom";
+import {
+  Link,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 
 export default function AuthPage() {
   const [isRegister, setIsRegister] = useState(false);
@@ -34,6 +38,18 @@ export default function AuthPage() {
 
   const [errorMessage, setErrorMessage] = useState("");
 
+  // --------------------------------------------------
+  // NAVIGATION
+  // --------------------------------------------------
+
+  const navigate = useNavigate();
+
+  const [searchParams] = useSearchParams();
+
+  // --------------------------------------------------
+  // HANDLE INPUT CHANGE
+  // --------------------------------------------------
+
   const handleChange = (event) => {
     const { name, value } = event.target;
 
@@ -43,11 +59,27 @@ export default function AuthPage() {
     }));
   };
 
+  // --------------------------------------------------
+  // GET RETURN PAGE
+  // --------------------------------------------------
+
+  const getReturnPath = () => {
+    return searchParams.get("returnTo") || "/";
+  };
+
+  // --------------------------------------------------
+  // HANDLE LOGIN / REGISTER
+  // --------------------------------------------------
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
     setErrorMessage("");
     setSuccessMessage("");
+
+    // ==================================================
+    // REGISTER
+    // ==================================================
 
     if (isRegister) {
       if (form.password !== form.confirmPassword) {
@@ -55,15 +87,146 @@ export default function AuthPage() {
         return;
       }
 
-      setSuccessMessage(
-        `Welcome, ${form.name}! Your account has been created successfully.`
+      if (form.password.length < 6) {
+        setErrorMessage(
+          "Password must contain at least 6 characters."
+        );
+        return;
+      }
+
+      // Check whether account already exists
+      const existingUser = localStorage.getItem(
+        "travelPlannerUser"
       );
-    } else {
-      setSuccessMessage(
-        `Login successful! Welcome back, ${form.email}.`
+
+      if (existingUser) {
+        try {
+          const user = JSON.parse(existingUser);
+
+          if (
+            user.email &&
+            user.email.toLowerCase() ===
+              form.email.trim().toLowerCase()
+          ) {
+            setErrorMessage(
+              "An account with this email already exists. Please sign in."
+            );
+            return;
+          }
+        } catch (error) {
+          // Continue with registration if saved data is invalid.
+        }
+      }
+
+      // Save registered user
+      const newUser = {
+        name: form.name.trim(),
+        email: form.email.trim(),
+        password: form.password,
+      };
+
+      localStorage.setItem(
+        "travelPlannerUser",
+        JSON.stringify(newUser)
       );
+
+      // Mark user as logged in
+      localStorage.setItem(
+        "travelPlannerLoggedIn",
+        "true"
+      );
+
+      // Save current user
+      localStorage.setItem(
+        "currentUser",
+        JSON.stringify({
+          name: newUser.name,
+          email: newUser.email,
+        })
+      );
+
+      // Clear form
+      setForm({
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+      });
+
+      setShowPassword(false);
+      setShowConfirmPassword(false);
+
+      // ------------------------------------------------
+      // RETURN TO THE PAGE WHERE USER SELECTED PLAN
+      // ------------------------------------------------
+
+      const returnTo = getReturnPath();
+
+      navigate(returnTo);
+
+      return;
     }
 
+    // ==================================================
+    // LOGIN
+    // ==================================================
+
+    const savedUser = localStorage.getItem(
+      "travelPlannerUser"
+    );
+
+    // If no account has been created yet
+    if (!savedUser) {
+      setErrorMessage(
+        "No account found. Please create an account first."
+      );
+      return;
+    }
+
+    let user;
+
+    try {
+      user = JSON.parse(savedUser);
+    } catch (error) {
+      setErrorMessage(
+        "Unable to verify your account. Please create your account again."
+      );
+      return;
+    }
+
+    // Check email
+    if (
+      user.email?.toLowerCase() !==
+      form.email.trim().toLowerCase()
+    ) {
+      setErrorMessage("Invalid email or password.");
+      return;
+    }
+
+    // Check password
+    if (user.password !== form.password) {
+      setErrorMessage("Invalid email or password.");
+      return;
+    }
+
+    // --------------------------------------------------
+    // LOGIN SUCCESS
+    // --------------------------------------------------
+
+    localStorage.setItem(
+      "travelPlannerLoggedIn",
+      "true"
+    );
+
+    localStorage.setItem(
+      "currentUser",
+      JSON.stringify({
+        name: user.name,
+        email: user.email,
+      })
+    );
+
+    // Clear form
     setForm({
       name: "",
       email: "",
@@ -73,7 +236,19 @@ export default function AuthPage() {
 
     setShowPassword(false);
     setShowConfirmPassword(false);
+
+    // --------------------------------------------------
+    // RETURN TO PREVIOUS PAGE
+    // --------------------------------------------------
+
+    const returnTo = getReturnPath();
+
+    navigate(returnTo);
   };
+
+  // --------------------------------------------------
+  // SWITCH LOGIN / REGISTER
+  // --------------------------------------------------
 
   const switchMode = () => {
     setIsRegister((current) => !current);
@@ -92,6 +267,10 @@ export default function AuthPage() {
     setErrorMessage("");
   };
 
+  // --------------------------------------------------
+  // CLOSE POPUP
+  // --------------------------------------------------
+
   const closePopup = () => {
     setSuccessMessage("");
     setErrorMessage("");
@@ -100,6 +279,7 @@ export default function AuthPage() {
   return (
     <main className="auth-page">
       <div className="auth-container">
+
         {/* ==================================================
             LEFT TRAVEL PANEL
         ================================================== */}
@@ -163,6 +343,7 @@ export default function AuthPage() {
         ================================================== */}
 
         <div className="auth-form-panel">
+
           {/* MOBILE BRAND */}
 
           <div className="auth-mobile-brand">
@@ -179,7 +360,9 @@ export default function AuthPage() {
 
           <div className="auth-heading">
             <span className="auth-form-label">
-              {isRegister ? "Create Account" : "Welcome Back"}
+              {isRegister
+                ? "Create Account"
+                : "Welcome Back"}
             </span>
 
             <h1>
@@ -225,12 +408,18 @@ export default function AuthPage() {
 
           {/* FORM */}
 
-          <form className="auth-form" onSubmit={handleSubmit}>
+          <form
+            className="auth-form"
+            onSubmit={handleSubmit}
+          >
+
             {/* NAME */}
 
             {isRegister && (
               <div className="form-group">
-                <label htmlFor="name">Full Name</label>
+                <label htmlFor="name">
+                  Full Name
+                </label>
 
                 <div className="input-wrapper">
                   <User size={18} />
@@ -251,7 +440,9 @@ export default function AuthPage() {
             {/* EMAIL */}
 
             <div className="form-group">
-              <label htmlFor="email">Email Address</label>
+              <label htmlFor="email">
+                Email Address
+              </label>
 
               <div className="input-wrapper">
                 <Mail size={18} />
@@ -272,7 +463,9 @@ export default function AuthPage() {
 
             <div className="form-group">
               <div className="form-label-row">
-                <label htmlFor="password">Password</label>
+                <label htmlFor="password">
+                  Password
+                </label>
 
                 {!isRegister && (
                   <button
@@ -295,7 +488,11 @@ export default function AuthPage() {
                 <input
                   id="password"
                   name="password"
-                  type={showPassword ? "text" : "password"}
+                  type={
+                    showPassword
+                      ? "text"
+                      : "password"
+                  }
                   placeholder="Enter your password"
                   value={form.password}
                   onChange={handleChange}
@@ -307,7 +504,9 @@ export default function AuthPage() {
                   type="button"
                   className="password-toggle"
                   onClick={() =>
-                    setShowPassword((current) => !current)
+                    setShowPassword(
+                      (current) => !current
+                    )
                   }
                   aria-label={
                     showPassword
@@ -378,7 +577,10 @@ export default function AuthPage() {
 
             {isRegister && (
               <label className="auth-checkbox">
-                <input type="checkbox" required />
+                <input
+                  type="checkbox"
+                  required
+                />
 
                 <span>
                   I agree to the{" "}
@@ -400,7 +602,9 @@ export default function AuthPage() {
               type="submit"
               className="primary-button auth-submit"
             >
-              {isRegister ? "Create Account" : "Sign In"}
+              {isRegister
+                ? "Create Account"
+                : "Sign In"}
 
               <ArrowRight size={17} />
             </button>
@@ -415,14 +619,22 @@ export default function AuthPage() {
                 : "Don't have an account?"}
             </span>
 
-            <button type="button" onClick={switchMode}>
-              {isRegister ? "Sign In" : "Sign Up"}
+            <button
+              type="button"
+              onClick={switchMode}
+            >
+              {isRegister
+                ? "Sign In"
+                : "Sign Up"}
             </button>
           </div>
 
           {/* HOME */}
 
-          <Link to="/" className="auth-home-link">
+          <Link
+            to="/"
+            className="auth-home-link"
+          >
             Continue without login
           </Link>
         </div>
@@ -430,6 +642,9 @@ export default function AuthPage() {
 
       {/* ==================================================
           SUCCESS POPUP
+          
+          Kept for compatibility, but normal login/register
+          now redirects automatically instead of showing it.
       ================================================== */}
 
       {successMessage && (

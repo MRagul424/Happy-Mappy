@@ -12,7 +12,7 @@ export const destinations = [
     description:
       "Beautiful hill station famous for tea gardens, misty mountains and waterfalls.",
     image:
-      "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1200&q=80",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSL6PPVGlO5JzRBb2qfMtgtAfqZewPuohGG2ph7TJro1Q&s=10",
     places: [
       "Munnar Tea Gardens",
       "Eravikulam National Park",
@@ -31,7 +31,7 @@ export const destinations = [
     description:
       "Enjoy Kerala's famous backwaters, houseboats and peaceful village scenery.",
     image:
-      "https://images.unsplash.com/photo-1605538883669-825200433431?auto=format&fit=crop&w=1200&q=80",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnwUzWOCOhvoIM_gB0u0LJOQWmqCq7hjK6NZ8sXcxvkA&s=10",
     places: [
       "Alleppey Backwaters",
       "Houseboat Cruise",
@@ -50,7 +50,7 @@ export const destinations = [
     description:
       "A historic coastal city combining Portuguese, Dutch and Indian heritage.",
     image:
-      "https://images.unsplash.com/photo-1593693411515-c20261bcad6e?auto=format&fit=crop&w=1200&q=80",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWacKXjFVSXzcUrHi5ROXbMlYKZvIDbo_gsjknRaaQcA&s=10",
     places: [
       "Fort Kochi",
       "Chinese Fishing Nets",
@@ -69,7 +69,7 @@ export const destinations = [
     description:
       "Explore forests, waterfalls, caves and beautiful mountain landscapes.",
     image:
-      "https://images.unsplash.com/photo-1596176530529-78163a4f7af2?auto=format&fit=crop&w=1200&q=80",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTicXJ0_-NWChd5H2lZsUIJ7gUVDGEkBGd4igNorw0e9A&s=10",
     places: [
       "Edakkal Caves",
       "Soochipara Falls",
@@ -88,7 +88,7 @@ export const destinations = [
     description:
       "A popular hill station known for cool weather, tea gardens and scenic views.",
     image:
-      "https://images.unsplash.com/photo-1597074866923-dc0589150358?auto=format&fit=crop&w=1200&q=80",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJhjCMcidBzYYTj-cwZXI6CDCeSVDjbsYf0YWF4Ld63A&s=10",
     places: [
       "Ooty Lake",
       "Botanical Garden",
@@ -107,7 +107,7 @@ export const destinations = [
     description:
       "Peaceful hill station famous for lakes, forests and beautiful viewpoints.",
     image:
-      "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=1200&q=80",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1SgZ9A8lADcE17I0UFNa3vflj9O4BLPXHiPyk7lqEjw&s=10",
     places: [
       "Kodaikanal Lake",
       "Coaker's Walk",
@@ -126,7 +126,7 @@ export const destinations = [
     description:
       "A vibrant coastal city with beaches, temples, food and cultural attractions.",
     image:
-      "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=1200&q=80",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQntzvYHW4eHnJeMjPuipRngACGXplSWt0N9Q2m7keLhg&s=10",
     places: [
       "Marina Beach",
       "Kapaleeshwarar Temple",
@@ -145,7 +145,7 @@ export const destinations = [
     description:
       "Ancient coastal town famous for UNESCO World Heritage monuments.",
     image:
-      "https://images.unsplash.com/photo-1626014303757-5c7b4e0d9f0a?auto=format&fit=crop&w=1200&q=80",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuTC-eiDJ60JRmTUW2KXbegpT2MBHFwAQnflz_6d7KNA&s=10",
     places: [
       "Shore Temple",
       "Arjuna's Penance",
@@ -164,7 +164,7 @@ export const destinations = [
     description:
       "One of India's oldest cities, famous for temples and Tamil culture.",
     image:
-      "https://images.unsplash.com/photo-1621252179027-94459d278660?auto=format&fit=crop&w=1200&q=80",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRySlx6bkLz5wQyaA6KcJPUhLBqy6i5tvKJPnRCyotj1w&s=10",
     places: [
       "Meenakshi Amman Temple",
       "Thirumalai Nayakkar Palace",
@@ -183,7 +183,7 @@ export const destinations = [
     description:
       "A cultural destination famous for the magnificent Brihadeeswarar Temple.",
     image:
-      "https://images.unsplash.com/photo-1600100397608-f0103f7f2f18?auto=format&fit=crop&w=1200&q=80",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRB4NHcjsVaJOuR2AQIcLC9GgCx3eGG_PEurECT8Gdwxw&s=10",
     places: [
       "Brihadeeswarar Temple",
       "Thanjavur Palace",
@@ -253,7 +253,7 @@ export const plans = [
       "Trip planning assistance",
     ],
     image:
-      "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1200&q=80",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLs1CKXG8MI4a7GAYUiiF3QnIa5yuxQWj5EXq2P31W8A&s=10",
     highlights: ["Tea Gardens", "Houseboat", "Fort Kochi"],
     places: [
       "Munnar Tea Gardens",
@@ -349,7 +349,7 @@ export const plans = [
       "Trip planning assistance",
     ],
     image:
-      "https://images.unsplash.com/photo-1600100397608-f0103f7f2f18?auto=format&fit=crop&w=1200&q=80",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmASq3HMG-DmgA1BnvAaEFD-IpkWQAv8Koq0eN8MSFcw&s=10",
     highlights: ["Ancient Temples", "UNESCO Heritage", "Tamil Culture"],
     places: [
       "Marina Beach",
@@ -471,7 +471,7 @@ export const plans = [
       "Trip planning assistance",
     ],
     image:
-      "https://images.unsplash.com/photo-1605538883669-825200433431?auto=format&fit=crop&w=1200&q=80",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTnC0D8kg3t8mp7xfFulCt7jhzjt6a8fZsHjdVfNOxAA&s=10",
     highlights: ["Houseboat", "Backwaters", "Fort Kochi"],
     places: [
       "Alleppey Backwaters",
@@ -554,7 +554,7 @@ export const plans = [
       "Trip planning assistance",
     ],
     image:
-      "https://images.unsplash.com/photo-1596176530529-78163a4f7af2?auto=format&fit=crop&w=1200&q=80",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8MytDb2VWAcVo1rdcupa-qwHbCBha9LhE4r_lFqR1GQ&s=10",
     highlights: ["Edakkal Caves", "Waterfalls", "Mountain Views"],
     places: [
       "Edakkal Caves",
@@ -623,7 +623,7 @@ export const plans = [
       "Trip planning assistance",
     ],
     image:
-      "https://images.unsplash.com/photo-1597074866923-dc0589150358?auto=format&fit=crop&w=1200&q=80",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9wLylDURmR4inEt3eSQOFzQWyWt3g93U_h2hg0YNdLQ&s=10",
     highlights: ["Ooty Lake", "Botanical Garden", "Tea Estates"],
     places: [
       "Ooty Lake",
@@ -693,7 +693,7 @@ export const plans = [
       "Trip planning assistance",
     ],
     image:
-      "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=1200&q=80",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIN4FcFaTUazH23bFSHFtIHHk0Bgsc-Iqb3k_J3QoxBQ&s=10",
     highlights: ["Lake", "Pillar Rocks", "Forest Walks"],
     places: [
       "Kodaikanal Lake",
@@ -762,7 +762,7 @@ export const plans = [
       "Trip planning assistance",
     ],
     image:
-      "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=1200&q=80",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4MhydjQeQbKTk9UZsQLhJkZ713tnZvJA4Au57ifcW_A&s=10",
     highlights: ["Marina Beach", "Temples", "City Food"],
     places: [
       "Marina Beach",
@@ -808,7 +808,7 @@ export const plans = [
       "Trip planning assistance",
     ],
     image:
-      "https://images.unsplash.com/photo-1626014303757-5c7b4e0d9f0a?auto=format&fit=crop&w=1200&q=80",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS09Z73-x0qqLAUd7YkZUVxedBVDnqDOdin1s1vU-wG8A&s=10",
     highlights: ["Shore Temple", "Pancha Rathas", "Beach"],
     places: [
       "Shore Temple",
@@ -854,7 +854,7 @@ export const plans = [
       "Trip planning assistance",
     ],
     image:
-      "https://images.unsplash.com/photo-1621252179027-94459d278660?auto=format&fit=crop&w=1200&q=80",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQicfGeTba1kLPdwm4bB75Tr4F_Q87112V2b1mCN-zvGw&s=10",
     highlights: ["Meenakshi Temple", "Palace", "Local Food"],
     places: [
       "Meenakshi Amman Temple",
@@ -901,7 +901,7 @@ export const plans = [
       "Trip planning assistance",
     ],
     image:
-      "https://images.unsplash.com/photo-1600100397608-f0103f7f2f18?auto=format&fit=crop&w=1200&q=80",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5c9gkG2UksnUss2XCzsx_qgCRleHw4eraLI2B7dKdOw&s=10",
     highlights: ["Brihadeeswarar Temple", "Palace", "Art"],
     places: [
       "Brihadeeswarar Temple",

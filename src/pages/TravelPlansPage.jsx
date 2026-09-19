@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import {
   Check,
@@ -11,9 +11,10 @@ import {
   Ticket,
   X,
   CheckCircle,
+  LogIn,
 } from "lucide-react";
 
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
 import { plans } from "../data/travelData";
 import { destinationPlans } from "../data/destinationPlans";
@@ -24,7 +25,10 @@ export default function TravelPlansPage() {
 
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [successPlan, setSuccessPlan] = useState(null);
+  const [showLoginPopup, setShowLoginPopup] = useState(false);
 
+  const navigate = useNavigate();
+  const location = useLocation();
   const [searchParams] = useSearchParams();
 
   const selectedDestination =
@@ -238,6 +242,45 @@ export default function TravelPlansPage() {
 
   /*
   =========================================================
+  DAY PLANNING HELPERS
+  =========================================================
+  */
+
+  const getDayPlanning = (day) => {
+    if (day?.planning) {
+      return day.planning;
+    }
+
+    const activities = Array.isArray(day?.activities)
+      ? day.activities
+      : [];
+
+    const places = activities.filter(
+      (item) => item?.type === "place"
+    );
+
+    const foodStops = activities.filter(
+      (item) => item?.type === "food"
+    );
+
+    return {
+      overview: `Day ${day?.day || ""} includes ${places.length} main place${places.length === 1 ? "" : "s"} with planned food breaks.`,
+      startTime: activities[0]?.time || "Flexible start",
+      endTime:
+        activities[activities.length - 1]?.time ||
+        "Flexible finish",
+      mainStops: places.map((item) => item.name),
+      foodStops: foodStops.map((item) => item.name),
+      tips: [
+        "Keep a small time buffer between activities.",
+        "Carry water and comfortable footwear.",
+        "Keep personal shopping outside the planned trip amount.",
+      ],
+    };
+  };
+
+  /*
+  =========================================================
   POPUP FUNCTIONS
   =========================================================
   */
@@ -252,9 +295,121 @@ export default function TravelPlansPage() {
     setSelectedPlan(null);
   };
 
+  /*
+  =========================================================
+  LOGIN CHECK
+  =========================================================
+  The login page stores the user's login status in
+  localStorage using the "travelPlannerLoggedIn" key.
+
+  A few common fallback keys are also checked so this
+  page can work with an existing login state.
+  =========================================================
+  */
+
+  const isUserLoggedIn = () => {
+    const loginKeys = [
+      "travelPlannerLoggedIn",
+      "isLoggedIn",
+      "loggedIn",
+      "isAuthenticated",
+    ];
+
+    if (
+      loginKeys.some(
+        (key) =>
+          localStorage.getItem(key) === "true"
+      )
+    ) {
+      return true;
+    }
+
+    const userKeys = [
+      "travelPlannerUser",
+      "currentUser",
+      "authUser",
+      "loggedInUser",
+      "user",
+    ];
+
+    return userKeys.some((key) => {
+      const value = localStorage.getItem(key);
+
+      if (!value) {
+        return false;
+      }
+
+      try {
+        const parsed = JSON.parse(value);
+        return Boolean(parsed);
+      } catch {
+        return Boolean(value);
+      }
+    });
+  };
+
   const selectPlan = (plan) => {
+    if (!isUserLoggedIn()) {
+      // Save the plan temporarily so it can be selected automatically
+      // after the user logs in and is redirected back here.
+      localStorage.setItem(
+        "travelPlannerPendingPlan",
+        JSON.stringify(plan)
+      );
+
+      setSelectedPlan(null);
+      setShowLoginPopup(true);
+      return;
+    }
+
     setSelectedPlan(null);
     setSuccessPlan(plan);
+  };
+
+  // When the user returns from the login page, show the success popup
+  // for the plan they originally selected.
+  useEffect(() => {
+    if (!isUserLoggedIn()) {
+      return;
+    }
+
+    const pendingPlan = localStorage.getItem(
+      "travelPlannerPendingPlan"
+    );
+
+    if (!pendingPlan) {
+      return;
+    }
+
+    try {
+      const plan = JSON.parse(pendingPlan);
+
+      if (plan && plan.title) {
+        setSuccessPlan(plan);
+        localStorage.removeItem(
+          "travelPlannerPendingPlan"
+        );
+
+        // Remove the login-return query from the URL, if present.
+        if (location.search) {
+          navigate(location.pathname, { replace: true });
+        }
+      }
+    } catch (error) {
+      localStorage.removeItem(
+        "travelPlannerPendingPlan"
+      );
+    }
+  }, [location.pathname, location.search, navigate]);
+
+  const closeLoginPopup = () => {
+    setShowLoginPopup(false);
+  };
+
+  const goToLogin = () => {
+    setShowLoginPopup(false);
+    const returnTo = `${location.pathname}${location.search}`;
+    navigate(`/auth?returnTo=${encodeURIComponent(returnTo)}`);
   };
 
   const closeSuccessPopup = () => {
@@ -592,16 +747,91 @@ export default function TravelPlansPage() {
 
           /*
           =====================================================
+          DAY PLANNING DETAILS
+          =====================================================
+          */
+
+          .travel-plan-day-subtitle {
+            display: block;
+            margin-top: 3px;
+            color: var(--muted);
+            font-size: 12px;
+          }
+
+          .travel-plan-day-planning {
+            margin-bottom: 15px;
+            padding: 16px;
+            background: linear-gradient(135deg, #f8fafc, #ecfeff);
+            border: 1px solid #cbd5e1;
+            border-left: 4px solid var(--primary);
+            border-radius: 10px;
+          }
+
+          .travel-plan-day-overview {
+            margin: 0 0 11px;
+            color: var(--text);
+            font-size: 14px;
+            line-height: 1.6;
+          }
+
+          .travel-plan-day-stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 8px;
+            margin-bottom: 11px;
+          }
+
+          .travel-plan-day-stats > div {
+            padding: 9px;
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+          }
+
+          .travel-plan-day-stats small {
+            display: block;
+            margin-bottom: 3px;
+            color: var(--muted);
+            font-size: 11px;
+          }
+
+          .travel-plan-day-stats strong {
+            color: var(--text);
+            font-size: 13px;
+          }
+
+          .travel-plan-day-tips > strong {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--text);
+            font-size: 13px;
+          }
+
+          .travel-plan-day-tips ul {
+            margin: 0;
+            padding-left: 17px;
+          }
+
+          .travel-plan-day-tips li {
+            margin-bottom: 3px;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.55;
+          }
+
+          /*
+          =====================================================
           DAY DETAILS
           =====================================================
           */
 
           .travel-plan-popup-day {
-            margin-bottom: 18px;
-            padding: 17px;
+            margin-bottom: 20px;
+            padding: 18px;
             background: #ffffff;
-            border: 1px solid var(--border);
-            border-radius: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
           }
 
           .travel-plan-popup-day-header {
@@ -628,7 +858,7 @@ export default function TravelPlansPage() {
           .travel-plan-popup-day-header h3 {
             margin: 0;
             color: var(--text);
-            font-size: 17px;
+            font-size: 19px;
           }
 
           .travel-plan-activity-list {
@@ -640,22 +870,39 @@ export default function TravelPlansPage() {
           .travel-plan-activity {
             display: grid;
             grid-template-columns:
-              125px
+              140px
               minmax(0, 1fr)
-              110px;
+              120px;
             align-items: center;
-            gap: 12px;
-            padding: 12px 13px;
+            gap: 14px;
+            padding: 14px 15px;
             background: #f8fafc;
-            border: 1px solid var(--border);
-            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+          }
+
+          .travel-plan-activity:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 16px rgba(15, 23, 42, 0.08);
           }
 
           .travel-plan-activity-time {
             display: flex;
-            align-items: center;
-            gap: 6px;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 4px;
             color: var(--primary);
+            font-size: 13px;
+          }
+
+          .travel-plan-activity-time svg {
+            flex-shrink: 0;
+          }
+
+          .travel-plan-activity-time span {
+            padding-left: 21px;
+            color: var(--muted);
             font-size: 12px;
           }
 
@@ -680,13 +927,32 @@ export default function TravelPlansPage() {
 
           .travel-plan-activity-place strong {
             color: var(--text);
-            font-size: 13px;
+            font-size: 15px;
+            line-height: 1.35;
             overflow-wrap: anywhere;
           }
 
           .travel-plan-activity-place span {
             color: var(--muted);
-            font-size: 10px;
+            font-size: 12px;
+          }
+
+          .travel-plan-activity-description {
+            margin: 5px 0 0;
+            color: var(--text);
+            font-size: 13px;
+            line-height: 1.55;
+          }
+
+          .travel-plan-activity-tip {
+            margin: 4px 0 0;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.5;
+          }
+
+          .travel-plan-activity-tip strong {
+            color: var(--primary);
           }
 
           .travel-plan-activity-amount {
@@ -695,7 +961,7 @@ export default function TravelPlansPage() {
             justify-content: flex-end;
             gap: 5px;
             color: var(--primary);
-            font-size: 12px;
+            font-size: 13px;
           }
 
           .travel-plan-food-label {
@@ -703,7 +969,7 @@ export default function TravelPlansPage() {
             color: #92400e;
             background: #fef3c7;
             border-radius: 999px;
-            font-size: 10px;
+            font-size: 11px;
             font-weight: 700;
           }
 
@@ -906,6 +1172,10 @@ export default function TravelPlansPage() {
           */
 
           @media (max-width: 760px) {
+            .travel-plan-day-stats {
+              grid-template-columns: 1fr;
+            }
+
             .travel-plan-page-scope .plans-list {
               grid-template-columns: 1fr;
             }
@@ -1265,7 +1535,42 @@ export default function TravelPlansPage() {
                           {day.day}
                         </div>
 
-                        <h3>{day.title}</h3>
+                        <div>
+                          <h3>{day.title}</h3>
+                          <span className="travel-plan-day-subtitle">
+                            {getDayPlanning(day).startTime} - {getDayPlanning(day).endTime}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="travel-plan-day-planning">
+                        <p className="travel-plan-day-overview">
+                          {getDayPlanning(day).overview}
+                        </p>
+
+                        <div className="travel-plan-day-stats">
+                          <div>
+                            <small>Main stops</small>
+                            <strong>
+                              {getDayPlanning(day).mainStops?.length || 0}
+                            </strong>
+                          </div>
+
+                          <div>
+                            <small>Food breaks</small>
+                            <strong>
+                              {getDayPlanning(day).foodStops?.length || 0}
+                            </strong>
+                          </div>
+
+                          <div>
+                            <small>Day timing</small>
+                            <strong>
+                              {getDayPlanning(day).startTime} - {getDayPlanning(day).endTime}
+                            </strong>
+                          </div>
+                        </div>
+
                       </div>
 
                       <div className="travel-plan-activity-list">
@@ -1303,6 +1608,11 @@ export default function TravelPlansPage() {
                                     {activity.time ||
                                       "Time not set"}
                                   </strong>
+
+                                  <span>
+                                    {activity.duration ||
+                                      "1-2 hrs"}
+                                  </span>
                                 </div>
 
                                 <div className="travel-plan-activity-place">
@@ -1328,6 +1638,17 @@ export default function TravelPlansPage() {
                                         ? "Free place / activity"
                                         : "Place / activity"}
                                     </span>
+
+                                    <p className="travel-plan-activity-description">
+                                      {activity.description ||
+                                        "Explore the main highlights and take some time for photographs."}
+                                    </p>
+
+                                    <p className="travel-plan-activity-tip">
+                                      <strong>Plan:</strong>{" "}
+                                      {activity.planningTip ||
+                                        "Keep a small time buffer before the next stop."}
+                                    </p>
                                   </div>
                                 </div>
 
@@ -1468,6 +1789,55 @@ export default function TravelPlansPage() {
                 </button>
               </div>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* =====================================================
+          LOGIN REQUIRED POPUP
+          ===================================================== */}
+
+      {showLoginPopup && (
+        <div
+          className="auth-popup-overlay"
+          onMouseDown={(event) => {
+            if (
+              event.target ===
+              event.currentTarget
+            ) {
+              closeLoginPopup();
+            }
+          }}
+        >
+          <div className="auth-popup">
+            <button
+              type="button"
+              className="auth-popup-close"
+              onClick={closeLoginPopup}
+              aria-label="Close login required popup"
+            >
+              <X size={18} />
+            </button>
+
+            <div className="auth-popup-icon error-icon">
+              <LogIn size={34} />
+            </div>
+
+            <h2>Login Required</h2>
+
+            <p>
+              Please log in to your TravelPlanner
+              account before selecting a travel plan.
+            </p>
+
+            <button
+              type="button"
+              className="primary-button auth-popup-button"
+              onClick={goToLogin}
+            >
+              Login
+              <LogIn size={17} />
+            </button>
           </div>
         </div>
       )}
