@@ -1,181 +1,191 @@
-import { useEffect, useState } from "react";
-
-import {
-  MapPin,
-  LogIn,
-  LogOut,
-} from "lucide-react";
-
-import {
-  Link,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Menu, X, LogIn, LogOut, User } from "lucide-react";
 
 export default function Navbar() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  const location = useLocation();
   const navigate = useNavigate();
 
-  // ==================================================
-  // CHECK LOGIN STATUS
-  // ==================================================
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [showLogoutPopup, setShowLogoutPopup] = useState(false);
 
-  useEffect(() => {
-    const loggedIn =
-      localStorage.getItem(
-        "travelPlannerLoggedIn"
-      ) === "true";
-
-    setIsLoggedIn(loggedIn);
-  }, [location]);
-
-  // ==================================================
-  // LOGOUT
-  // ==================================================
+  const currentUser = localStorage.getItem("happyMappyCurrentUser");
 
   const handleLogout = () => {
-    // Remove current login session
-    localStorage.removeItem(
-      "travelPlannerLoggedIn"
-    );
+    localStorage.removeItem("happyMappyCurrentUser");
+    setShowLogoutPopup(false);
+    setMenuOpen(false);
 
-    // Remove current logged-in user
-    localStorage.removeItem(
-      "currentUser"
-    );
-
-    // Remove pending plan
-    // so an old plan will not be selected
-    // after logging in again.
-    localStorage.removeItem(
-      "travelPlannerPendingPlan"
-    );
-
-    // Immediately change button to Login
-    setIsLoggedIn(false);
-
-    // Go back to Home
     navigate("/");
   };
 
+  const closeMenu = () => {
+    setMenuOpen(false);
+  };
+
   return (
-    <header className="navbar">
+    <>
+      <nav className="navbar">
+        <div className="navbar-container">
 
-      {/* ==================================================
-          LOGO
-      ================================================== */}
+          {/* LOGO */}
+          <Link to="/" className="brand-logo-link">
+  <img
+    src="/images/logo1.png"
+    alt="Happy Mappy"
+    className="brand-logo"
+  />
 
-      <Link
-        to="/"
-        className="navbar-logo"
-      >
-        <span className="navbar-logo-icon">
-          <MapPin size={21} />
-        </span>
+  <span className="brand-name">Happy Mappy</span>
+</Link>
 
-        <span className="navbar-logo-text">
-          Travel<span>Planner</span>
-        </span>
-      </Link>
+          {/* DESKTOP MENU */}
+          <div className="nav-links">
+            <Link to="/" className="nav-link">
+              Home
+            </Link>
 
-      {/* ==================================================
-          NAVIGATION
-      ================================================== */}
+            <Link to="/destinations" className="nav-link">
+              Destinations
+            </Link>
 
-      <nav className="navbar-links">
+            <Link to="/explore" className="nav-link">
+              Explore
+            </Link>
 
-        <Link
-          to="/"
-          className={
-            location.pathname === "/"
-              ? "active"
-              : ""
-          }
-        >
-          Home
-        </Link>
+            <Link to="/travel-plans" className="nav-link">
+              Travel Plans
+            </Link>
 
-        <Link
-          to="/destinations"
-          className={
-            location.pathname === "/destinations"
-              ? "active"
-              : ""
-          }
-        >
-          Destinations
-        </Link>
+            <Link to="/contact" className="nav-link">
+              Contact
+            </Link>
+          </div>
 
-        <Link
-          to="/travel-plans"
-          className={
-            location.pathname === "/travel-plans"
-              ? "active"
-              : ""
-          }
-        >
-          Travel Plans
-        </Link>
+          {/* RIGHT SIDE */}
+          <div className="nav-actions">
 
-        <Link
-          to="/explore"
-          className={
-            location.pathname === "/explore"
-              ? "active"
-              : ""
-          }
-        >
-          Explore
-        </Link>
+            {currentUser ? (
+              <>
+                <div className="user-display">
+                  <User size={18} />
+                  <span>
+                    {JSON.parse(currentUser)?.name || "User"}
+                  </span>
+                </div>
 
-        {/* <Link
-          to="/about"
-          className={
-            location.pathname === "/about"
-              ? "active"
-              : ""
-          }
-        >
-          About
-        </Link> */}
+                <button
+                  className="logout-btn"
+                  onClick={() => setShowLogoutPopup(true)}
+                >
+                  <LogOut size={17} />
+                  Logout
+                </button>
+              </>
+            ) : (
+              <button
+                className="login-btn"
+                onClick={() => navigate("/auth")}
+              >
+                <LogIn size={17} />
+                Login
+              </button>
+            )}
+          </div>
 
-        <Link
-          to="/contact"
-          className={
-            location.pathname === "/contact"
-              ? "active"
-              : ""
-          }
-        >
-          Contact
-        </Link>
-
-        {/* ==================================================
-            LOGIN / LOGOUT
-        ================================================== */}
-
-        {isLoggedIn ? (
+          {/* MOBILE BUTTON */}
           <button
-            type="button"
-            className="navbar-login"
-            onClick={handleLogout}
+            className="mobile-menu-btn"
+            onClick={() => setMenuOpen(!menuOpen)}
           >
-            <LogOut size={17} />
-            Logout
+            {menuOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
-        ) : (
-          <Link
-            to="/auth"
-            className="navbar-login"
-          >
-            <LogIn size={17} />
-            Login
-          </Link>
-        )}
+        </div>
 
+        {/* MOBILE MENU */}
+        {menuOpen && (
+          <div className="mobile-menu">
+
+            <Link to="/" onClick={closeMenu}>
+              Home
+            </Link>
+
+            <Link to="/destinations" onClick={closeMenu}>
+              Destinations
+            </Link>
+
+            <Link to="/explore" onClick={closeMenu}>
+              Explore
+            </Link>
+
+            <Link to="/travel-plans" onClick={closeMenu}>
+              Travel Plans
+            </Link>
+
+            <Link to="/contact" onClick={closeMenu}>
+              Contact
+            </Link>
+
+            {currentUser ? (
+              <button
+                className="mobile-logout-btn"
+                onClick={() => {
+                  setMenuOpen(false);
+                  setShowLogoutPopup(true);
+                }}
+              >
+                <LogOut size={18} />
+                Logout
+              </button>
+            ) : (
+              <button
+                className="mobile-login-btn"
+                onClick={() => {
+                  setMenuOpen(false);
+                  navigate("/auth");
+                }}
+              >
+                <LogIn size={18} />
+                Login
+              </button>
+            )}
+          </div>
+        )}
       </nav>
-    </header>
+
+      {/* LOGOUT POPUP */}
+      {showLogoutPopup && (
+        <div className="popup-overlay">
+          <div className="logout-popup">
+
+            <div className="popup-icon">
+              <LogOut size={28} />
+            </div>
+
+            <h2>Logout from Happy Mappy?</h2>
+
+            <p>
+              Are you sure you want to logout from your account?
+            </p>
+
+            <div className="popup-buttons">
+              <button
+                className="cancel-popup-btn"
+                onClick={() => setShowLogoutPopup(false)}
+              >
+                Cancel
+              </button>
+
+              <button
+                className="confirm-logout-btn"
+                onClick={handleLogout}
+              >
+                Yes, Logout
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
+    </>
   );
 }

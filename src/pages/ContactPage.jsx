@@ -64,7 +64,7 @@ const ContactPage = () => {
           <h1>Contact Us</h1>
 
           <p>
-            Have a question about TravelPlanner?
+            Have a question about HappyMappy?
             Get in touch with our team and share your
             feedback with us.
           </p>
@@ -132,7 +132,7 @@ const ContactPage = () => {
                   <br />
 
                   <strong>Business:</strong>{" "}
-                  travelplanner@gmail.com
+                  happymappy@gmail.com
                 </p>
               </div>
             </div>
@@ -185,7 +185,7 @@ const ContactPage = () => {
 
               <p>
                 Share your feedback with us and help
-                us improve TravelPlanner.
+                us improve Happy Mappy.
               </p>
             </div>
 
@@ -294,7 +294,7 @@ const ContactPage = () => {
             <h2>We value your feedback</h2>
 
             <p>
-              Your feedback helps us improve TravelPlanner
+              Your feedback helps us improve Happy Mappy
               and provide a better travel planning experience.
             </p>
           </div>
@@ -335,7 +335,7 @@ const ContactPage = () => {
 
             <p>
               Thank you for sharing your feedback
-              with TravelPlanner. Your feedback is
+              with Happy Mappy. Your feedback is
               valuable to us.
             </p>
 

@@ -1,3 +1,9 @@
+/* =========================================================
+   HAPPY MAPPY - CLEAN GLOBAL STYLES
+   Navbar: blue theme
+   Duplicate/obsolete navbar, footer and auth-popup blocks removed.
+   ========================================================= */
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -61,160 +67,6 @@ button {
 img {
   display: block;
   max-width: 100%;
-}
-
-.navbar {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  height: 72px;
-
-  padding: 0 6%;
-
-  background:
-    rgba(126, 205, 241, 0.96);
-
-  border-bottom:
-    1px solid
-    var(--border);
-
-  backdrop-filter: blur(12px);
-}
-
-.navbar-logo {
-  display: flex;
-  align-items: center;
-
-  gap: 10px;
-
-  font-size: 20px;
-  font-weight: 800;
-}
-
-.navbar-logo-text span,
-.footer-logo span {
-  color: var(--primary);
-}
-
-.navbar-logo-icon,
-.logo-icon {
-  display: flex;
-
-  align-items: center;
-  justify-content: center;
-
-  width: 40px;
-  height: 40px;
-
-  color: white;
-
-  background:
-    var(--primary);
-
-  border-radius: 12px;
-}
-
-.navbar-links {
-  display: flex;
-
-  align-items: center;
-
-  gap: 32px;
-}
-
-.navbar-links a {
-  color: var(--muted);
-
-  font-size: 15px;
-  font-weight: 600;
-
-  transition:
-    color 0.2s ease;
-}
-
-.navbar-links a:hover,
-.navbar-links a.active {
-  color: var(--primary);
-}
-
-.navbar-login {
-  padding: 10px 20px;
-
-  color: white;
-
-  background:
-    var(--primary);
-
-  border-radius: 10px;
-
-  font-size: 14px;
-  font-weight: 700;
-
-  transition:
-    background 0.2s ease;
-}
-
-.navbar-login:hover {
-  background:
-    var(--primary-dark);
-}
-
-/* ==================================================
-   NAVBAR LOGIN / LOGOUT BUTTON
-   Keep both buttons bright and consistent
-================================================== */
-
-.navbar .navbar-login {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-
-  padding: 10px 20px;
-
-  color: #ffffff !important;
-  background: var(--primary);
-
-  border: 1px solid var(--primary);
-  border-radius: 10px;
-
-  font-size: 14px;
-  font-weight: 700;
-
-  text-decoration: none !important;
-
-  opacity: 1 !important;
-
-  cursor: pointer;
-
-  transition:
-    background 0.2s ease,
-    color 0.2s ease,
-    transform 0.2s ease;
-}
-
-/* Login and Logout hover */
-
-.navbar .navbar-login:hover {
-  color: #ffffff !important;
-  background: var(--primary-dark, #006f68);
-
-  opacity: 1 !important;
-
-  transform: translateY(-1px);
-}
-
-/* Icon inside Login / Logout */
-
-.navbar .navbar-login svg {
-  color: #ffffff !important;
-  opacity: 1 !important;
-  flex-shrink: 0;
 }
 
 
@@ -3267,121 +3119,6 @@ img {
   font-size: 13px;
 }
 
-.footer {
-  color:
-    #cbd5e1;
-
-  background:
-    #0f172a;
-}
-
-.footer-container {
-  width:
-    min(
-      1200px,
-      90%
-    );
-
-  margin: auto;
-
-  display: grid;
-
-  grid-template-columns:
-    2fr
-    1fr
-    1fr
-    1.5fr;
-
-  gap: 50px;
-
-  padding: 60px 0;
-}
-
-.footer-logo {
-  display: flex;
-
-  align-items: center;
-
-  gap: 9px;
-
-  margin-bottom: 15px;
-
-  color: white;
-
-  font-size: 21px;
-
-  font-weight: 800;
-}
-
-.footer-brand p {
-  max-width: 360px;
-
-  color:
-    #94a3b8;
-
-  font-size: 14px;
-}
-
-.footer-column {
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 9px;
-}
-
-.footer-column h4 {
-  margin-bottom: 8px;
-
-  color: white;
-}
-
-.footer-column a,
-.footer-column p {
-  color:
-    #94a3b8;
-
-  font-size: 14px;
-}
-
-.footer-column a:hover {
-  color: white;
-}
-
-.footer-contact {
-  display: flex;
-
-  align-items: center;
-
-  gap: 7px;
-}
-
-.footer-bottom {
-  width:
-    min(
-      1200px,
-      90%
-    );
-
-  margin: auto;
-
-  display: flex;
-
-  justify-content:
-    space-between;
-
-  padding: 20px 0;
-
-  border-top:
-    1px solid
-    #334155;
-
-  color:
-    #64748b;
-
-  font-size: 12px;
-}
-
 @media (max-width: 1000px) {
 
   .destination-grid,
@@ -3393,11 +3130,6 @@ img {
   .feature-grid {
     grid-template-columns:
       1fr;
-  }
-
-  .footer-container {
-    grid-template-columns:
-      repeat(2, 1fr);
   }
 
   .travelplans-card-main,
@@ -4248,135 +3980,6 @@ img {
   }
 }
 
-.auth-popup-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  padding: 20px;
-
-  background: rgba(15, 23, 42, 0.65);
-}
-
-.auth-popup {
-  position: relative;
-
-  width: 100%;
-  max-width: 420px;
-
-  padding: 35px 28px;
-
-  text-align: center;
-
-  background: #ffffff;
-  border-radius: 18px;
-
-  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.25);
-
-  animation: authPopupShow 0.25s ease;
-}
-
-.auth-popup-close {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 34px;
-  height: 34px;
-
-  border: none;
-  border-radius: 50%;
-
-  color: #64748b;
-  background: #f1f5f9;
-
-  cursor: pointer;
-}
-
-.auth-popup-close:hover {
-  color: #0f172a;
-  background: #e2e8f0;
-}
-
-.auth-popup-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 78px;
-  height: 78px;
-
-  margin: 0 auto 18px;
-
-  border-radius: 50%;
-}
-
-.success-icon {
-  color: #0f766e;
-  background: #ccfbf1;
-}
-
-.error-icon {
-  color: #dc2626;
-  background: #fee2e2;
-}
-
-.auth-popup h2 {
-  margin: 0 0 12px;
-
-  color: #0f172a;
-  font-size: 25px;
-  font-weight: 700;
-}
-
-.auth-popup p {
-  margin: 0 auto 25px;
-
-  max-width: 330px;
-
-  color: #64748b;
-  font-size: 15px;
-  line-height: 1.7;
-}
-
-.auth-popup-button {
-  min-width: 130px;
-  justify-content: center;
-}
-
-@keyframes authPopupShow {
-  from {
-    opacity: 0;
-    transform: translateY(15px) scale(0.96);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-@media (max-width: 480px) {
-  .auth-popup {
-    padding: 32px 20px;
-  }
-
-  .auth-popup h2 {
-    font-size: 22px;
-  }
-
-  .auth-popup p {
-    font-size: 14px;
-  }
-}
 
 
 /* =====================================================
@@ -4415,4 +4018,1524 @@ img {
     height: 294px !important;
     min-height: 294px !important;
   }
+}
+/* =========================================================
+   HAPPY MAPPY NAVBAR BRAND
+========================================================= */
+
+.auth-popup-overlay {
+  position: fixed;
+  inset: 0;
+
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background: rgba(15, 23, 42, 0.58);
+
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+
+  animation: authPopupOverlayIn 0.2s ease;
+}
+
+
+.auth-popup {
+  position: relative;
+
+  width: min(420px, 100%);
+
+  padding: 38px 32px 32px;
+
+  background: #ffffff;
+
+  border-radius: 24px;
+
+  text-align: center;
+
+  box-shadow:
+    0 25px 70px rgba(0, 0, 0, 0.25);
+
+  animation: authPopupIn 0.3s ease;
+}
+
+
+/* =========================================================
+   CLOSE BUTTON
+========================================================= */
+
+.auth-popup-close {
+  position: absolute;
+
+  top: 15px;
+  right: 15px;
+
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+
+  border-radius: 50%;
+
+  background: #f1f5f9;
+
+  color: #64748b;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.auth-popup-close:hover {
+  background: #e2e8f0;
+
+  color: #0f172a;
+
+  transform: rotate(90deg);
+}
+
+
+/* =========================================================
+   POPUP ICON
+========================================================= */
+
+.auth-popup-icon {
+  width: 72px;
+  height: 72px;
+
+  margin: 0 auto 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+}
+
+
+/* SUCCESS */
+
+.auth-popup-success
+.auth-popup-icon {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+
+/* ERROR */
+
+.auth-popup-error
+.auth-popup-icon {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+
+/* WARNING */
+
+.auth-popup-warning
+.auth-popup-icon {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+
+/* INFO */
+
+.auth-popup-info
+.auth-popup-icon {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+
+/* =========================================================
+   POPUP TEXT
+========================================================= */
+
+.auth-popup h2 {
+  margin: 0 0 10px;
+
+  color: #172033;
+
+  font-size: 24px;
+
+  font-weight: 800;
+}
+
+
+.auth-popup p {
+  margin: 0 auto 25px;
+
+  max-width: 340px;
+
+  color: #64748b;
+
+  font-size: 15px;
+
+  line-height: 1.65;
+}
+
+
+/* =========================================================
+   POPUP BUTTON
+========================================================= */
+
+.auth-popup-button {
+  width: 100%;
+
+  min-height: 48px;
+
+  border: none;
+
+  border-radius: 12px;
+
+  background: #087f73;
+
+  color: #ffffff;
+
+  font-family: inherit;
+
+  font-size: 15px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.auth-popup-button:hover {
+  background: #06675e;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 8px 20px rgba(8, 127, 115, 0.25);
+}
+
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes authPopupOverlayIn {
+
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+
+}
+
+
+@keyframes authPopupIn {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(20px)
+      scale(0.94);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+  .auth-popup-overlay {
+    padding: 16px;
+  }
+
+
+  .auth-popup {
+    padding: 34px 22px 24px;
+
+    border-radius: 20px;
+  }
+
+
+  .auth-popup-icon {
+    width: 64px;
+    height: 64px;
+  }
+
+
+  .auth-popup h2 {
+    font-size: 21px;
+  }
+
+
+  .auth-popup p {
+    font-size: 14px;
+  }
+
+}
+
+/* =========================================================
+   HAPPY MAPPY - LOGOUT CONFIRMATION
+========================================================= */
+
+.logout-popup-buttons {
+  display: grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap: 12px;
+
+  margin-top: 8px;
+}
+
+
+/* =========================================================
+   CANCEL BUTTON
+========================================================= */
+
+.logout-cancel-button {
+  min-height: 48px;
+
+  padding: 0 20px;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 12px;
+
+  background: #f8fafc;
+
+  color: #475569;
+
+  font-family: inherit;
+
+  font-size: 15px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease,
+    border-color 0.2s ease;
+}
+
+
+.logout-cancel-button:hover {
+  background: #e2e8f0;
+
+  color: #1e293b;
+
+  border-color: #cbd5e1;
+
+  transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   CONFIRM LOGOUT BUTTON
+========================================================= */
+
+.logout-confirm-button {
+  min-height: 48px;
+
+  padding: 0 20px;
+
+  border: none;
+
+  border-radius: 12px;
+
+  background: #dc2626;
+
+  color: #ffffff;
+
+  font-family: inherit;
+
+  font-size: 15px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.logout-confirm-button:hover {
+  background: #b91c1c;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 8px 20px rgba(220, 38, 38, 0.25);
+}
+
+
+/* =========================================================
+   LOGOUT POPUP ICON
+========================================================= */
+
+.auth-popup-warning .auth-popup-icon {
+  background: #fef3c7;
+
+  color: #d97706;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+  .logout-popup-buttons {
+    grid-template-columns: 1fr;
+
+    gap: 10px;
+  }
+
+
+  .logout-cancel-button,
+  .logout-confirm-button {
+    width: 100%;
+  }
+
+}
+/* =========================================================
+   HAPPY MAPPY NAVBAR
+   ========================================================= */
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  background: linear-gradient(135deg, #1cdfe6fd, #59dad3);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 4px 18px rgba(0, 70, 150, 0.25);
+}
+
+.navbar-container {
+  width: 100%;
+  max-width: 1400px;
+  min-height: 78px;
+  margin: auto;
+  padding: 8px 35px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+}
+
+/* =========================================================
+   HAPPY MAPPY LOGO
+   ========================================================= */
+
+.brand-logo-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.brand-logo {
+  width: 155px;
+  height: 62px;
+
+  object-fit: contain;
+  object-position: center;
+
+  display: block;
+
+  transition:
+    transform 0.25s ease,
+    filter 0.25s ease;
+}
+
+.brand-logo:hover {
+  transform: scale(1.05);
+  filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.12));
+}
+
+/* =========================================================
+   DESKTOP NAV LINKS
+   ========================================================= */
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex: 1;
+}
+
+.nav-link {
+  position: relative;
+
+  padding: 10px 15px;
+
+  color: #ffffff;
+  text-decoration: none;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  border-radius: 10px;
+
+  transition:
+    color 0.25s ease,
+    background 0.25s ease;
+}
+
+.nav-link:hover {
+  color: #0066cc;
+  background: #ffffff;
+}
+
+.nav-link::after {
+  content: "";
+
+  position: absolute;
+  left: 50%;
+  bottom: 3px;
+
+  width: 0;
+  height: 2px;
+
+  background: #ffffff;
+  border-radius: 10px;
+
+  transform: translateX(-50%);
+
+  transition: width 0.25s ease;
+}
+
+.nav-link:hover::after {
+  width: 55%;
+}
+
+/* =========================================================
+   NAV ACTIONS
+   ========================================================= */
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* USER */
+
+.user-display {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  padding: 9px 13px;
+
+  color: #176b45;
+  background: #eefaf4;
+
+  border-radius: 10px;
+
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* LOGIN */
+
+.login-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  padding: 10px 18px;
+
+  border: none;
+  border-radius: 10px;
+
+  color: white;
+  background: linear-gradient(
+    135deg,
+    #0b8f55,
+    #14b86d
+  );
+
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow: 0 5px 15px rgba(11, 143, 85, 0.22);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.login-btn:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 8px 20px rgba(11, 143, 85, 0.3);
+}
+
+/* LOGOUT */
+
+.logout-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  padding: 10px 17px;
+
+  border: none;
+  border-radius: 10px;
+
+  color: white;
+  background: linear-gradient(
+    135deg,
+    #ef4444,
+    #dc2626
+  );
+
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.logout-btn:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 8px 18px rgba(220, 38, 38, 0.25);
+}
+
+/* =========================================================
+   MOBILE MENU BUTTON
+   ========================================================= */
+
+.mobile-menu-btn {
+  display: none;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 44px;
+  height: 44px;
+
+  border: none;
+  border-radius: 10px;
+
+  color: #176b45;
+  background: #eefaf4;
+
+  cursor: pointer;
+}
+
+/* =========================================================
+   MOBILE MENU
+   ========================================================= */
+
+.mobile-menu {
+  display: none;
+
+  padding: 15px 25px 22px;
+
+  background: white;
+
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+
+  box-shadow:
+    0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.mobile-menu a {
+  display: block;
+
+  padding: 13px 15px;
+
+  color: #263238;
+
+  text-decoration: none;
+
+  font-size: 16px;
+  font-weight: 600;
+
+  border-radius: 10px;
+
+  transition:
+    color 0.2s ease,
+    background 0.2s ease;
+}
+
+.mobile-menu a:hover {
+  color: #0b8f55;
+  background: #eefaf4;
+}
+
+.mobile-login-btn,
+.mobile-logout-btn {
+  width: 100%;
+
+  margin-top: 10px;
+
+  padding: 13px 15px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  border: none;
+  border-radius: 10px;
+
+  font-size: 15px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.mobile-login-btn {
+  color: white;
+
+  background: linear-gradient(
+    135deg,
+    #0b8f55,
+    #14b86d
+  );
+}
+
+.mobile-logout-btn {
+  color: white;
+
+  background: linear-gradient(
+    135deg,
+    #ef4444,
+    #dc2626
+  );
+}
+
+/* =========================================================
+   LOGOUT POPUP
+   ========================================================= */
+
+.popup-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 5000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background: rgba(0, 0, 0, 0.58);
+
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.logout-popup {
+  width: 100%;
+  max-width: 430px;
+
+  padding: 35px 30px;
+
+  text-align: center;
+
+  background: white;
+
+  border-radius: 22px;
+
+  box-shadow:
+    0 25px 70px rgba(0, 0, 0, 0.25);
+
+  animation: popupAppear 0.25s ease;
+}
+
+@keyframes popupAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(15px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.popup-icon {
+  width: 65px;
+  height: 65px;
+
+  margin: 0 auto 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #dc2626;
+
+  background: #fee2e2;
+
+  border-radius: 50%;
+}
+
+.logout-popup h2 {
+  margin: 0 0 10px;
+
+  color: #1f2937;
+
+  font-size: 23px;
+  font-weight: 800;
+}
+
+.logout-popup p {
+  margin: 0 auto 25px;
+
+  max-width: 340px;
+
+  color: #6b7280;
+
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.popup-buttons {
+  display: flex;
+  justify-content: center;
+
+  gap: 12px;
+}
+
+.cancel-popup-btn,
+.confirm-logout-btn {
+  min-width: 130px;
+
+  padding: 12px 18px;
+
+  border: none;
+  border-radius: 10px;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.cancel-popup-btn {
+  color: #374151;
+  background: #f3f4f6;
+}
+
+.cancel-popup-btn:hover {
+  background: #e5e7eb;
+  transform: translateY(-1px);
+}
+
+.confirm-logout-btn {
+  color: white;
+
+  background: linear-gradient(
+    135deg,
+    #ef4444,
+    #dc2626
+  );
+}
+
+.confirm-logout-btn:hover {
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 6px 16px rgba(220, 38, 38, 0.25);
+}
+
+/* =========================================================
+   RESPONSIVE NAVBAR
+   ========================================================= */
+
+@media (max-width: 1000px) {
+
+  .navbar-container {
+    padding: 8px 22px;
+  }
+
+  .nav-links {
+    gap: 2px;
+  }
+
+  .nav-link {
+    padding: 9px 10px;
+    font-size: 14px;
+  }
+
+  .brand-logo {
+    width: 135px;
+    height: 58px;
+  }
+
+  .user-display {
+    display: none;
+  }
+}
+
+@media (max-width: 800px) {
+
+  .navbar-container {
+    min-height: 70px;
+    padding: 7px 18px;
+  }
+
+  .nav-links,
+  .nav-actions {
+    display: none;
+  }
+
+  .brand-logo {
+    width: 140px;
+    height: 55px;
+  }
+
+  .mobile-menu-btn {
+    display: flex;
+  }
+
+  .mobile-menu {
+    display: block;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .navbar-container {
+    padding: 6px 14px;
+  }
+
+  .brand-logo {
+    width: 125px;
+    height: 52px;
+  }
+
+  .mobile-menu {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .logout-popup {
+    padding: 30px 20px;
+  }
+
+  .logout-popup h2 {
+    font-size: 20px;
+  }
+
+  .popup-buttons {
+    flex-direction: column;
+  }
+
+  .cancel-popup-btn,
+  .confirm-logout-btn {
+    width: 100%;
+  }
+}
+
+/* =========================================================
+   HAPPY MAPPY FOOTER
+   ========================================================= */
+
+.happy-mappy-footer {
+  position: relative;
+
+  margin-top: 60px;
+
+  color: #ffffff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #063b2a,
+      #08734a,
+      #075e3c
+    );
+
+  overflow: hidden;
+}
+
+/* Decorative background */
+
+.happy-mappy-footer::before {
+  content: "";
+
+  position: absolute;
+
+  width: 280px;
+  height: 280px;
+
+  top: -140px;
+  right: -80px;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.happy-mappy-footer::after {
+  content: "";
+
+  position: absolute;
+
+  width: 220px;
+  height: 220px;
+
+  bottom: -110px;
+  left: -80px;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* =========================================================
+   FOOTER CONTAINER
+   ========================================================= */
+
+.footer-container {
+  position: relative;
+  z-index: 2;
+
+  width: 100%;
+  max-width: 1400px;
+
+  margin: auto;
+
+  padding: 65px 40px 45px;
+
+  display: grid;
+
+  grid-template-columns:
+    2fr
+    1fr
+    1fr
+    1.3fr;
+
+  gap: 45px;
+}
+
+/* =========================================================
+   FOOTER COLUMNS
+   ========================================================= */
+
+.footer-column h3 {
+  margin: 0 0 20px;
+
+  color: #ffffff;
+
+  font-size: 18px;
+  font-weight: 800;
+}
+
+/* =========================================================
+   FOOTER LOGO
+   ========================================================= */
+
+.footer-logo-link {
+  display: inline-flex;
+
+  align-items: center;
+
+  text-decoration: none;
+}
+
+.footer-logo {
+  width: 170px;
+  height: 75px;
+
+  object-fit: contain;
+
+  display: block;
+
+  margin-bottom: 12px;
+
+  background: #ffffff;
+
+  border-radius: 12px;
+
+  padding: 5px;
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.footer-logo:hover {
+  transform: scale(1.04);
+
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.18);
+}
+
+/* =========================================================
+   FOOTER DESCRIPTION
+   ========================================================= */
+
+.footer-description {
+  max-width: 350px;
+
+  margin: 0;
+
+  color: rgba(255, 255, 255, 0.78);
+
+  font-size: 14px;
+
+  line-height: 1.8;
+}
+
+/* =========================================================
+   SOCIAL MEDIA
+   ========================================================= */
+
+.footer-socials {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  margin-top: 23px;
+}
+
+.footer-social {
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  color: #ffffff;
+
+  background: rgba(255, 255, 255, 0.1);
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  border-radius: 50%;
+
+  text-decoration: none;
+
+  transition:
+    transform 0.25s ease,
+    background 0.25s ease;
+}
+
+.footer-social:hover {
+  transform: translateY(-3px);
+
+  background: rgba(255, 255, 255, 0.22);
+}
+
+/* =========================================================
+   FOOTER LINKS
+   ========================================================= */
+
+.footer-links {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 12px;
+}
+
+.footer-links a {
+  width: fit-content;
+
+  color: rgba(255, 255, 255, 0.75);
+
+  text-decoration: none;
+
+  font-size: 14px;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.footer-links a:hover {
+  color: #ffffff;
+
+  transform: translateX(5px);
+}
+
+/* =========================================================
+   FOOTER CONTACT
+   ========================================================= */
+
+.footer-contact {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 17px;
+}
+
+.footer-contact-item {
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 11px;
+
+  color: rgba(255, 255, 255, 0.78);
+
+  font-size: 14px;
+
+  line-height: 1.5;
+}
+
+.footer-contact-item svg {
+  flex-shrink: 0;
+
+  color: #9af0c5;
+}
+
+/* =========================================================
+   NEWSLETTER / CTA
+   ========================================================= */
+
+.footer-newsletter {
+  position: relative;
+
+  z-index: 2;
+
+  padding: 25px 40px;
+
+  border-top:
+    1px solid rgba(255, 255, 255, 0.1);
+
+  border-bottom:
+    1px solid rgba(255, 255, 255, 0.1);
+}
+
+.newsletter-content {
+  max-width: 1320px;
+
+  margin: auto;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 30px;
+}
+
+.newsletter-content h3 {
+  margin: 0 0 7px;
+
+  color: #ffffff;
+
+  font-size: 20px;
+
+  font-weight: 800;
+}
+
+.newsletter-content p {
+  margin: 0;
+
+  color: rgba(255, 255, 255, 0.72);
+
+  font-size: 14px;
+}
+
+.footer-explore-btn {
+  flex-shrink: 0;
+
+  padding: 12px 23px;
+
+  color: #075e3c;
+
+  background: #ffffff;
+
+  border-radius: 10px;
+
+  text-decoration: none;
+
+  font-size: 14px;
+
+  font-weight: 800;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.footer-explore-btn:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.18);
+}
+
+/* =========================================================
+   FOOTER BOTTOM
+   ========================================================= */
+
+.footer-bottom {
+  position: relative;
+
+  z-index: 2;
+
+  background: rgba(0, 0, 0, 0.16);
+}
+
+.footer-bottom-content {
+  width: 100%;
+  max-width: 1400px;
+
+  min-height: 70px;
+
+  margin: auto;
+
+  padding: 15px 40px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 20px;
+}
+
+.footer-bottom p {
+  margin: 0;
+
+  color: rgba(255, 255, 255, 0.65);
+
+  font-size: 13px;
+}
+
+.footer-bottom-links {
+  display: flex;
+
+  gap: 20px;
+}
+
+.footer-bottom-links a {
+  color: rgba(255, 255, 255, 0.65);
+
+  text-decoration: none;
+
+  font-size: 13px;
+}
+
+.footer-bottom-links a:hover {
+  color: #ffffff;
+}
+
+/* =========================================================
+   BACK TO TOP
+   ========================================================= */
+
+.back-to-top {
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+
+  border-radius: 9px;
+
+  color: #075e3c;
+
+  background: #ffffff;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.back-to-top:hover {
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* =========================================================
+   FOOTER RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1000px) {
+
+  .footer-container {
+    grid-template-columns: 1fr 1fr;
+
+    gap: 40px;
+
+    padding: 55px 30px 40px;
+  }
+
+  .footer-brand-column {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 700px) {
+
+  .footer-container {
+    grid-template-columns: 1fr;
+
+    padding: 45px 25px 35px;
+
+    gap: 35px;
+  }
+
+  .footer-brand-column {
+    grid-column: span 1;
+  }
+
+  .newsletter-content {
+    flex-direction: column;
+
+    align-items: flex-start;
+  }
+
+  .footer-newsletter {
+    padding: 25px;
+  }
+
+  .footer-bottom-content {
+    flex-direction: column;
+
+    text-align: center;
+
+    padding: 22px 20px;
+  }
+}
+
+@media (max-width: 450px) {
+
+  .footer-logo {
+    width: 150px;
+    height: 65px;
+  }
+
+  .footer-description {
+    font-size: 13px;
+  }
+
+  .newsletter-content h3 {
+    font-size: 18px;
+  }
+
+  .footer-explore-btn {
+    width: 100%;
+
+    text-align: center;
+  }
+}
+/* Happy Mappy Logo + Name */
+.brand-logo-link {
+  display: flex;
+  align-items: center;
+  gap: 2px;                 /* almost no space */
+  text-decoration: none;
+}
+
+/* Logo */
+.brand-logo {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  display: block;
+}
+ 
+/* Happy Mappy Name */
+/* .brand-name {
+  color: #ffffff;
+  font-family: "Outfit", sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+  line-height: 1;
+  margin-left: -2px;
+} */
+
+ .brand-name {
+  font-family: "Bubble Round", sans-serif;
+  font-size: 25px;
+  font-weight: 400;
+  color: #ffffff;
+
+  -webkit-text-stroke: 0.8px #ffffff;
+
+  letter-spacing: 0;
+  white-space: nowrap;
+  line-height: 1;
+  margin-left: -1px;
 }

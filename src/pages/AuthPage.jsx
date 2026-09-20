@@ -1,4 +1,7 @@
-import { useState } from "react";
+import {
+  useEffect,
+  useState,
+} from "react";
 
 import {
   Eye,
@@ -10,22 +13,45 @@ import {
   ArrowRight,
   Map,
   CheckCircle,
+  AlertCircle,
   X,
 } from "lucide-react";
 
 import {
   Link,
+  useLocation,
   useNavigate,
-  useSearchParams,
 } from "react-router-dom";
 
-export default function AuthPage() {
-  const [isRegister, setIsRegister] = useState(false);
 
-  const [showPassword, setShowPassword] = useState(false);
+export default function AuthPage() {
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
+
+  /* ==================================================
+     LOGIN / SIGNUP
+  ================================================== */
+
+  const [isRegister, setIsRegister] =
+    useState(false);
+
+
+  /* ==================================================
+     PASSWORD VISIBILITY
+  ================================================== */
+
+  const [showPassword, setShowPassword] =
+    useState(false);
 
   const [showConfirmPassword, setShowConfirmPassword] =
     useState(false);
+
+
+  /* ==================================================
+     FORM
+  ================================================== */
 
   const [form, setForm] = useState({
     name: "",
@@ -34,118 +60,263 @@ export default function AuthPage() {
     confirmPassword: "",
   });
 
-  const [successMessage, setSuccessMessage] = useState("");
 
-  const [errorMessage, setErrorMessage] = useState("");
+  /* ==================================================
+     POPUP
+  ================================================== */
 
-  // --------------------------------------------------
-  // NAVIGATION
-  // --------------------------------------------------
+  const [popup, setPopup] = useState({
+    show: false,
+    type: "success",
+    title: "",
+    message: "",
+    buttonText: "OK",
+    action: null,
+  });
 
-  const navigate = useNavigate();
 
-  const [searchParams] = useSearchParams();
+  /* ==================================================
+     LOGIN REQUIRED POPUP
+  ================================================== */
 
-  // --------------------------------------------------
-  // HANDLE INPUT CHANGE
-  // --------------------------------------------------
+  useEffect(() => {
+
+    if (
+      location.state?.requireLogin
+    ) {
+
+      setPopup({
+        show: true,
+        type: "warning",
+        title: "Please Login First",
+        message:
+          "You need to login to your Happy Mappy account before selecting a travel plan.",
+        buttonText: "Continue",
+        action: null,
+      });
+
+    }
+
+  }, [location.state]);
+
+
+  /* ==================================================
+     SHOW POPUP
+  ================================================== */
+
+  const showPopup = ({
+    type = "success",
+    title = "",
+    message = "",
+    buttonText = "OK",
+    action = null,
+  }) => {
+
+    setPopup({
+      show: true,
+      type,
+      title,
+      message,
+      buttonText,
+      action,
+    });
+
+  };
+
+
+  /* ==================================================
+     CLOSE POPUP
+  ================================================== */
+
+  const closePopup = () => {
+
+    const action =
+      popup.action;
+
+    setPopup({
+      show: false,
+      type: "success",
+      title: "",
+      message: "",
+      buttonText: "OK",
+      action: null,
+    });
+
+    if (action) {
+      action();
+    }
+
+  };
+
+
+  /* ==================================================
+     INPUT CHANGE
+  ================================================== */
 
   const handleChange = (event) => {
-    const { name, value } = event.target;
+
+    const {
+      name,
+      value,
+    } = event.target;
 
     setForm((current) => ({
       ...current,
       [name]: value,
     }));
+
   };
 
-  // --------------------------------------------------
-  // GET RETURN PAGE
-  // --------------------------------------------------
 
-  const getReturnPath = () => {
-    return searchParams.get("returnTo") || "/";
-  };
-
-  // --------------------------------------------------
-  // HANDLE LOGIN / REGISTER
-  // --------------------------------------------------
+  /* ==================================================
+     SUBMIT
+  ================================================== */
 
   const handleSubmit = (event) => {
+
     event.preventDefault();
 
-    setErrorMessage("");
-    setSuccessMessage("");
+    const email =
+      form.email
+        .trim()
+        .toLowerCase();
 
-    // ==================================================
-    // REGISTER
-    // ==================================================
+
+    /* ==================================================
+       SIGN UP
+    ================================================== */
 
     if (isRegister) {
-      if (form.password !== form.confirmPassword) {
-        setErrorMessage("Passwords do not match.");
+
+      if (
+        form.password !==
+        form.confirmPassword
+      ) {
+
+        showPopup({
+          type: "error",
+          title: "Passwords Don't Match",
+          message:
+            "Please enter the same password in both password fields.",
+          buttonText: "Try Again",
+        });
+
         return;
       }
+
 
       if (form.password.length < 6) {
-        setErrorMessage(
-          "Password must contain at least 6 characters."
-        );
+
+        showPopup({
+          type: "error",
+          title: "Password Too Short",
+          message:
+            "Your password must contain at least 6 characters.",
+          buttonText: "Try Again",
+        });
+
         return;
       }
 
-      // Check whether account already exists
-      const existingUser = localStorage.getItem(
-        "travelPlannerUser"
-      );
 
-      if (existingUser) {
-        try {
-          const user = JSON.parse(existingUser);
+      const existingUsers =
+        JSON.parse(
+          localStorage.getItem(
+            "happyMappyUsers"
+          ) || "[]"
+        );
 
-          if (
-            user.email &&
-            user.email.toLowerCase() ===
-              form.email.trim().toLowerCase()
-          ) {
-            setErrorMessage(
-              "An account with this email already exists. Please sign in."
-            );
-            return;
-          }
-        } catch (error) {
-          // Continue with registration if saved data is invalid.
-        }
+
+      const userExists =
+        existingUsers.some(
+          (user) =>
+            user.email === email
+        );
+
+
+      if (userExists) {
+
+        showPopup({
+          type: "warning",
+          title: "Account Already Exists",
+          message:
+            "An account with this email already exists. Please sign in instead.",
+          buttonText: "Go to Sign In",
+          action: () => {
+
+            setIsRegister(false);
+
+            setForm({
+              name: "",
+              email: email,
+              password: "",
+              confirmPassword: "",
+            });
+
+          },
+        });
+
+        return;
       }
 
-      // Save registered user
+
       const newUser = {
+        id: Date.now(),
         name: form.name.trim(),
-        email: form.email.trim(),
+        email,
         password: form.password,
       };
 
+
       localStorage.setItem(
-        "travelPlannerUser",
-        JSON.stringify(newUser)
+        "happyMappyUsers",
+        JSON.stringify([
+          ...existingUsers,
+          newUser,
+        ])
       );
 
-      // Mark user as logged in
+
+      /* ==================================================
+         AUTOMATIC LOGIN AFTER SIGN UP
+      ================================================== */
+
+      const currentUser = {
+        id: newUser.id,
+        name: newUser.name,
+        email: newUser.email,
+      };
+
       localStorage.setItem(
-        "travelPlannerLoggedIn",
-        "true"
+        "happyMappyCurrentUser",
+        JSON.stringify(currentUser)
       );
 
-      // Save current user
-      localStorage.setItem(
-        "currentUser",
-        JSON.stringify({
-          name: newUser.name,
-          email: newUser.email,
-        })
+      window.dispatchEvent(
+        new Event("happyMappyAuthChanged")
       );
 
-      // Clear form
+      /* ==================================================
+         SHOW SUCCESS POPUP
+      ================================================== */
+
+      showPopup({
+        type: "success",
+        title: "Account Created!",
+        message:
+          `Welcome ${newUser.name}! Your Happy Mappy account has been created successfully. You are now logged in.`,
+        buttonText: "Continue",
+
+        action: () => {
+          navigate(
+            location.state?.from || "/",
+            {
+              replace: true,
+            }
+          );
+        },
+      });
+
       setForm({
         name: "",
         email: "",
@@ -156,77 +327,92 @@ export default function AuthPage() {
       setShowPassword(false);
       setShowConfirmPassword(false);
 
-      // ------------------------------------------------
-      // RETURN TO THE PAGE WHERE USER SELECTED PLAN
-      // ------------------------------------------------
-
-      const returnTo = getReturnPath();
-
-      navigate(returnTo);
-
       return;
     }
 
-    // ==================================================
-    // LOGIN
-    // ==================================================
 
-    const savedUser = localStorage.getItem(
-      "travelPlannerUser"
-    );
+    /* ==================================================
+       LOGIN
+    ================================================== */
 
-    // If no account has been created yet
-    if (!savedUser) {
-      setErrorMessage(
-        "No account found. Please create an account first."
+    const existingUsers =
+      JSON.parse(
+        localStorage.getItem(
+          "happyMappyUsers"
+        ) || "[]"
       );
-      return;
-    }
 
-    let user;
 
-    try {
-      user = JSON.parse(savedUser);
-    } catch (error) {
-      setErrorMessage(
-        "Unable to verify your account. Please create your account again."
+    const user =
+      existingUsers.find(
+        (account) =>
+          account.email === email &&
+          account.password === form.password
       );
+
+
+    if (!user) {
+
+      showPopup({
+        type: "error",
+        title: "Login Failed",
+        message:
+          "Invalid email or password. Please check your login details and try again.",
+        buttonText: "Try Again",
+      });
+
       return;
     }
 
-    // Check email
-    if (
-      user.email?.toLowerCase() !==
-      form.email.trim().toLowerCase()
-    ) {
-      setErrorMessage("Invalid email or password.");
-      return;
-    }
 
-    // Check password
-    if (user.password !== form.password) {
-      setErrorMessage("Invalid email or password.");
-      return;
-    }
+    /* ==================================================
+       SAVE CURRENT USER
+    ================================================== */
 
-    // --------------------------------------------------
-    // LOGIN SUCCESS
-    // --------------------------------------------------
+    const currentUser = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+    };
+
 
     localStorage.setItem(
-      "travelPlannerLoggedIn",
-      "true"
+      "happyMappyCurrentUser",
+      JSON.stringify(currentUser)
     );
 
-    localStorage.setItem(
-      "currentUser",
-      JSON.stringify({
-        name: user.name,
-        email: user.email,
-      })
+
+    window.dispatchEvent(
+      new Event("happyMappyAuthChanged")
     );
 
-    // Clear form
+
+    /* ==================================================
+       RETURN LOCATION
+    ================================================== */
+
+    const returnPath =
+      location.state?.from ||
+      "/";
+
+
+    showPopup({
+      type: "success",
+      title: "Welcome Back!",
+      message:
+        `Hi ${user.name}! You have successfully logged in to Happy Mappy.`,
+      buttonText: "Continue",
+
+      action: () => {
+
+        navigate(returnPath, {
+          replace: true,
+        });
+
+      },
+    });
+
+
     setForm({
       name: "",
       email: "",
@@ -234,24 +420,18 @@ export default function AuthPage() {
       confirmPassword: "",
     });
 
-    setShowPassword(false);
-    setShowConfirmPassword(false);
-
-    // --------------------------------------------------
-    // RETURN TO PREVIOUS PAGE
-    // --------------------------------------------------
-
-    const returnTo = getReturnPath();
-
-    navigate(returnTo);
   };
 
-  // --------------------------------------------------
-  // SWITCH LOGIN / REGISTER
-  // --------------------------------------------------
+
+  /* ==================================================
+     SWITCH MODE
+  ================================================== */
 
   const switchMode = () => {
-    setIsRegister((current) => !current);
+
+    setIsRegister(
+      (current) => !current
+    );
 
     setForm({
       name: "",
@@ -263,107 +443,126 @@ export default function AuthPage() {
     setShowPassword(false);
     setShowConfirmPassword(false);
 
-    setSuccessMessage("");
-    setErrorMessage("");
   };
 
-  // --------------------------------------------------
-  // CLOSE POPUP
-  // --------------------------------------------------
-
-  const closePopup = () => {
-    setSuccessMessage("");
-    setErrorMessage("");
-  };
 
   return (
     <main className="auth-page">
+
       <div className="auth-container">
 
+
         {/* ==================================================
-            LEFT TRAVEL PANEL
+            LEFT PANEL
         ================================================== */}
 
         <div className="auth-travel-panel">
+
           <div className="auth-travel-overlay"></div>
 
+
           <div className="auth-travel-content">
+
             <div className="auth-brand-mark">
+
               <span>
                 <Plane size={21} />
               </span>
 
               <strong>
-                Travel<span>Planner</span>
+                Happy <span>Mappy</span>
               </strong>
+
             </div>
 
+
             <div className="auth-travel-text">
+
               <span className="auth-small-label">
                 PLAN • EXPLORE • TRAVEL
               </span>
 
+
               <h2>
                 Your next journey
-                <br />
                 starts here.
               </h2>
 
+
               <p>
-                Discover beautiful destinations, choose
-                your travel plan and explore your journey
-                with Travel Planner.
+                Discover beautiful
+                destinations, choose
+                your travel plan and
+                explore your journey
+                with Happy Mappy.
               </p>
+
             </div>
 
+
             <div className="auth-travel-features">
+
               <div>
                 <Map size={18} />
 
-                <span>Discover destinations</span>
+                <span>
+                  Discover destinations
+                </span>
               </div>
+
 
               <div>
                 <Plane size={18} />
 
-                <span>Plan your journey</span>
+                <span>
+                  Plan your journey
+                </span>
               </div>
+
 
               <div>
                 <ArrowRight size={18} />
 
-                <span>Travel with confidence</span>
+                <span>
+                  Travel with confidence
+                </span>
               </div>
+
             </div>
+
           </div>
+
         </div>
 
+
         {/* ==================================================
-            AUTH FORM PANEL
+            FORM PANEL
         ================================================== */}
 
         <div className="auth-form-panel">
 
-          {/* MOBILE BRAND */}
 
           <div className="auth-mobile-brand">
+
             <span>
               <Plane size={20} />
             </span>
 
             <strong>
-              Travel<span>Planner</span>
+              Happy <span>Mappy</span>
             </strong>
+
           </div>
 
-          {/* HEADING */}
 
           <div className="auth-heading">
+
             <span className="auth-form-label">
               {isRegister
                 ? "Create Account"
                 : "Welcome Back"}
             </span>
+
 
             <h1>
               {isRegister
@@ -371,57 +570,82 @@ export default function AuthPage() {
                 : "Sign in to continue"}
             </h1>
 
+
             <p>
               {isRegister
                 ? "Create your account and start planning your next adventure."
                 : "Sign in to access your travel plans and continue exploring."}
             </p>
+
           </div>
 
-          {/* SIGN IN / SIGN UP SWITCH */}
+
+          {/* ==================================================
+              MODE SWITCH
+          ================================================== */}
 
           <div className="auth-mode-switch">
+
             <button
               type="button"
-              className={!isRegister ? "active" : ""}
+              className={
+                !isRegister
+                  ? "active"
+                  : ""
+              }
               onClick={() => {
+
                 if (isRegister) {
                   switchMode();
                 }
+
               }}
             >
               Sign In
             </button>
 
+
             <button
               type="button"
-              className={isRegister ? "active" : ""}
+              className={
+                isRegister
+                  ? "active"
+                  : ""
+              }
               onClick={() => {
+
                 if (!isRegister) {
                   switchMode();
                 }
+
               }}
             >
               Sign Up
             </button>
+
           </div>
 
-          {/* FORM */}
+
+          {/* ==================================================
+              FORM
+          ================================================== */}
 
           <form
             className="auth-form"
             onSubmit={handleSubmit}
           >
 
-            {/* NAME */}
-
             {isRegister && (
+
               <div className="form-group">
+
                 <label htmlFor="name">
                   Full Name
                 </label>
 
+
                 <div className="input-wrapper">
+
                   <User size={18} />
 
                   <input
@@ -433,18 +657,23 @@ export default function AuthPage() {
                     onChange={handleChange}
                     required
                   />
+
                 </div>
+
               </div>
+
             )}
 
-            {/* EMAIL */}
 
             <div className="form-group">
+
               <label htmlFor="email">
                 Email Address
               </label>
 
+
               <div className="input-wrapper">
+
                 <Mail size={18} />
 
                 <input
@@ -456,33 +685,48 @@ export default function AuthPage() {
                   onChange={handleChange}
                   required
                 />
+
               </div>
+
             </div>
 
-            {/* PASSWORD */}
 
             <div className="form-group">
+
               <div className="form-label-row">
+
                 <label htmlFor="password">
                   Password
                 </label>
 
+
                 {!isRegister && (
+
                   <button
                     type="button"
                     className="forgot-password"
-                    onClick={() =>
-                      setErrorMessage(
-                        "Password reset will be available soon."
-                      )
-                    }
+                    onClick={() => {
+
+                      showPopup({
+                        type: "info",
+                        title: "Forgot Password?",
+                        message:
+                          "Password reset is not connected to a backend yet. Please contact Happy Mappy support.",
+                        buttonText: "OK",
+                      });
+
+                    }}
                   >
                     Forgot password?
                   </button>
+
                 )}
+
               </div>
 
+
               <div className="input-wrapper">
+
                 <Lock size={18} />
 
                 <input
@@ -500,38 +744,42 @@ export default function AuthPage() {
                   minLength={6}
                 />
 
+
                 <button
                   type="button"
                   className="password-toggle"
                   onClick={() =>
                     setShowPassword(
-                      (current) => !current
+                      (current) =>
+                        !current
                     )
                   }
-                  aria-label={
-                    showPassword
-                      ? "Hide password"
-                      : "Show password"
-                  }
                 >
+
                   {showPassword ? (
                     <EyeOff size={18} />
                   ) : (
                     <Eye size={18} />
                   )}
+
                 </button>
+
               </div>
+
             </div>
 
-            {/* CONFIRM PASSWORD */}
 
             {isRegister && (
+
               <div className="form-group">
+
                 <label htmlFor="confirmPassword">
                   Confirm Password
                 </label>
 
+
                 <div className="input-wrapper">
+
                   <Lock size={18} />
 
                   <input
@@ -543,47 +791,52 @@ export default function AuthPage() {
                         : "password"
                     }
                     placeholder="Confirm your password"
-                    value={form.confirmPassword}
+                    value={
+                      form.confirmPassword
+                    }
                     onChange={handleChange}
                     required
                     minLength={6}
                   />
+
 
                   <button
                     type="button"
                     className="password-toggle"
                     onClick={() =>
                       setShowConfirmPassword(
-                        (current) => !current
+                        (current) =>
+                          !current
                       )
                     }
-                    aria-label={
-                      showConfirmPassword
-                        ? "Hide password"
-                        : "Show password"
-                    }
                   >
+
                     {showConfirmPassword ? (
                       <EyeOff size={18} />
                     ) : (
                       <Eye size={18} />
                     )}
+
                   </button>
+
                 </div>
+
               </div>
+
             )}
 
-            {/* TERMS */}
 
             {isRegister && (
+
               <label className="auth-checkbox">
+
                 <input
                   type="checkbox"
                   required
                 />
 
                 <span>
-                  I agree to the{" "}
+                  I agree to the
                   <a
                     href="#terms"
                     onClick={(event) =>
@@ -593,31 +846,36 @@ export default function AuthPage() {
                     Terms & Conditions
                   </a>
                 </span>
+
               </label>
+
             )}
 
-            {/* SUBMIT */}
 
             <button
               type="submit"
               className="primary-button auth-submit"
             >
+
               {isRegister
                 ? "Create Account"
                 : "Sign In"}
 
               <ArrowRight size={17} />
+
             </button>
+
           </form>
 
-          {/* SWITCH TEXT */}
 
           <div className="auth-switch">
+
             <span>
               {isRegister
                 ? "Already have an account?"
                 : "Don't have an account?"}
             </span>
+
 
             <button
               type="button"
@@ -627,9 +885,9 @@ export default function AuthPage() {
                 ? "Sign In"
                 : "Sign Up"}
             </button>
+
           </div>
 
-          {/* HOME */}
 
           <Link
             to="/"
@@ -637,95 +895,84 @@ export default function AuthPage() {
           >
             Continue without login
           </Link>
+
         </div>
+
       </div>
 
+
       {/* ==================================================
-          SUCCESS POPUP
-          
-          Kept for compatibility, but normal login/register
-          now redirects automatically instead of showing it.
+          CUSTOM AUTH POPUP
       ================================================== */}
 
-      {successMessage && (
-        <div className="auth-popup-overlay">
+      {popup.show && (
+
+        <div
+          className="auth-popup-overlay"
+          onClick={closePopup}
+        >
+
           <div
-            className="auth-popup success-popup"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="success-popup-title"
+            className={`auth-popup auth-popup-${popup.type}`}
+            onClick={(event) =>
+              event.stopPropagation()
+            }
           >
+
             <button
               type="button"
               className="auth-popup-close"
               onClick={closePopup}
-              aria-label="Close success message"
             >
-              <X size={20} />
+              <X size={19} />
             </button>
 
-            <div className="auth-popup-icon success-icon">
-              <CheckCircle size={42} />
+
+            <div className="auth-popup-icon">
+
+              {popup.type === "success" && (
+                <CheckCircle size={32} />
+              )}
+
+              {popup.type === "error" && (
+                <AlertCircle size={32} />
+              )}
+
+              {popup.type === "warning" && (
+                <AlertCircle size={32} />
+              )}
+
+              {popup.type === "info" && (
+                <Mail size={30} />
+              )}
+
             </div>
 
-            <h2 id="success-popup-title">
-              Success!
+
+            <h2>
+              {popup.title}
             </h2>
 
-            <p>{successMessage}</p>
+
+            <p>
+              {popup.message}
+            </p>
+
 
             <button
               type="button"
-              className="primary-button auth-popup-button"
+              className="auth-popup-button"
               onClick={closePopup}
             >
-              Continue
+              {popup.buttonText}
             </button>
+
           </div>
+
         </div>
+
       )}
 
-      {/* ==================================================
-          ERROR POPUP
-      ================================================== */}
-
-      {errorMessage && (
-        <div className="auth-popup-overlay">
-          <div
-            className="auth-popup error-popup"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="error-popup-title"
-          >
-            <button
-              type="button"
-              className="auth-popup-close"
-              onClick={closePopup}
-              aria-label="Close error message"
-            >
-              <X size={20} />
-            </button>
-
-            <div className="auth-popup-icon error-icon">
-              <X size={42} />
-            </div>
-
-            <h2 id="error-popup-title">
-              Please Check
-            </h2>
-
-            <p>{errorMessage}</p>
-
-            <button
-              type="button"
-              className="primary-button auth-popup-button"
-              onClick={closePopup}
-            >
-              Try Again
-            </button>
-          </div>
-        </div>
-      )}
     </main>
   );
 }
