@@ -5498,44 +5498,43 @@ img {
     text-align: center;
   }
 }
-/* Happy Mappy Logo + Name */
+/* Container Link */
 .brand-logo-link {
   display: flex;
   align-items: center;
-  gap: 2px;                 /* almost no space */
+  gap: 0;
   text-decoration: none;
 }
 
-/* Logo */
-.brand-logo {
-  width: 60px;
-  height: 60px;
-  object-fit: contain;
+/* Updated Logo Container: Allows natural aspect ratio */
+.logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 55px;           /* Gives the logo adequate height */
+  width: auto;            /* Lets the width expand naturally */
+  overflow: visible;      /* Prevents cropping edges */
+  border-radius: 0;       /* Removes circle crop */
+}
+
+/* Updated Logo Image: Crisp, sharp rendering */
+.logo-img {
+  height: 100%;
+  width: auto;
+  object-fit: contain;    /* Preserves full details without distortion */
+  transform: none;        /* Removes scale crop */
   display: block;
 }
- 
-/* Happy Mappy Name */
-/* .brand-name {
-  color: #ffffff;
-  font-family: "Outfit", sans-serif;
-  font-size: 28px;
-  font-weight: 800;
-  letter-spacing: 0.2px;
-  white-space: nowrap;
-  line-height: 1;
-  margin-left: -2px;
-} */
 
- .brand-name {
+/* Brand Name */
+.brand-name {
   font-family: "Bubble Round", sans-serif;
   font-size: 25px;
   font-weight: 400;
   color: #ffffff;
-
   -webkit-text-stroke: 0.8px #ffffff;
-
   letter-spacing: 0;
   white-space: nowrap;
   line-height: 1;
-  margin-left: -1px;
+  margin-left: -30px;       /* Gentle spacing from the full logo */
 }
