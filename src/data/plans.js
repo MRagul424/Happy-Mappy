@@ -7,7 +7,7 @@ export const plans = [
     nights: 4,
     category: "Nature",
     image:
-      "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1200&q=80",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8DWpSKp3wxiMc4uz38BhH_Pdmjqv1avxC25V4Jb4QVw&s=10",
 
     places: [
       "Munnar Tea Gardens",
