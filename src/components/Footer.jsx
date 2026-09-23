@@ -1,219 +1,142 @@
 import {
-  Facebook,
-  Instagram,
-  Twitter,
   Mail,
   Phone,
   MapPin,
-  ArrowUp,
 } from "lucide-react";
-import { Link } from "react-router-dom";
 
 export default function Footer() {
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
-
   return (
     <footer className="happy-mappy-footer">
 
-      {/* FOOTER TOP */}
+      {/* FOOTER CONTENT */}
       <div className="footer-container">
 
-        {/* BRAND */}
-        <div className="footer-column footer-brand-column">
-
-          <Link to="/" className="footer-logo-link">
-            <img
-              src="/images/logo1.png"
-              alt="Happy Mappy"
-              className="footer-logo"
-            />
-          </Link>
+        {/* SOCIAL MEDIA */}
+        <div className="footer-column">
+          <h3>Social Media</h3>
 
           <p className="footer-description">
-            Explore beautiful destinations, discover amazing places,
-            and create unforgettable travel memories with Happy Mappy.
+            Follow Happy Mappy and stay connected with us.
           </p>
 
-          {/* SOCIAL MEDIA */}
           <div className="footer-socials">
 
+            {/* FACEBOOK */}
             <a
-              href="#"
+              href="https://www.facebook.com/"
+              target="_blank"
+              rel="noopener noreferrer"
               className="footer-social"
               aria-label="Facebook"
             >
-              <Facebook size={19} />
+              <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  fill="currentColor"
+                  d="M14 8h3V4h-3c-3.31 0-5 1.69-5 5v3H6v4h3v8h4v-8h3l1-4h-4V9c0-.67.33-1 1-1z"
+                />
+              </svg>
             </a>
 
+            {/* INSTAGRAM */}
             <a
-              href="#"
+              href="https://www.instagram.com/"
+              target="_blank"
+              rel="noopener noreferrer"
               className="footer-social"
               aria-label="Instagram"
             >
-              <Instagram size={19} />
+              <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <rect
+                  x="3"
+                  y="3"
+                  width="18"
+                  height="18"
+                  rx="5"
+                  ry="5"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                />
+
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="4"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                />
+
+                <circle
+                  cx="17.5"
+                  cy="6.5"
+                  r="1.2"
+                  fill="currentColor"
+                />
+              </svg>
             </a>
 
+            {/* TWITTER */}
             <a
-              href="#"
+              href="https://twitter.com/"
+              target="_blank"
+              rel="noopener noreferrer"
               className="footer-social"
               aria-label="Twitter"
             >
-              <Twitter size={19} />
+              <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  fill="currentColor"
+                  d="M18.9 2H22l-6.77 7.74L23.2 22h-6.24l-4.89-6.39L6.48 22H3.36l7.24-8.28L2.8 2h6.4l4.42 5.84L18.9 2zm-1.1 17.7h1.73L8.26 4.18H6.4L17.8 19.7z"
+                />
+              </svg>
             </a>
 
           </div>
         </div>
 
-        {/* QUICK LINKS */}
+        {/* CONTACT US */}
         <div className="footer-column">
-
-          <h3>Quick Links</h3>
-
-          <div className="footer-links">
-
-            <Link to="/">
-              Home
-            </Link>
-
-            <Link to="/destinations">
-              Destinations
-            </Link>
-
-            <Link to="/explore">
-              Explore
-            </Link>
-
-            <Link to="/travel-plans">
-              Travel Plans
-            </Link>
-
-            <Link to="/contact">
-              Contact
-            </Link>
-
-          </div>
-        </div>
-
-        {/* TRAVEL */}
-        <div className="footer-column">
-
-          <h3>Travel With Us</h3>
-
-          <div className="footer-links">
-
-            <Link to="/destinations">
-              Popular Destinations
-            </Link>
-
-            <Link to="/explore">
-              Combination Plans
-            </Link>
-
-            <Link to="/travel-plans">
-              Trip Plans
-            </Link>
-
-            <Link to="/auth">
-              Login
-            </Link>
-
-          </div>
-        </div>
-
-        {/* CONTACT */}
-        <div className="footer-column">
-
           <h3>Contact Us</h3>
 
           <div className="footer-contact">
 
             <div className="footer-contact-item">
               <MapPin size={19} />
-
-              <span>
-                Tamil Nadu, India
-              </span>
+              <span>Tamil Nadu, India</span>
             </div>
 
             <div className="footer-contact-item">
               <Phone size={19} />
-
-              <span>
-                +91 98765 43210
-              </span>
+              <span>+91 98765 43210</span>
             </div>
 
             <div className="footer-contact-item">
               <Mail size={19} />
-
-              <span>
-                happymappy@example.com
-              </span>
+              <span>happymappy@example.com</span>
             </div>
 
           </div>
-
-        </div>
-      </div>
-
-      {/* NEWSLETTER */}
-      <div className="footer-newsletter">
-
-        <div className="newsletter-content">
-
-          <div>
-            <h3>Ready for your next adventure?</h3>
-
-            <p>
-              Discover new places and plan your perfect trip with Happy Mappy.
-            </p>
-          </div>
-
-          <Link
-            to="/destinations"
-            className="footer-explore-btn"
-          >
-            Explore Now
-          </Link>
-
         </div>
 
       </div>
 
-      {/* BOTTOM */}
+      {/* FOOTER BOTTOM */}
       <div className="footer-bottom">
-
         <div className="footer-bottom-content">
-
           <p>
             © {new Date().getFullYear()} Happy Mappy. All rights reserved.
           </p>
-
-          <div className="footer-bottom-links">
-            <Link to="/">
-              Privacy
-            </Link>
-
-            <Link to="/">
-              Terms
-            </Link>
-          </div>
-
-          <button
-            className="back-to-top"
-            onClick={scrollToTop}
-            aria-label="Back to top"
-          >
-            <ArrowUp size={18} />
-          </button>
-
         </div>
-
       </div>
 
     </footer>

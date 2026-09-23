@@ -7,19 +7,26 @@ const dualPlans = [
     title: "Alleppey + Cochin Explorer",
     destinationName: "Alleppey + Cochin",
     destination: "Alleppey + Cochin",
+
     places: [
       "Alleppey",
       "Cochin",
       "Fort Kochi",
       "Mattancherry",
     ],
+
     category: "Kerala Duo",
-    image: "/images/alleppey.jpg",
+
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfFBkf7haiixfEB2nt0vRu7neuGl9mdKTjbXiQJltBnQ&s=10",
 
     description:
       "Explore the peaceful backwaters of Alleppey and the historic streets, beaches and cultural attractions of Cochin.",
 
     durationOptions: {
+      // =====================================================
+      // 2 DAYS
+      // =====================================================
       2: {
         days: 2,
         nights: 1,
@@ -59,7 +66,8 @@ const dualPlans = [
                 name: "Breakfast",
                 type: "food",
                 amount: 0,
-                description: "Start the day with a relaxed Kerala breakfast.",
+                description:
+                  "Start your morning with a relaxed Kerala-style breakfast before beginning the day's sightseeing.",
               },
               {
                 time: "09:00 AM",
@@ -68,7 +76,7 @@ const dualPlans = [
                 type: "place",
                 amount: 1500,
                 description:
-                  "Enjoy beautiful waterways, coconut trees and peaceful village scenery.",
+                  "Enjoy beautiful waterways, coconut trees, traditional houses and peaceful village scenery along the backwaters.",
               },
               {
                 time: "11:15 AM",
@@ -77,7 +85,7 @@ const dualPlans = [
                 type: "place",
                 amount: 200,
                 description:
-                  "Explore the traditional village surroundings near the backwaters.",
+                  "Explore the traditional village surroundings and experience the relaxed lifestyle of the local backwater communities.",
               },
               {
                 time: "12:30 PM",
@@ -86,7 +94,7 @@ const dualPlans = [
                 type: "food",
                 amount: 0,
                 description:
-                  "Enjoy a traditional Kerala-style lunch.",
+                  "Enjoy a traditional Kerala-style lunch with local flavours before continuing the afternoon sightseeing.",
               },
               {
                 time: "02:00 PM",
@@ -95,7 +103,7 @@ const dualPlans = [
                 type: "place",
                 amount: 0,
                 description:
-                  "Relax beside the Arabian Sea and enjoy the coastal atmosphere.",
+                  "Relax beside the Arabian Sea, enjoy the coastal breeze and spend some peaceful time along the shoreline.",
               },
               {
                 time: "04:30 PM",
@@ -104,7 +112,7 @@ const dualPlans = [
                 type: "place",
                 amount: 500,
                 description:
-                  "Enjoy the peaceful beach environment and sunset surroundings.",
+                  "Enjoy Marari's calm coastline, soft sandy surroundings and beautiful evening atmosphere away from busy city areas.",
               },
               {
                 time: "07:00 PM",
@@ -113,7 +121,7 @@ const dualPlans = [
                 type: "food",
                 amount: 0,
                 description:
-                  "Enjoy a relaxed Kerala dinner.",
+                  "Enjoy a relaxed Kerala dinner with local dishes after a full day of sightseeing.",
               },
               {
                 time: "08:30 PM",
@@ -122,7 +130,7 @@ const dualPlans = [
                 type: "activity",
                 amount: 300,
                 description:
-                  "Enjoy a peaceful evening around the local town area.",
+                  "Take a peaceful evening walk around the local town area and enjoy Alleppey's calm night atmosphere.",
               },
               {
                 time: "10:00 PM",
@@ -131,7 +139,7 @@ const dualPlans = [
                 type: "activity",
                 amount: 0,
                 description:
-                  "Return to the accommodation and relax.",
+                  "Return to the accommodation, freshen up and relax after a full day of exploring Alleppey.",
               },
             ],
 
@@ -153,7 +161,7 @@ const dualPlans = [
                 type: "food",
                 amount: 0,
                 description:
-                  "Have breakfast before starting the Cochin sightseeing.",
+                  "Have a fresh breakfast before starting the day's Cochin heritage and sightseeing experience.",
               },
               {
                 time: "09:00 AM",
@@ -162,7 +170,7 @@ const dualPlans = [
                 type: "place",
                 amount: 500,
                 description:
-                  "Explore the historic streets, colonial buildings and cultural attractions.",
+                  "Explore the historic streets, colonial buildings, heritage landmarks and cultural attractions of Fort Kochi.",
               },
               {
                 time: "11:15 AM",
@@ -171,7 +179,7 @@ const dualPlans = [
                 type: "place",
                 amount: 0,
                 description:
-                  "See the traditional Chinese fishing nets along the waterfront.",
+                  "See the traditional Chinese fishing nets along the waterfront and enjoy the unique coastal setting of Fort Kochi.",
               },
               {
                 time: "12:30 PM",
@@ -180,7 +188,7 @@ const dualPlans = [
                 type: "food",
                 amount: 0,
                 description:
-                  "Enjoy a traditional lunch in Cochin.",
+                  "Enjoy a traditional Kerala lunch in Cochin and take a short break before the afternoon sightseeing.",
               },
               {
                 time: "02:00 PM",
@@ -189,7 +197,7 @@ const dualPlans = [
                 type: "place",
                 amount: 500,
                 description:
-                  "Explore the historic streets and cultural heritage of Mattancherry.",
+                  "Explore the historic streets, heritage buildings and cultural character of Mattancherry.",
               },
               {
                 time: "04:30 PM",
@@ -198,7 +206,7 @@ const dualPlans = [
                 type: "place",
                 amount: 300,
                 description:
-                  "Explore the colourful heritage streets and local shops.",
+                  "Walk through the colourful heritage streets, browse local shops and experience the historic atmosphere of Jew Town.",
               },
               {
                 time: "06:30 PM",
@@ -207,7 +215,7 @@ const dualPlans = [
                 type: "place",
                 amount: 300,
                 description:
-                  "Enjoy the evening waterfront atmosphere.",
+                  "Enjoy the evening waterfront atmosphere, scenic views and relaxing promenade along Marine Drive.",
               },
               {
                 time: "08:15 PM",
@@ -216,7 +224,7 @@ const dualPlans = [
                 type: "food",
                 amount: 0,
                 description:
-                  "Enjoy dinner before ending the trip.",
+                  "Enjoy a comfortable dinner in Cochin before completing the final activities of the trip.",
               },
               {
                 time: "09:30 PM",
@@ -225,7 +233,7 @@ const dualPlans = [
                 type: "activity",
                 amount: 200,
                 description:
-                  "Enjoy a short evening drive through the city.",
+                  "Enjoy a short evening drive through Cochin and see the city lights and waterfront areas at night.",
               },
               {
                 time: "10:00 PM",
@@ -234,7 +242,7 @@ const dualPlans = [
                 type: "activity",
                 amount: 0,
                 description:
-                  "Complete the Cochin experience and prepare for departure.",
+                  "Complete the Cochin experience and prepare for departure or the next part of your journey.",
               },
             ],
 
@@ -244,6 +252,9 @@ const dualPlans = [
         ],
       },
 
+      // =====================================================
+      // 3 DAYS
+      // =====================================================
       3: {
         days: 3,
         nights: 2,
@@ -282,7 +293,8 @@ const dualPlans = [
                 name: "Breakfast",
                 type: "food",
                 amount: 0,
-                description: "Start the day with breakfast.",
+                description:
+                  "Start the morning with a fresh breakfast before heading out for the day's Alleppey experiences.",
               },
               {
                 time: "09:00 AM",
@@ -291,7 +303,7 @@ const dualPlans = [
                 type: "place",
                 amount: 1500,
                 description:
-                  "Enjoy the peaceful Kerala backwaters.",
+                  "Cruise through peaceful waterways surrounded by coconut palms, village homes and beautiful Kerala scenery.",
               },
               {
                 time: "11:15 AM",
@@ -300,7 +312,7 @@ const dualPlans = [
                 type: "activity",
                 amount: 300,
                 description:
-                  "Explore the local village surroundings.",
+                  "Experience the quiet village surroundings and observe the traditional lifestyle near the Alleppey backwaters.",
               },
               {
                 time: "12:30 PM",
@@ -308,7 +320,8 @@ const dualPlans = [
                 name: "Lunch",
                 type: "food",
                 amount: 0,
-                description: "Enjoy Kerala cuisine.",
+                description:
+                  "Enjoy a delicious Kerala lunch and take some time to relax before the afternoon activities.",
               },
               {
                 time: "02:00 PM",
@@ -317,7 +330,7 @@ const dualPlans = [
                 type: "place",
                 amount: 0,
                 description:
-                  "Relax beside the Arabian Sea.",
+                  "Relax beside the Arabian Sea, enjoy the sea breeze and spend a peaceful afternoon at the beach.",
               },
               {
                 time: "04:30 PM",
@@ -326,7 +339,7 @@ const dualPlans = [
                 type: "place",
                 amount: 200,
                 description:
-                  "Explore the coastal surroundings.",
+                  "Explore the coastal surroundings near the lighthouse and enjoy views of the nearby shoreline.",
               },
               {
                 time: "06:30 PM",
@@ -335,7 +348,7 @@ const dualPlans = [
                 type: "activity",
                 amount: 200,
                 description:
-                  "Enjoy the evening coastal views.",
+                  "Slow down in the evening and enjoy the changing colours of the sky along the coastal landscape.",
               },
               {
                 time: "08:00 PM",
@@ -343,7 +356,8 @@ const dualPlans = [
                 name: "Dinner",
                 type: "food",
                 amount: 0,
-                description: "Enjoy dinner.",
+                description:
+                  "Enjoy a relaxed dinner featuring local Kerala flavours after the day's sightseeing.",
               },
               {
                 time: "09:15 PM",
@@ -352,7 +366,7 @@ const dualPlans = [
                 type: "activity",
                 amount: 200,
                 description:
-                  "Enjoy a relaxed evening walk.",
+                  "Take a comfortable evening walk around the town and enjoy the quieter side of Alleppey at night.",
               },
               {
                 time: "10:00 PM",
@@ -360,7 +374,8 @@ const dualPlans = [
                 name: "Day End",
                 type: "activity",
                 amount: 0,
-                description: "Return and relax.",
+                description:
+                  "Return to the accommodation and relax after a scenic day around Alleppey's backwaters and coast.",
               },
             ],
 
@@ -381,7 +396,8 @@ const dualPlans = [
                 name: "Breakfast",
                 type: "food",
                 amount: 0,
-                description: "Have breakfast.",
+                description:
+                  "Have a filling breakfast before starting the Cochin heritage sightseeing.",
               },
               {
                 time: "09:00 AM",
@@ -390,7 +406,7 @@ const dualPlans = [
                 type: "place",
                 amount: 500,
                 description:
-                  "Explore the historic Fort Kochi area.",
+                  "Walk through Fort Kochi's historic streets and discover its colonial architecture, cultural landmarks and coastal charm.",
               },
               {
                 time: "11:15 AM",
@@ -399,7 +415,7 @@ const dualPlans = [
                 type: "place",
                 amount: 0,
                 description:
-                  "See the famous fishing nets.",
+                  "Visit the waterfront to see the traditional fishing nets and enjoy views across the Arabian Sea.",
               },
               {
                 time: "12:30 PM",
@@ -407,7 +423,8 @@ const dualPlans = [
                 name: "Lunch",
                 type: "food",
                 amount: 0,
-                description: "Enjoy lunch.",
+                description:
+                  "Take a lunch break and enjoy local Kerala or coastal dishes in Cochin.",
               },
               {
                 time: "02:00 PM",
@@ -416,7 +433,7 @@ const dualPlans = [
                 type: "place",
                 amount: 500,
                 description:
-                  "Explore the historic neighbourhood.",
+                  "Discover Mattancherry's historic neighbourhoods, colourful streets and rich cultural surroundings.",
               },
               {
                 time: "04:30 PM",
@@ -425,7 +442,7 @@ const dualPlans = [
                 type: "place",
                 amount: 300,
                 description:
-                  "Explore the colourful heritage streets.",
+                  "Explore the heritage streets, local shops and distinctive cultural atmosphere of Jew Town.",
               },
               {
                 time: "06:30 PM",
@@ -434,7 +451,7 @@ const dualPlans = [
                 type: "place",
                 amount: 300,
                 description:
-                  "Enjoy the waterfront.",
+                  "Spend the evening beside the waterfront and enjoy the city skyline and relaxing promenade.",
               },
               {
                 time: "08:00 PM",
@@ -442,7 +459,8 @@ const dualPlans = [
                 name: "Dinner",
                 type: "food",
                 amount: 0,
-                description: "Enjoy dinner.",
+                description:
+                  "Enjoy dinner in Cochin after completing the day's heritage sightseeing.",
               },
               {
                 time: "09:15 PM",
@@ -451,7 +469,7 @@ const dualPlans = [
                 type: "activity",
                 amount: 200,
                 description:
-                  "Enjoy Cochin's evening atmosphere.",
+                  "Enjoy Cochin's evening atmosphere with a short relaxed outing through the illuminated city.",
               },
               {
                 time: "10:00 PM",
@@ -459,7 +477,8 @@ const dualPlans = [
                 name: "Day End",
                 type: "activity",
                 amount: 0,
-                description: "Return and relax.",
+                description:
+                  "Return to your accommodation and relax after a full day of exploring Cochin.",
               },
             ],
 
@@ -480,7 +499,8 @@ const dualPlans = [
                 name: "Breakfast",
                 type: "food",
                 amount: 0,
-                description: "Start with breakfast.",
+                description:
+                  "Start the final day with a relaxed breakfast before heading out for the last sightseeing activities.",
               },
               {
                 time: "09:00 AM",
@@ -489,7 +509,7 @@ const dualPlans = [
                 type: "place",
                 amount: 400,
                 description:
-                  "Relax at one of Cochin's popular beaches.",
+                  "Relax along Cherai Beach, enjoy the coastal scenery and spend some peaceful time beside the sea.",
               },
               {
                 time: "11:30 AM",
@@ -498,7 +518,7 @@ const dualPlans = [
                 type: "activity",
                 amount: 300,
                 description:
-                  "Explore local shops and souvenirs.",
+                  "Explore local shops for souvenirs, traditional products and small gifts to remember the trip.",
               },
               {
                 time: "12:30 PM",
@@ -506,7 +526,8 @@ const dualPlans = [
                 name: "Lunch",
                 type: "food",
                 amount: 0,
-                description: "Enjoy lunch.",
+                description:
+                  "Enjoy a relaxed lunch before continuing with the final afternoon sightseeing.",
               },
               {
                 time: "02:00 PM",
@@ -515,7 +536,7 @@ const dualPlans = [
                 type: "place",
                 amount: 400,
                 description:
-                  "Explore additional city attractions.",
+                  "Explore additional local attractions and enjoy a final look at Cochin's city and cultural surroundings.",
               },
               {
                 time: "04:30 PM",
@@ -524,7 +545,7 @@ const dualPlans = [
                 type: "place",
                 amount: 300,
                 description:
-                  "Enjoy the waterfront.",
+                  "Spend some relaxing time along the waterfront and enjoy the city views during the afternoon.",
               },
               {
                 time: "06:30 PM",
@@ -533,7 +554,7 @@ const dualPlans = [
                 type: "activity",
                 amount: 200,
                 description:
-                  "Enjoy the evening sky.",
+                  "Enjoy the evening sky and take in the peaceful coastal atmosphere before the final dinner.",
               },
               {
                 time: "08:00 PM",
@@ -541,7 +562,8 @@ const dualPlans = [
                 name: "Dinner",
                 type: "food",
                 amount: 0,
-                description: "Enjoy the final dinner.",
+                description:
+                  "Enjoy your final dinner in Cochin and take a relaxed break before departure.",
               },
               {
                 time: "09:15 PM",
@@ -550,7 +572,7 @@ const dualPlans = [
                 type: "activity",
                 amount: 200,
                 description:
-                  "Enjoy a relaxed final evening.",
+                  "Take a gentle final evening walk and enjoy the atmosphere before ending the trip.",
               },
               {
                 time: "10:00 PM",
@@ -559,7 +581,7 @@ const dualPlans = [
                 type: "activity",
                 amount: 0,
                 description:
-                  "Complete the trip.",
+                  "Complete the trip and prepare for departure with your travel memories from Kerala.",
               },
             ],
 
@@ -579,19 +601,26 @@ const dualPlans = [
     title: "Munroe Island + Varkala Escape",
     destinationName: "Munroe Island + Varkala",
     destination: "Munroe Island + Varkala",
+
     places: [
       "Munroe Island",
       "Varkala",
       "Kappil Beach",
       "Varkala Cliff",
     ],
+
     category: "Kerala Duo",
-    image: "/images/munroe.jpg",
+
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1JzlyLzlOVFN5iOFRqkkXrcjaH1rPvqRp0Hfvqf6mcA&s=10",
 
     description:
       "Combine peaceful backwaters, village life and canoe experiences with Varkala's famous cliffs and beaches.",
 
     durationOptions: {
+      // =====================================================
+      // 2 DAYS
+      // =====================================================
       2: {
         days: 2,
         nights: 1,
@@ -630,7 +659,8 @@ const dualPlans = [
                 name: "Breakfast",
                 type: "food",
                 amount: 0,
-                description: "Start the day with breakfast.",
+                description:
+                  "Start the morning with a relaxed breakfast before heading out to explore Munroe Island.",
               },
               {
                 time: "09:00 AM",
@@ -639,7 +669,7 @@ const dualPlans = [
                 type: "place",
                 amount: 1200,
                 description:
-                  "Explore the beautiful backwater channels.",
+                  "Explore beautiful backwater channels surrounded by coconut trees, village homes and peaceful island scenery.",
               },
               {
                 time: "11:15 AM",
@@ -648,7 +678,7 @@ const dualPlans = [
                 type: "activity",
                 amount: 700,
                 description:
-                  "Enjoy a traditional canoe ride through narrow waterways.",
+                  "Enjoy a traditional canoe ride through narrow waterways and experience the calm village side of Munroe Island.",
               },
               {
                 time: "01:00 PM",
@@ -657,7 +687,7 @@ const dualPlans = [
                 type: "food",
                 amount: 0,
                 description:
-                  "Enjoy a relaxed local lunch.",
+                  "Enjoy a relaxed local lunch featuring Kerala-style dishes and fresh regional flavours.",
               },
               {
                 time: "02:30 PM",
@@ -666,7 +696,7 @@ const dualPlans = [
                 type: "place",
                 amount: 200,
                 description:
-                  "Explore the village and local surroundings.",
+                  "Walk through the village surroundings and experience the simple lifestyle, greenery and local atmosphere.",
               },
               {
                 time: "05:00 PM",
@@ -675,7 +705,7 @@ const dualPlans = [
                 type: "activity",
                 amount: 200,
                 description:
-                  "Enjoy the peaceful sunset atmosphere.",
+                  "Enjoy the peaceful sunset over the island waterways and capture the beautiful evening scenery.",
               },
               {
                 time: "07:00 PM",
@@ -684,7 +714,7 @@ const dualPlans = [
                 type: "food",
                 amount: 0,
                 description:
-                  "Enjoy a relaxed local dinner.",
+                  "Enjoy a relaxed local dinner after a full day of backwater and village experiences.",
               },
               {
                 time: "08:30 PM",
@@ -693,7 +723,7 @@ const dualPlans = [
                 type: "activity",
                 amount: 200,
                 description:
-                  "Enjoy a peaceful evening around the island.",
+                  "Spend a peaceful evening around the island and enjoy the quiet village atmosphere away from busy city areas.",
               },
               {
                 time: "10:00 PM",
@@ -702,7 +732,7 @@ const dualPlans = [
                 type: "activity",
                 amount: 0,
                 description:
-                  "Return to accommodation and relax.",
+                  "Return to the accommodation, relax and prepare for the next day's Varkala experience.",
               },
             ],
 
@@ -724,7 +754,7 @@ const dualPlans = [
                 type: "food",
                 amount: 0,
                 description:
-                  "Start the day with breakfast.",
+                  "Start the day with breakfast before heading out to explore Varkala's coastal attractions.",
               },
               {
                 time: "09:00 AM",
@@ -733,7 +763,7 @@ const dualPlans = [
                 type: "place",
                 amount: 300,
                 description:
-                  "Enjoy panoramic views of the Arabian Sea.",
+                  "Walk along the famous cliff area and enjoy panoramic views of the Arabian Sea and surrounding coastline.",
               },
               {
                 time: "11:15 AM",
@@ -742,7 +772,7 @@ const dualPlans = [
                 type: "place",
                 amount: 0,
                 description:
-                  "Relax beside the sea.",
+                  "Relax beside the sea, enjoy the beach atmosphere and spend some peaceful time along the shoreline.",
               },
               {
                 time: "01:30 PM",
@@ -751,7 +781,7 @@ const dualPlans = [
                 type: "food",
                 amount: 0,
                 description:
-                  "Enjoy lunch near the beach.",
+                  "Enjoy a relaxed lunch near the beach before continuing the afternoon sightseeing.",
               },
               {
                 time: "03:00 PM",
@@ -760,7 +790,7 @@ const dualPlans = [
                 type: "place",
                 amount: 400,
                 description:
-                  "Explore the beautiful coastal landscape.",
+                  "Explore the beautiful coastal landscape where the beach surroundings meet the peaceful backwater region.",
               },
               {
                 time: "05:30 PM",
@@ -769,7 +799,7 @@ const dualPlans = [
                 type: "place",
                 amount: 200,
                 description:
-                  "Enjoy the lake and coastal scenery.",
+                  "Enjoy the peaceful lake scenery and views of the surrounding coastal landscape during the evening.",
               },
               {
                 time: "07:00 PM",
@@ -778,7 +808,7 @@ const dualPlans = [
                 type: "food",
                 amount: 0,
                 description:
-                  "Enjoy a relaxed dinner.",
+                  "Enjoy a relaxed dinner after exploring Varkala and the Kappil coastal area.",
               },
               {
                 time: "08:30 PM",
@@ -787,7 +817,7 @@ const dualPlans = [
                 type: "activity",
                 amount: 300,
                 description:
-                  "Explore the cliff area in the evening.",
+                  "Explore the cliff area in the evening, browse local surroundings and enjoy Varkala's lively night atmosphere.",
               },
               {
                 time: "10:00 PM",
@@ -796,7 +826,7 @@ const dualPlans = [
                 type: "activity",
                 amount: 0,
                 description:
-                  "Complete the Varkala experience.",
+                  "Complete the Varkala experience and prepare for departure after enjoying the coastal highlights.",
               },
             ],
 
@@ -806,6 +836,9 @@ const dualPlans = [
         ],
       },
 
+      // =====================================================
+      // 3 DAYS
+      // =====================================================
       3: {
         days: 3,
         nights: 2,
@@ -844,7 +877,8 @@ const dualPlans = [
                 name: "Breakfast",
                 type: "food",
                 amount: 0,
-                description: "Have breakfast.",
+                description:
+                  "Have breakfast and get ready for a peaceful day exploring the island backwaters.",
               },
               {
                 time: "09:00 AM",
@@ -853,7 +887,7 @@ const dualPlans = [
                 type: "place",
                 amount: 1200,
                 description:
-                  "Explore the island backwaters.",
+                  "Explore the calm backwater channels, coconut-lined waterways and beautiful island surroundings.",
               },
               {
                 time: "11:15 AM",
@@ -862,7 +896,7 @@ const dualPlans = [
                 type: "activity",
                 amount: 700,
                 description:
-                  "Enjoy a traditional canoe experience.",
+                  "Enjoy a traditional canoe experience through the narrow waterways and peaceful village areas.",
               },
               {
                 time: "01:00 PM",
@@ -870,7 +904,8 @@ const dualPlans = [
                 name: "Lunch",
                 type: "food",
                 amount: 0,
-                description: "Enjoy local food.",
+                description:
+                  "Enjoy local Kerala food and take a comfortable break before continuing the afternoon activities.",
               },
               {
                 time: "02:30 PM",
@@ -879,7 +914,7 @@ const dualPlans = [
                 type: "place",
                 amount: 200,
                 description:
-                  "Explore the village.",
+                  "Explore the village, local surroundings and peaceful lifestyle of the island community.",
               },
               {
                 time: "05:00 PM",
@@ -888,7 +923,7 @@ const dualPlans = [
                 type: "activity",
                 amount: 200,
                 description:
-                  "Enjoy sunset views.",
+                  "Enjoy the beautiful evening light and peaceful sunset views across the island waterways.",
               },
               {
                 time: "07:00 PM",
@@ -896,7 +931,8 @@ const dualPlans = [
                 name: "Dinner",
                 type: "food",
                 amount: 0,
-                description: "Enjoy dinner.",
+                description:
+                  "Enjoy a relaxed dinner after a full day of backwater and village exploration.",
               },
               {
                 time: "08:30 PM",
@@ -905,7 +941,7 @@ const dualPlans = [
                 type: "activity",
                 amount: 200,
                 description:
-                  "Relax around the village.",
+                  "Relax around the village and enjoy the calm atmosphere of Munroe Island after sunset.",
               },
               {
                 time: "10:00 PM",
@@ -913,7 +949,8 @@ const dualPlans = [
                 name: "Day End",
                 type: "activity",
                 amount: 0,
-                description: "Return and relax.",
+                description:
+                  "Return to the accommodation and relax before the next day's Varkala sightseeing.",
               },
             ],
 
@@ -934,7 +971,8 @@ const dualPlans = [
                 name: "Breakfast",
                 type: "food",
                 amount: 0,
-                description: "Have breakfast.",
+                description:
+                  "Have breakfast before starting a full day of coastal sightseeing around Varkala.",
               },
               {
                 time: "09:00 AM",
@@ -943,7 +981,7 @@ const dualPlans = [
                 type: "place",
                 amount: 300,
                 description:
-                  "Enjoy sea views from the cliff.",
+                  "Explore the famous cliff area and enjoy wide views of the Arabian Sea and Varkala coastline.",
               },
               {
                 time: "11:15 AM",
@@ -952,7 +990,7 @@ const dualPlans = [
                 type: "place",
                 amount: 0,
                 description:
-                  "Relax at the beach.",
+                  "Relax on the beach, enjoy the sea breeze and spend a peaceful morning by the Arabian Sea.",
               },
               {
                 time: "01:30 PM",
@@ -960,7 +998,8 @@ const dualPlans = [
                 name: "Lunch",
                 type: "food",
                 amount: 0,
-                description: "Enjoy lunch.",
+                description:
+                  "Enjoy lunch near the beach and take a short break before the afternoon activities.",
               },
               {
                 time: "03:00 PM",
@@ -969,7 +1008,7 @@ const dualPlans = [
                 type: "activity",
                 amount: 300,
                 description:
-                  "Explore local shops and cafes.",
+                  "Explore local shops, cafés and small stores while experiencing the relaxed atmosphere around Varkala.",
               },
               {
                 time: "05:30 PM",
@@ -978,7 +1017,7 @@ const dualPlans = [
                 type: "place",
                 amount: 200,
                 description:
-                  "Enjoy the evening sea view.",
+                  "Find a comfortable viewpoint and enjoy the evening sea views as the sun begins to set.",
               },
               {
                 time: "07:00 PM",
@@ -986,7 +1025,8 @@ const dualPlans = [
                 name: "Dinner",
                 type: "food",
                 amount: 0,
-                description: "Enjoy dinner.",
+                description:
+                  "Enjoy a relaxed dinner after spending the day around Varkala's beaches and cliff area.",
               },
               {
                 time: "08:30 PM",
@@ -995,7 +1035,7 @@ const dualPlans = [
                 type: "activity",
                 amount: 300,
                 description:
-                  "Enjoy the evening atmosphere.",
+                  "Enjoy an evening walk around the cliff area, local shops and cafés while experiencing Varkala at night.",
               },
               {
                 time: "10:00 PM",
@@ -1003,7 +1043,8 @@ const dualPlans = [
                 name: "Day End",
                 type: "activity",
                 amount: 0,
-                description: "Return and relax.",
+                description:
+                  "Return to your accommodation and relax after a complete day of Varkala sightseeing.",
               },
             ],
 
@@ -1024,7 +1065,8 @@ const dualPlans = [
                 name: "Breakfast",
                 type: "food",
                 amount: 0,
-                description: "Start with breakfast.",
+                description:
+                  "Start the final day with breakfast before heading toward the Kappil coastal region.",
               },
               {
                 time: "09:00 AM",
@@ -1033,7 +1075,7 @@ const dualPlans = [
                 type: "place",
                 amount: 400,
                 description:
-                  "Explore the peaceful coastal area.",
+                  "Explore the peaceful coastline, enjoy the sea breeze and take in the natural beauty around Kappil.",
               },
               {
                 time: "11:15 AM",
@@ -1042,7 +1084,7 @@ const dualPlans = [
                 type: "place",
                 amount: 200,
                 description:
-                  "Enjoy the lake and surrounding landscape.",
+                  "Enjoy the calm lake, surrounding greenery and scenic landscape where the backwater meets the coast.",
               },
               {
                 time: "01:00 PM",
@@ -1050,7 +1092,8 @@ const dualPlans = [
                 name: "Lunch",
                 type: "food",
                 amount: 0,
-                description: "Enjoy lunch.",
+                description:
+                  "Enjoy lunch and take some time to relax before the final afternoon sightseeing.",
               },
               {
                 time: "02:30 PM",
@@ -1059,7 +1102,7 @@ const dualPlans = [
                 type: "place",
                 amount: 300,
                 description:
-                  "Explore the local attractions.",
+                  "Explore a few remaining local attractions and enjoy the relaxed coastal surroundings of Varkala.",
               },
               {
                 time: "05:00 PM",
@@ -1068,7 +1111,7 @@ const dualPlans = [
                 type: "activity",
                 amount: 0,
                 description:
-                  "Relax before departure.",
+                  "Spend some quiet time by the beach and enjoy the final coastal views before departure.",
               },
               {
                 time: "07:00 PM",
@@ -1076,7 +1119,8 @@ const dualPlans = [
                 name: "Dinner",
                 type: "food",
                 amount: 0,
-                description: "Enjoy the final dinner.",
+                description:
+                  "Enjoy the final dinner of the trip and take a comfortable break before departure.",
               },
               {
                 time: "08:30 PM",
@@ -1085,7 +1129,7 @@ const dualPlans = [
                 type: "activity",
                 amount: 200,
                 description:
-                  "Enjoy the final evening.",
+                  "Take a relaxed final evening walk and enjoy the coastal atmosphere before ending the journey.",
               },
               {
                 time: "10:00 PM",
@@ -1094,7 +1138,7 @@ const dualPlans = [
                 type: "activity",
                 amount: 0,
                 description:
-                  "Complete the trip.",
+                  "Complete the trip and prepare for departure after exploring Munroe Island, Varkala and Kappil.",
               },
             ],
 
@@ -1114,6 +1158,7 @@ const dualPlans = [
     title: "Mysore + Coorg Heritage & Coffee",
     destinationName: "Mysore + Coorg",
     destination: "Mysore + Coorg",
+
     places: [
       "Mysore",
       "Coorg",
@@ -1121,13 +1166,19 @@ const dualPlans = [
       "Abbey Falls",
       "Coffee Estates",
     ],
+
     category: "Karnataka Duo",
-    image: "/images/coorg.jpg",
+
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0KJ-iqZW3rRs__yEXtDTG8__tyb3TBZQpMr3MOy-LwQ&s=10",
 
     description:
       "Combine Mysore's royal heritage with Coorg's coffee plantations, waterfalls and scenic hills.",
 
     durationOptions: {
+      // =====================================================
+      // 2 DAYS
+      // =====================================================
       2: {
         days: 2,
         nights: 1,
@@ -1167,7 +1218,7 @@ const dualPlans = [
                 type: "food",
                 amount: 0,
                 description:
-                  "Enjoy a traditional South Indian breakfast.",
+                  "Enjoy a traditional South Indian breakfast before starting your Mysore sightseeing.",
               },
               {
                 time: "09:00 AM",
@@ -1176,7 +1227,7 @@ const dualPlans = [
                 type: "place",
                 amount: 500,
                 description:
-                  "Explore the magnificent Mysore Palace.",
+                  "Explore the magnificent Mysore Palace, admire its grand architecture and discover the royal heritage of the city.",
               },
               {
                 time: "11:15 AM",
@@ -1185,7 +1236,7 @@ const dualPlans = [
                 type: "place",
                 amount: 200,
                 description:
-                  "Explore the colourful local market.",
+                  "Explore the colourful local market filled with flowers, spices, fruits and traditional products.",
               },
               {
                 time: "01:00 PM",
@@ -1194,7 +1245,7 @@ const dualPlans = [
                 type: "food",
                 amount: 0,
                 description:
-                  "Enjoy a Mysore-style lunch.",
+                  "Enjoy a Mysore-style lunch and take a short break before continuing the afternoon sightseeing.",
               },
               {
                 time: "02:30 PM",
@@ -1203,7 +1254,7 @@ const dualPlans = [
                 type: "place",
                 amount: 300,
                 description:
-                  "Enjoy panoramic views of Mysore.",
+                  "Visit the hill area and enjoy panoramic views overlooking Mysore and the surrounding landscape.",
               },
               {
                 time: "05:00 PM",
@@ -1212,7 +1263,7 @@ const dualPlans = [
                 type: "place",
                 amount: 600,
                 description:
-                  "Relax among the landscaped gardens.",
+                  "Relax among the beautifully landscaped gardens, fountains and scenic surroundings near the dam.",
               },
               {
                 time: "07:30 PM",
@@ -1221,7 +1272,7 @@ const dualPlans = [
                 type: "food",
                 amount: 0,
                 description:
-                  "Enjoy dinner.",
+                  "Enjoy dinner after a full day of exploring Mysore's royal and cultural attractions.",
               },
               {
                 time: "09:00 PM",
@@ -1230,7 +1281,7 @@ const dualPlans = [
                 type: "activity",
                 amount: 200,
                 description:
-                  "Enjoy the illuminated city atmosphere.",
+                  "Enjoy a relaxed evening drive through Mysore and experience the illuminated city atmosphere.",
               },
               {
                 time: "10:00 PM",
@@ -1239,7 +1290,7 @@ const dualPlans = [
                 type: "activity",
                 amount: 0,
                 description:
-                  "Return and relax.",
+                  "Return to the accommodation and relax before travelling toward Coorg the next day.",
               },
             ],
 
@@ -1261,7 +1312,7 @@ const dualPlans = [
                 type: "food",
                 amount: 0,
                 description:
-                  "Start with breakfast.",
+                  "Start the day with breakfast before heading out to explore the scenic coffee country of Coorg.",
               },
               {
                 time: "09:00 AM",
@@ -1270,7 +1321,7 @@ const dualPlans = [
                 type: "place",
                 amount: 700,
                 description:
-                  "Explore the famous coffee plantation landscape.",
+                  "Explore the famous coffee plantation landscape and enjoy the greenery, fresh air and peaceful hill surroundings.",
               },
               {
                 time: "11:15 AM",
@@ -1279,7 +1330,7 @@ const dualPlans = [
                 type: "place",
                 amount: 300,
                 description:
-                  "Visit the scenic waterfall surrounded by greenery.",
+                  "Visit the scenic waterfall surrounded by lush greenery and enjoy the natural atmosphere of the area.",
               },
               {
                 time: "01:00 PM",
@@ -1288,7 +1339,7 @@ const dualPlans = [
                 type: "food",
                 amount: 0,
                 description:
-                  "Enjoy a local Coorg-style lunch.",
+                  "Enjoy a local Coorg-style lunch featuring regional flavours before continuing the sightseeing.",
               },
               {
                 time: "02:30 PM",
@@ -1297,7 +1348,7 @@ const dualPlans = [
                 type: "place",
                 amount: 300,
                 description:
-                  "Enjoy the scenic hill views.",
+                  "Enjoy scenic hill views from Raja's Seat and take in the surrounding valleys and greenery.",
               },
               {
                 time: "05:00 PM",
@@ -1306,7 +1357,7 @@ const dualPlans = [
                 type: "place",
                 amount: 400,
                 description:
-                  "Enjoy the surrounding coffee-country landscape.",
+                  "Enjoy wide views of the surrounding coffee-country landscape and peaceful Western Ghats scenery.",
               },
               {
                 time: "07:00 PM",
@@ -1315,7 +1366,7 @@ const dualPlans = [
                 type: "food",
                 amount: 0,
                 description:
-                  "Enjoy dinner.",
+                  "Enjoy a relaxed dinner after a scenic day exploring Coorg's plantations and hill attractions.",
               },
               {
                 time: "08:30 PM",
@@ -1324,7 +1375,7 @@ const dualPlans = [
                 type: "activity",
                 amount: 300,
                 description:
-                  "Enjoy a peaceful evening in the hills.",
+                  "Enjoy a peaceful evening in the hills and take in Coorg's cool weather and relaxed atmosphere.",
               },
               {
                 time: "10:00 PM",
@@ -1333,7 +1384,7 @@ const dualPlans = [
                 type: "activity",
                 amount: 0,
                 description:
-                  "Complete the Coorg experience.",
+                  "Complete the Coorg experience and prepare for departure after exploring the coffee country and hills.",
               },
             ],
 
@@ -1343,6 +1394,9 @@ const dualPlans = [
         ],
       },
 
+      // =====================================================
+      // 3 DAYS
+      // =====================================================
       3: {
         days: 3,
         nights: 2,
@@ -1382,7 +1436,8 @@ const dualPlans = [
                 name: "Breakfast",
                 type: "food",
                 amount: 0,
-                description: "Have breakfast.",
+                description:
+                  "Have breakfast and get ready for a full day of Mysore heritage sightseeing.",
               },
               {
                 time: "09:00 AM",
@@ -1391,7 +1446,7 @@ const dualPlans = [
                 type: "place",
                 amount: 500,
                 description:
-                  "Explore the royal palace.",
+                  "Explore the royal palace, admire its detailed architecture and learn about Mysore's royal heritage.",
               },
               {
                 time: "11:15 AM",
@@ -1400,7 +1455,7 @@ const dualPlans = [
                 type: "place",
                 amount: 200,
                 description:
-                  "Explore the local market.",
+                  "Walk through the colourful market and discover local flowers, spices, fruits and traditional products.",
               },
               {
                 time: "01:00 PM",
@@ -1408,7 +1463,8 @@ const dualPlans = [
                 name: "Lunch",
                 type: "food",
                 amount: 0,
-                description: "Enjoy lunch.",
+                description:
+                  "Enjoy a relaxed lunch featuring local South Indian flavours before continuing the day's sightseeing.",
               },
               {
                 time: "02:30 PM",
@@ -1417,7 +1473,7 @@ const dualPlans = [
                 type: "place",
                 amount: 300,
                 description:
-                  "Enjoy views of Mysore.",
+                  "Visit Chamundi Hills and enjoy panoramic views across Mysore and the surrounding countryside.",
               },
               {
                 time: "05:00 PM",
@@ -1426,7 +1482,7 @@ const dualPlans = [
                 type: "place",
                 amount: 600,
                 description:
-                  "Relax in the gardens.",
+                  "Relax through the landscaped gardens, fountains and peaceful surroundings near the dam.",
               },
               {
                 time: "07:30 PM",
@@ -1434,7 +1490,8 @@ const dualPlans = [
                 name: "Dinner",
                 type: "food",
                 amount: 0,
-                description: "Enjoy dinner.",
+                description:
+                  "Enjoy dinner after a complete day of exploring Mysore's historic and scenic attractions.",
               },
               {
                 time: "09:00 PM",
@@ -1443,7 +1500,7 @@ const dualPlans = [
                 type: "activity",
                 amount: 200,
                 description:
-                  "Enjoy the city at night.",
+                  "Take a relaxed evening drive and enjoy the illuminated streets and calm night atmosphere of Mysore.",
               },
               {
                 time: "10:00 PM",
@@ -1451,7 +1508,8 @@ const dualPlans = [
                 name: "Day End",
                 type: "activity",
                 amount: 0,
-                description: "Return and relax.",
+                description:
+                  "Return to the accommodation and relax before beginning the Coorg part of the journey.",
               },
             ],
 
@@ -1472,7 +1530,8 @@ const dualPlans = [
                 name: "Breakfast",
                 type: "food",
                 amount: 0,
-                description: "Have breakfast.",
+                description:
+                  "Have breakfast before starting the journey toward Coorg and its scenic coffee plantations.",
               },
               {
                 time: "09:30 AM",
@@ -1481,7 +1540,7 @@ const dualPlans = [
                 type: "place",
                 amount: 700,
                 description:
-                  "Explore the coffee plantation.",
+                  "Explore the coffee plantation landscape and enjoy the greenery, fresh air and peaceful hill environment.",
               },
               {
                 time: "12:00 PM",
@@ -1490,7 +1549,7 @@ const dualPlans = [
                 type: "activity",
                 amount: 300,
                 description:
-                  "Learn about coffee production.",
+                  "Learn about coffee cultivation and processing while experiencing the culture behind Coorg's famous coffee estates.",
               },
               {
                 time: "01:30 PM",
@@ -1498,7 +1557,8 @@ const dualPlans = [
                 name: "Lunch",
                 type: "food",
                 amount: 0,
-                description: "Enjoy lunch.",
+                description:
+                  "Enjoy lunch with local flavours and take a short rest before the afternoon sightseeing.",
               },
               {
                 time: "03:00 PM",
@@ -1507,7 +1567,7 @@ const dualPlans = [
                 type: "place",
                 amount: 300,
                 description:
-                  "Visit the waterfall.",
+                  "Visit the scenic waterfall and enjoy the lush greenery and natural surroundings around the falls.",
               },
               {
                 time: "05:30 PM",
@@ -1516,7 +1576,7 @@ const dualPlans = [
                 type: "place",
                 amount: 300,
                 description:
-                  "Enjoy the hill views.",
+                  "Enjoy beautiful hill views and a peaceful atmosphere from one of Coorg's scenic viewpoints.",
               },
               {
                 time: "07:30 PM",
@@ -1524,7 +1584,8 @@ const dualPlans = [
                 name: "Dinner",
                 type: "food",
                 amount: 0,
-                description: "Enjoy dinner.",
+                description:
+                  "Enjoy dinner after a full day of coffee estate and waterfall exploration.",
               },
               {
                 time: "09:00 PM",
@@ -1533,7 +1594,7 @@ const dualPlans = [
                 type: "activity",
                 amount: 200,
                 description:
-                  "Relax in the peaceful hill environment.",
+                  "Relax in the peaceful hill environment and enjoy Coorg's cool evening atmosphere.",
               },
               {
                 time: "10:00 PM",
@@ -1541,7 +1602,8 @@ const dualPlans = [
                 name: "Day End",
                 type: "activity",
                 amount: 0,
-                description: "Return and relax.",
+                description:
+                  "Return to the accommodation and relax before the final day of mountain sightseeing.",
               },
             ],
 
@@ -1563,7 +1625,7 @@ const dualPlans = [
                 type: "food",
                 amount: 0,
                 description:
-                  "Start the final day.",
+                  "Start the final day with breakfast before heading toward the scenic mountain areas of Coorg.",
               },
               {
                 time: "09:00 AM",
@@ -1572,7 +1634,7 @@ const dualPlans = [
                 type: "place",
                 amount: 900,
                 description:
-                  "Enjoy panoramic views of the Western Ghats.",
+                  "Enjoy panoramic views of the Western Ghats and explore the beautiful mountain landscape around Mandalpatti.",
               },
               {
                 time: "12:00 PM",
@@ -1581,7 +1643,7 @@ const dualPlans = [
                 type: "food",
                 amount: 0,
                 description:
-                  "Enjoy lunch.",
+                  "Enjoy lunch and take a comfortable break before continuing the final afternoon sightseeing.",
               },
               {
                 time: "01:30 PM",
@@ -1590,7 +1652,7 @@ const dualPlans = [
                 type: "place",
                 amount: 400,
                 description:
-                  "Explore nearby local attractions.",
+                  "Explore nearby attractions and enjoy the scenic surroundings of Coorg at a relaxed pace.",
               },
               {
                 time: "04:00 PM",
@@ -1599,7 +1661,7 @@ const dualPlans = [
                 type: "activity",
                 amount: 300,
                 description:
-                  "Buy local coffee and souvenirs.",
+                  "Browse local shops and pick up fresh Coorg coffee and souvenirs to remember the trip.",
               },
               {
                 time: "06:00 PM",
@@ -1608,7 +1670,7 @@ const dualPlans = [
                 type: "place",
                 amount: 300,
                 description:
-                  "Enjoy the final hill sunset.",
+                  "Enjoy the final hill sunset and take in the peaceful views across the surrounding mountains.",
               },
               {
                 time: "08:00 PM",
@@ -1617,7 +1679,7 @@ const dualPlans = [
                 type: "food",
                 amount: 0,
                 description:
-                  "Enjoy the final dinner.",
+                  "Enjoy the final dinner of the trip and relax after a scenic day in the Coorg hills.",
               },
               {
                 time: "09:00 PM",
@@ -1626,7 +1688,7 @@ const dualPlans = [
                 type: "activity",
                 amount: 200,
                 description:
-                  "Relax before departure.",
+                  "Spend a relaxed final evening in Coorg and prepare your belongings before departure.",
               },
               {
                 time: "10:00 PM",
@@ -1635,7 +1697,7 @@ const dualPlans = [
                 type: "activity",
                 amount: 0,
                 description:
-                  "Complete the trip.",
+                  "Complete the Mysore and Coorg journey and prepare for your return trip.",
               },
             ],
 
@@ -1655,21 +1717,26 @@ const dualPlans = [
     title: "Vagamon + Chikmagalur Hills",
     destinationName: "Vagamon + Chikmagalur",
     destination: "Vagamon + Chikmagalur",
+
     places: [
       "Vagamon",
       "Chikmagalur",
       "Vagamon Meadows",
       "Pine Forest",
-      "Mullayanagiri",
-      "Coffee Estates",
     ],
+
     category: "South India Duo",
-    image: "/images/vagamon.jpg",
+
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3tzgxLdFQIBr459HoJLnLW5SioSzn8jNfGRT5Qqj2Nw&s=10",
 
     description:
-      "Explore the green meadows and pine forests of Vagamon along with the coffee estates and mountain landscapes of Chikmagalur.",
+      "Explore the view pointof Vagamon and mountain landscapes of Chikmagalur.",
 
     durationOptions: {
+      // =====================================================
+      // 2 DAYS
+      // =====================================================
       2: {
         days: 2,
         nights: 1,
@@ -1680,7 +1747,6 @@ const dualPlans = [
         placeAmount: 5000,
 
         highlights: [
-          "Vagamon Meadows",
           "Pine Forest",
           "Vagamon Viewpoint",
           "Chikmagalur Coffee Estate",
@@ -1709,7 +1775,7 @@ const dualPlans = [
                 type: "food",
                 amount: 0,
                 description:
-                  "Start the day with breakfast.",
+                  "Start the day with a relaxed breakfast before heading into Vagamon's green hill landscapes.",
               },
               {
                 time: "09:00 AM",
@@ -1718,7 +1784,7 @@ const dualPlans = [
                 type: "place",
                 amount: 400,
                 description:
-                  "Explore the beautiful green meadows.",
+                  "Explore the beautiful green meadows, open landscapes and peaceful hill surroundings of Vagamon.",
               },
               {
                 time: "11:15 AM",
@@ -1727,7 +1793,7 @@ const dualPlans = [
                 type: "place",
                 amount: 300,
                 description:
-                  "Enjoy a peaceful walk through the pine forest.",
+                  "Enjoy a peaceful walk through the tall pine trees and experience the cool, quiet atmosphere of the forest.",
               },
               {
                 time: "01:00 PM",
@@ -1736,7 +1802,7 @@ const dualPlans = [
                 type: "food",
                 amount: 0,
                 description:
-                  "Enjoy a local Kerala lunch.",
+                  "Enjoy a local Kerala lunch and take a short break before continuing the hill sightseeing.",
               },
               {
                 time: "02:30 PM",
@@ -1745,7 +1811,7 @@ const dualPlans = [
                 type: "place",
                 amount: 500,
                 description:
-                  "Enjoy panoramic hill views.",
+                  "Enjoy panoramic views across Vagamon's rolling hills, valleys and green landscapes.",
               },
               {
                 time: "05:00 PM",
@@ -1754,7 +1820,7 @@ const dualPlans = [
                 type: "place",
                 amount: 300,
                 description:
-                  "Relax near the peaceful hill lake.",
+                  "Relax near the peaceful hill lake and enjoy the surrounding greenery and cool mountain atmosphere.",
               },
               {
                 time: "07:00 PM",
@@ -1763,7 +1829,7 @@ const dualPlans = [
                 type: "food",
                 amount: 0,
                 description:
-                  "Enjoy dinner.",
+                  "Enjoy a relaxed dinner after a full day exploring Vagamon's hills, forests and viewpoints.",
               },
               {
                 time: "08:30 PM",
@@ -1772,7 +1838,7 @@ const dualPlans = [
                 type: "activity",
                 amount: 300,
                 description:
-                  "Enjoy the cool hill atmosphere.",
+                  "Take a peaceful evening walk through the hill town and enjoy Vagamon's cool night atmosphere.",
               },
               {
                 time: "10:00 PM",
@@ -1781,7 +1847,7 @@ const dualPlans = [
                 type: "activity",
                 amount: 0,
                 description:
-                  "Return and relax.",
+                  "Return to the accommodation and relax before continuing the journey toward Chikmagalur.",
               },
             ],
 
@@ -1803,7 +1869,7 @@ const dualPlans = [
                 type: "food",
                 amount: 0,
                 description:
-                  "Start with breakfast.",
+                  "Start the morning with breakfast before exploring Chikmagalur's coffee and mountain attractions.",
               },
               {
                 time: "09:00 AM",
@@ -1812,7 +1878,7 @@ const dualPlans = [
                 type: "place",
                 amount: 700,
                 description:
-                  "Explore the famous coffee plantation landscape.",
+                  "Explore the famous coffee plantation landscape and enjoy the greenery, fresh air and peaceful hill surroundings.",
               },
               {
                 time: "11:15 AM",
@@ -1821,7 +1887,7 @@ const dualPlans = [
                 type: "place",
                 amount: 300,
                 description:
-                  "Learn about coffee production and history.",
+                  "Discover the history of coffee, learn about its production and understand the importance of coffee culture in the region.",
               },
               {
                 time: "01:00 PM",
@@ -1830,7 +1896,7 @@ const dualPlans = [
                 type: "food",
                 amount: 0,
                 description:
-                  "Enjoy a local lunch.",
+                  "Enjoy a local lunch and take a comfortable break before heading toward the mountain attractions.",
               },
               {
                 time: "02:30 PM",
@@ -1839,7 +1905,7 @@ const dualPlans = [
                 type: "place",
                 amount: 700,
                 description:
-                  "Enjoy the scenic mountain landscape.",
+                  "Explore the scenic mountain landscape around Mullayanagiri and enjoy impressive views of the surrounding hills.",
               },
               {
                 time: "05:30 PM",
@@ -1848,7 +1914,7 @@ const dualPlans = [
                 type: "place",
                 amount: 400,
                 description:
-                  "Enjoy panoramic hill views.",
+                  "Enjoy panoramic views of Chikmagalur's green valleys, coffee plantations and surrounding mountain ranges.",
               },
               {
                 time: "07:30 PM",
@@ -1857,7 +1923,7 @@ const dualPlans = [
                 type: "food",
                 amount: 0,
                 description:
-                  "Enjoy dinner.",
+                  "Enjoy dinner after a scenic day of coffee estate and mountain exploration.",
               },
               {
                 time: "09:00 PM",
@@ -1866,7 +1932,7 @@ const dualPlans = [
                 type: "activity",
                 amount: 300,
                 description:
-                  "Enjoy a relaxed evening around Chikmagalur town.",
+                  "Enjoy a relaxed evening around Chikmagalur town and experience its calm coffee-country atmosphere.",
               },
               {
                 time: "10:00 PM",
@@ -1875,7 +1941,7 @@ const dualPlans = [
                 type: "activity",
                 amount: 0,
                 description:
-                  "Complete the trip.",
+                  "Complete the trip after experiencing Vagamon's hills and Chikmagalur's coffee and mountain landscapes.",
               },
             ],
 
@@ -1885,6 +1951,9 @@ const dualPlans = [
         ],
       },
 
+      // =====================================================
+      // 3 DAYS
+      // =====================================================
       3: {
         days: 3,
         nights: 2,
@@ -1924,7 +1993,7 @@ const dualPlans = [
                 type: "food",
                 amount: 0,
                 description:
-                  "Start with breakfast.",
+                  "Start the morning with breakfast before heading out to explore Vagamon's peaceful hill landscapes.",
               },
               {
                 time: "09:00 AM",
@@ -1933,7 +2002,7 @@ const dualPlans = [
                 type: "place",
                 amount: 400,
                 description:
-                  "Explore the green meadows.",
+                  "Explore the wide green meadows and enjoy the fresh air, open views and peaceful surroundings of Vagamon.",
               },
               {
                 time: "11:15 AM",
@@ -1942,7 +2011,7 @@ const dualPlans = [
                 type: "place",
                 amount: 300,
                 description:
-                  "Enjoy a peaceful forest walk.",
+                  "Walk through the tall pine trees and enjoy the cool, shaded environment of the forest.",
               },
               {
                 time: "01:00 PM",
@@ -1951,7 +2020,7 @@ const dualPlans = [
                 type: "food",
                 amount: 0,
                 description:
-                  "Enjoy lunch.",
+                  "Enjoy a relaxed lunch and recharge before continuing the afternoon hill sightseeing.",
               },
               {
                 time: "02:30 PM",
@@ -1960,7 +2029,7 @@ const dualPlans = [
                 type: "place",
                 amount: 500,
                 description:
-                  "Enjoy panoramic views.",
+                  "Enjoy panoramic views of the rolling green hills and valleys surrounding Vagamon.",
               },
               {
                 time: "05:00 PM",
@@ -1969,7 +2038,7 @@ const dualPlans = [
                 type: "place",
                 amount: 300,
                 description:
-                  "Relax near the lake.",
+                  "Relax beside the peaceful lake and enjoy the greenery and cool mountain atmosphere.",
               },
               {
                 time: "07:00 PM",
@@ -1978,7 +2047,7 @@ const dualPlans = [
                 type: "food",
                 amount: 0,
                 description:
-                  "Enjoy dinner.",
+                  "Enjoy dinner after a scenic day exploring the meadows, forests and viewpoints of Vagamon.",
               },
               {
                 time: "08:30 PM",
@@ -1987,7 +2056,7 @@ const dualPlans = [
                 type: "activity",
                 amount: 200,
                 description:
-                  "Enjoy the peaceful evening atmosphere.",
+                  "Enjoy the peaceful evening atmosphere around the hill town and take a relaxed walk before resting.",
               },
               {
                 time: "10:00 PM",
@@ -1996,7 +2065,7 @@ const dualPlans = [
                 type: "activity",
                 amount: 0,
                 description:
-                  "Return and relax.",
+                  "Return to the accommodation and relax after the first day of the hill journey.",
               },
             ],
 
@@ -2018,7 +2087,7 @@ const dualPlans = [
                 type: "food",
                 amount: 0,
                 description:
-                  "Have breakfast before sightseeing.",
+                  "Have breakfast before starting the day's coffee plantation and waterfall experiences.",
               },
               {
                 time: "09:00 AM",
@@ -2027,7 +2096,7 @@ const dualPlans = [
                 type: "place",
                 amount: 700,
                 description:
-                  "Explore the coffee plantation.",
+                  "Explore the coffee estate, walk through the plantation landscape and enjoy the peaceful greenery of Chikmagalur.",
               },
               {
                 time: "11:15 AM",
@@ -2036,7 +2105,7 @@ const dualPlans = [
                 type: "place",
                 amount: 300,
                 description:
-                  "Learn about coffee culture.",
+                  "Learn about coffee culture, cultivation and production while discovering the history behind Chikmagalur's coffee industry.",
               },
               {
                 time: "01:00 PM",
@@ -2045,7 +2114,7 @@ const dualPlans = [
                 type: "food",
                 amount: 0,
                 description:
-                  "Enjoy lunch.",
+                  "Enjoy lunch with local flavours and take a comfortable break before the afternoon adventure.",
               },
               {
                 time: "02:30 PM",
@@ -2054,7 +2123,7 @@ const dualPlans = [
                 type: "place",
                 amount: 500,
                 description:
-                  "Visit the beautiful waterfall surrounded by greenery.",
+                  "Visit the beautiful waterfall surrounded by lush greenery and enjoy the natural scenery around the falls.",
               },
               {
                 time: "05:00 PM",
@@ -2063,7 +2132,7 @@ const dualPlans = [
                 type: "place",
                 amount: 400,
                 description:
-                  "Enjoy panoramic mountain views.",
+                  "Enjoy panoramic mountain views and take in the green valleys and coffee-growing landscapes around Chikmagalur.",
               },
               {
                 time: "07:00 PM",
@@ -2072,7 +2141,7 @@ const dualPlans = [
                 type: "food",
                 amount: 0,
                 description:
-                  "Enjoy dinner.",
+                  "Enjoy a relaxed dinner after a full day of coffee plantation and mountain sightseeing.",
               },
               {
                 time: "08:30 PM",
@@ -2081,7 +2150,7 @@ const dualPlans = [
                 type: "activity",
                 amount: 300,
                 description:
-                  "Relax and explore the town.",
+                  "Relax and explore the town in the evening while enjoying Chikmagalur's calm coffee-country atmosphere.",
               },
               {
                 time: "10:00 PM",
@@ -2090,7 +2159,7 @@ const dualPlans = [
                 type: "activity",
                 amount: 0,
                 description:
-                  "Return and relax.",
+                  "Return to the accommodation and relax before the final mountain experience.",
               },
             ],
 
@@ -2112,7 +2181,7 @@ const dualPlans = [
                 type: "food",
                 amount: 0,
                 description:
-                  "Start the final day.",
+                  "Start the final day with breakfast before heading toward the mountain attractions of Chikmagalur.",
               },
               {
                 time: "09:00 AM",
@@ -2121,7 +2190,7 @@ const dualPlans = [
                 type: "place",
                 amount: 700,
                 description:
-                  "Explore the mountain and surrounding landscapes.",
+                  "Explore the mountain surroundings and enjoy panoramic views across the Western Ghats and nearby valleys.",
               },
               {
                 time: "12:00 PM",
@@ -2130,7 +2199,7 @@ const dualPlans = [
                 type: "food",
                 amount: 0,
                 description:
-                  "Enjoy lunch.",
+                  "Enjoy lunch and take a short rest before continuing the final afternoon sightseeing.",
               },
               {
                 time: "01:30 PM",
@@ -2139,7 +2208,7 @@ const dualPlans = [
                 type: "place",
                 amount: 500,
                 description:
-                  "Explore the scenic mountain region.",
+                  "Explore the scenic mountain region, enjoy the surrounding landscapes and take in the peaceful hill atmosphere.",
               },
               {
                 time: "04:00 PM",
@@ -2148,7 +2217,7 @@ const dualPlans = [
                 type: "activity",
                 amount: 300,
                 description:
-                  "Buy local coffee and souvenirs.",
+                  "Browse local shops and choose fresh coffee products and souvenirs to take home from Chikmagalur.",
               },
               {
                 time: "06:00 PM",
@@ -2157,7 +2226,7 @@ const dualPlans = [
                 type: "place",
                 amount: 300,
                 description:
-                  "Enjoy the final hill sunset.",
+                  "Enjoy the final hill sunset and watch the evening light spread across the surrounding mountain landscape.",
               },
               {
                 time: "08:00 PM",
@@ -2166,7 +2235,7 @@ const dualPlans = [
                 type: "food",
                 amount: 0,
                 description:
-                  "Enjoy the final dinner.",
+                  "Enjoy the final dinner of the journey and relax after a memorable day in the Chikmagalur hills.",
               },
               {
                 time: "09:00 PM",
@@ -2175,7 +2244,7 @@ const dualPlans = [
                 type: "activity",
                 amount: 200,
                 description:
-                  "Relax before departure.",
+                  "Spend a relaxed final evening preparing your belongings and enjoying the peaceful hill atmosphere.",
               },
               {
                 time: "10:00 PM",
@@ -2184,7 +2253,7 @@ const dualPlans = [
                 type: "activity",
                 amount: 0,
                 description:
-                  "Complete the trip.",
+                  "Complete the Vagamon and Chikmagalur journey and prepare for your return trip.",
               },
             ],
 

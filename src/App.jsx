@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 
 import Home from "./pages/Home";
 import DestinationsPage from "./pages/DestinationsPage";
@@ -12,40 +13,55 @@ import ContactPage from "./pages/ContactPage";
 function App() {
   return (
     <BrowserRouter>
-      {/* Navbar appears on every page */}
+      {/* NAVBAR - appears on every page */}
       <Navbar />
 
-      <Routes>
-        <Route path="/" element={<Home />} />
+      {/* PAGE CONTENT */}
+      <main>
+        <Routes>
+          {/* HOME */}
+          <Route path="/" element={<Home />} />
 
-        <Route
-          path="/destinations"
-          element={<DestinationsPage />}
-        />
+          {/* DESTINATIONS */}
+          <Route
+            path="/destinations"
+            element={<DestinationsPage />}
+          />
 
-        <Route
-          path="/travel-plans"
-          element={<TravelPlansPage />}
-        />
+          {/* TRAVEL PLANS */}
+          <Route
+            path="/travel-plans"
+            element={<TravelPlansPage />}
+          />
 
-        <Route
-          path="/dual-plans"
-          element={<DualPlansPage />}
-        />
+          {/* DUAL PLANS */}
+          <Route
+            path="/dual-plans"
+            element={<DualPlansPage />}
+          />
 
-        <Route
-          path="/auth"
-          element={<AuthPage />}
-        />
+          {/* LOGIN / SIGN UP */}
+          <Route
+            path="/auth"
+            element={<AuthPage />}
+          />
 
-        <Route
-          path="/contact"
-          element={<ContactPage />}
-        />
+          {/* CONTACT */}
+          <Route
+            path="/contact"
+            element={<ContactPage />}
+          />
 
-        {/* Unknown URL */}
-        <Route path="*" element={<Home />} />
-      </Routes>
+          {/* UNKNOWN URL */}
+          <Route
+            path="*"
+            element={<Home />}
+          />
+        </Routes>
+      </main>
+
+      {/* FOOTER - appears on every page */}
+      <Footer />
     </BrowserRouter>
   );
 }

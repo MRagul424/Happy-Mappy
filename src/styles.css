@@ -1479,87 +1479,6 @@ img {
   color: var(--muted);
   font-size: 11px;
 }
-.explore-grid {
-  display: grid;
-  grid-template-columns:
-    repeat(2, 1fr);
-  gap: 25px;
-}
-.explore-card {
-  overflow: hidden;
-  background: white;
-  border:
-    1px solid
-    var(--border);
-  border-radius:
-    var(--radius);
-  box-shadow:
-    var(--shadow);
-}
-.explore-image {
-  height: 250px;
-}
-.explore-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.explore-content {
-  padding: 24px;
-}
-.explore-category {
-  padding: 5px 10px;
-}
-.explore-content h3 {
-  margin:
-    10px 0
-    7px;
-  font-size: 25px;
-}
-.explore-content > p {
-  margin-bottom: 20px;
-  color: var(--muted);
-}
-.explore-content h4 {
-  margin:
-    15px 0
-    8px;
-}
-.explore-places,
-.explore-food {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-.explore-places span,
-.explore-food span {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  padding: 7px 9px;
-  color: #475569;
-  background:
-    #f1f5f9;
-  border-radius: 8px;
-  font-size: 12px;
-}
-.explore-link {
-  margin-top: 20px;
-}
-.auth-page {
-  min-height:
-    calc(100vh - 72px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 50px 20px;
-  background:
-    linear-gradient(
-      135deg,
-      #ecfeff,
-      #f8fafc
-    );
-}
 .auth-container {
   width:
     min(
@@ -4018,4 +3937,85 @@ img {
   white-space: nowrap;
   line-height: 1;
   margin-left: -30px;       /* Gentle spacing from the full logo */
+}
+
+/* Dual Plan Card Image */
+.dual-plan-card-image {
+  width: 100%;
+  height: 250px;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 18px 18px 0 0;
+  background: #f1f5f4;
+}
+
+/* Dual Plan Popup Image */
+.dual-popup-image {
+  width: 360px;
+  height: 190px;
+  display: block;
+  margin: 14px auto 18px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 10px;
+  background: #f1f5f4;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .dual-plan-card-image {
+    height: 220px;
+  }
+
+  .dual-popup-image {
+    width: 330px;
+    height: 175px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dual-plan-card-image {
+    height: 200px;
+  }
+
+  .dual-popup-image {
+    width: 100%;
+    max-width: 320px;
+    height: 165px;
+  }
+}
+
+
+/* ========================================
+   SOCIAL MEDIA ICONS
+======================================== */
+.happy-mappy-footer .footer-socials {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 5px;
+}
+.happy-mappy-footer .footer-social {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 50%;
+  color: #ffffff;
+  background: transparent;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+.happy-mappy-footer .footer-social svg {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+.happy-mappy-footer .footer-social:hover {
+  background: #ffffff;
+  color: #075c3f;
+  transform: translateY(-3px);
 }
