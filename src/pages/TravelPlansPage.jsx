@@ -12,6 +12,8 @@ import {
   X,
   CheckCircle,
   BedDouble,
+  Calculator,
+  WalletCards,
 } from "lucide-react";
 
 import {
@@ -33,7 +35,8 @@ export default function TravelPlansPage() {
 
   const [searchParams] = useSearchParams();
 
-  const selectedDestination = searchParams.get("destination");
+  const selectedDestination =
+    searchParams.get("destination");
 
   /* =========================================================
      NORMALIZE
@@ -69,8 +72,10 @@ export default function TravelPlansPage() {
       .trim()
       .toUpperCase();
 
+    // Supports both "8:00 AM" and ranges such as
+    // "8:00 AM - 9:00 AM" by sorting on the first time.
     const match = value.match(
-      /^(\d{1,2}):(\d{2})\s*(AM|PM)?$/
+      /(\d{1,2}):(\d{2})\s*(AM|PM)?/
     );
 
     if (!match) return 9999;
@@ -94,66 +99,100 @@ export default function TravelPlansPage() {
      ACTIVITY TYPE HELPERS
   ========================================================= */
 
-  const isFood = (activity) => {
-    if (!activity) return false;
+  /* =========================================================
+     MEAL HELPERS
+  ========================================================= */
+
+  const getMealType = (activity) => {
+    if (!activity || typeof activity === "string") {
+      return null;
+    }
 
     const type = normalize(activity.type);
+    const meal = normalize(activity.meal);
     const name = normalize(activity.name);
+    const time = normalize(activity.time);
 
-    return (
+    // Explicit meal metadata always wins.
+    if (meal === "breakfast") return "breakfast";
+    if (meal === "lunch") return "lunch";
+    if (meal === "dinner") return "dinner";
+
+    // The activity name is deliberately checked before hotel detection.
+    // This keeps names such as "Dinner at hotel" and
+    // "Dinner at resort" orange food cards.
+    if (name.includes("breakfast")) return "breakfast";
+    if (name.includes("lunch")) return "lunch";
+    if (name.includes("dinner")) return "dinner";
+
+    if (
       type === "food" ||
-      type === "breakfast" ||
-      type === "lunch" ||
-      type === "dinner" ||
-      name.includes("breakfast") ||
-      name.includes("lunch") ||
-      name.includes("dinner") ||
-      name.includes("food") ||
-      name.includes("restaurant") ||
-      name.includes("cafe") ||
-      name.includes("café")
-    );
+      type === "meal" ||
+      type === "restaurant" ||
+      type === "cafe"
+    ) {
+      const timeMatch = time.match(
+        /(\d{1,2})(?::\d{2})?\s*(am|pm)/i
+      );
+
+      const hour = timeMatch
+        ? Number(timeMatch[1])
+        : null;
+
+      const period = timeMatch?.[2]?.toLowerCase();
+
+      if (hour !== null && period) {
+        if (
+          period === "am" &&
+          hour >= 6 &&
+          hour <= 10
+        ) {
+          return "breakfast";
+        }
+
+        if (
+          period === "pm" &&
+          hour >= 12 &&
+          hour <= 3
+        ) {
+          return "lunch";
+        }
+
+        if (
+          period === "pm" &&
+          hour >= 6 &&
+          hour <= 10
+        ) {
+          return "dinner";
+        }
+      }
+
+      return "food";
+    }
+
+    return null;
   };
 
-  const isDinner = (activity) => {
-    if (!activity) return false;
+  const isFood = (activity) => Boolean(getMealType(activity));
 
-    const type = normalize(activity.type);
-    const name = normalize(activity.name);
+  const isDinner = (activity) =>
+    getMealType(activity) === "dinner";
 
-    return (
-      type === "dinner" ||
-      name.includes("dinner") ||
-      name.includes("night dinner")
-    );
-  };
+  const isBreakfast = (activity) =>
+    getMealType(activity) === "breakfast";
 
-  const isBreakfast = (activity) => {
-    if (!activity) return false;
-
-    const type = normalize(activity.type);
-    const name = normalize(activity.name);
-
-    return (
-      type === "breakfast" ||
-      name.includes("breakfast")
-    );
-  };
-
-  const isLunch = (activity) => {
-    if (!activity) return false;
-
-    const type = normalize(activity.type);
-    const name = normalize(activity.name);
-
-    return (
-      type === "lunch" ||
-      name.includes("lunch")
-    );
-  };
+  const isLunch = (activity) =>
+    getMealType(activity) === "lunch";
 
   const isHotel = (activity) => {
     if (!activity) return false;
+
+    // Meals always have priority over hotel detection.
+    // Example: "Dinner - Marari Beach Resort Restaurant"
+    // contains "resort", but it is still a meal and must be orange.
+    if (isFood(activity)) {
+      return false;
+    }
 
     const type = normalize(activity.type);
     const name = normalize(activity.name);
@@ -162,6 +201,7 @@ export default function TravelPlansPage() {
       type === "hotel" ||
       type === "stay" ||
       type === "accommodation" ||
+      type === "hotel stay" ||
       name.includes("hotel") ||
       name.includes("resort") ||
       name.includes("stay")
@@ -178,6 +218,35 @@ export default function TravelPlansPage() {
   const getDetailedPlan = (plan) => {
     if (!plan) {
       return null;
+    }
+
+    /*
+     * travelData.js is the source of truth for the detailed itinerary.
+     * This is especially important when the user opened a plan from
+     * destinationPlans, because that object may contain an older itinerary.
+     */
+    const travelDataPlan = plans.find(
+      (item) =>
+        normalize(item.title) ===
+          normalize(plan.title) &&
+        normalize(
+          item.destinationName ||
+            item.destination
+        ) ===
+          normalize(
+            plan.destinationName ||
+              plan.destination
+          )
+    );
+
+    if (travelDataPlan) {
+      return {
+        ...plan,
+        ...travelDataPlan,
+        image:
+          travelDataPlan.image ||
+          plan.image,
+      };
     }
 
     if (
@@ -482,59 +551,253 @@ export default function TravelPlansPage() {
   };
 
   /* =========================================================
+     CREATE REQUIRED MEALS
+
+     Every itinerary day gets exactly one breakfast, lunch and
+     dinner card. Existing meal cards are kept when present.
+  ========================================================= */
+
+  const createMeal = (mealType) => {
+    const config = {
+      breakfast: {
+        name: "Breakfast at hotel",
+        time: "8:00 AM - 9:00 AM",
+      },
+      lunch: {
+        name: "Lunch at local restaurant",
+        time: "1:00 PM - 2:00 PM",
+      },
+      dinner: {
+        name: "Dinner at hotel",
+        time: "7:30 PM - 8:30 PM",
+      },
+    };
+
+    const item = config[mealType];
+
+    return {
+      name: item.name,
+      time: item.time,
+      amount: 0,
+      type: "food",
+      meal: mealType,
+      duration: "1 hr",
+      description: `Enjoy your ${mealType} before continuing the day's journey.`,
+    };
+  };
+
+  const getDefaultHotelName = (plan) => {
+    const destination =
+      plan?.destination ||
+      plan?.destinationName ||
+      "Destination";
+
+    return `${destination} Hotel`;
+  };
+
+  /* =========================================================
+     BUILD FINAL DAY ACTIVITIES
+
+     Rules:                                 
+     - Exactly one breakfast, lunch and dinner per day.
+     - Every non-final day has exactly one hotel.
+     - Hotel is immediately after dinner.
+     - Final day has no hotel.
+     - 1-day plans therefore have no hotel.
+     - Food classification always wins over hotel classification.
+  ========================================================= */
+
+  const buildDayActivities = (
+    day,
+    dayIndex,
+    plan
+  ) => {
+    const rawActivities =
+      Array.isArray(day?.activities)
+        ? day.activities
+        : [];
+
+    const itinerary =
+      Array.isArray(plan?.itinerary)
+        ? plan.itinerary
+        : [];
+
+    const isFinalDay =
+      dayIndex === itinerary.length - 1;
+
+    const hotels = rawActivities.filter(
+      (activity) => isHotel(activity)
+    );
+
+    const nonHotelActivities =
+      rawActivities.filter(
+        (activity) => !isHotel(activity)
+      );
+
+    const mealSeen = {
+      breakfast: false,
+      lunch: false,
+      dinner: false,
+    };
+
+    const cleanedActivities = [];
+
+    nonHotelActivities.forEach(
+      (activity) => {
+        const mealType =
+          getMealType(activity);
+
+        if (
+          mealType === "breakfast" ||
+          mealType === "lunch" ||
+          mealType === "dinner"
+        ) {
+          if (mealSeen[mealType]) {
+            return;
+          }
+
+          mealSeen[mealType] = true;
+        }
+
+        cleanedActivities.push(activity);
+      }
+    );
+
+    [
+      "breakfast",
+      "lunch",
+      "dinner",
+    ].forEach((mealType) => {
+      if (!mealSeen[mealType]) {
+        cleanedActivities.push(
+          createMeal(mealType)
+        );
+      }
+    });
+
+    const orderedWithoutHotels =
+      getOrderedActivities(
+        cleanedActivities
+      );
+
+    // The final day never gets a hotel.
+    if (isFinalDay) {
+      return orderedWithoutHotels;
+    }
+
+    // Keep one real hotel when available. If the source data has no hotel,
+    // create the required default night-stay card.
+    const selectedHotel =
+      hotels.find(
+        (item) =>
+          Number(item?.amount || 0) > 0
+      ) ||
+      hotels[0] ||
+      {
+        name: getDefaultHotelName(plan),
+        time: "09:15 PM",
+        amount: 1200,
+        type: "hotel",
+        duration: "Overnight",
+      };
+
+    const hotelActivity = {
+      ...selectedHotel,
+      type: "hotel",
+      time:
+        selectedHotel.time ||
+        "09:15 PM",
+      amount:
+        Number(selectedHotel.amount || 0) > 0
+          ? Number(selectedHotel.amount)
+          : 1200,
+      duration:
+        selectedHotel.duration ||
+        "Overnight",
+    };
+
+    const dinnerIndex =
+      orderedWithoutHotels.findIndex(
+        (activity) => isDinner(activity)
+      );
+
+    // Dinner is guaranteed above, but keep this fallback defensive.
+    if (dinnerIndex === -1) {
+      return [
+        ...orderedWithoutHotels,
+        hotelActivity,
+      ];
+    }
+
+    // Do NOT sort after this insertion. The hotel must remain directly
+    // after dinner even when another activity has a later clock time.
+    return [
+      ...orderedWithoutHotels.slice(
+        0,
+        dinnerIndex + 1
+      ),
+      hotelActivity,
+      ...orderedWithoutHotels.slice(
+        dinnerIndex + 1
+      ),
+    ];
+  };
+
+  /* =========================================================
      CALCULATE HOTEL CHARGES
 
-     IMPORTANT:
-     FINAL DAY HOTEL IS NOT COUNTED.
+     Uses the same generated itinerary shown in the popup.
+     Final-day hotel is never counted.
   ========================================================= */
 
   const getHotelCharges = (plan) => {
-    if (!plan) {
+    if (
+      !plan ||
+      !Array.isArray(plan.itinerary)
+    ) {
       return 0;
     }
 
     let total = 0;
 
-    if (
-      Array.isArray(plan.itinerary)
-    ) {
-      plan.itinerary.forEach(
-        (day, dayIndex) => {
-          const isFinalDay =
-            dayIndex ===
-            plan.itinerary.length - 1;
+    plan.itinerary.forEach(
+      (day, dayIndex) => {
+        // No hotel on the final day.
+        if (
+          dayIndex ===
+          plan.itinerary.length - 1
+        ) {
+          return;
+        }
 
-          if (isFinalDay) {
-            return;
-          }
+        const activities =
+          buildDayActivities(
+            day,
+            dayIndex,
+            plan
+          );
 
-          const activities =
-            Array.isArray(
-              day?.activities
-            )
-              ? day.activities
-              : [];
+        const hotelActivity =
+          activities.find((activity) =>
+            isHotel(activity)
+          );
 
-          activities.forEach(
-            (activity) => {
-              if (
-                isHotel(activity)
-              ) {
-                total += Number(
-                  activity.amount || 0
-                );
-              }
-            }
+        if (hotelActivity) {
+          total += Number(
+            hotelActivity.amount || 0
           );
         }
-      );
-    }
+      }
+    );
 
     return total;
   };
 
   /* =========================================================
      CALCULATE PLACE / ACTIVITY CHARGES
+
+     FOOD IS NOT INCLUDED.
+     HOTEL IS NOT INCLUDED.
   ========================================================= */
 
   const getPlaceCharges = (plan) => {
@@ -583,6 +846,52 @@ export default function TravelPlansPage() {
     }
 
     return total;
+  };
+
+  /* =========================================================
+     CALCULATE BASE TRIP AMOUNT
+  ========================================================= */
+
+  const getBaseAmount = (plan) => {
+    if (!plan) {
+      return 0;
+    }
+
+    return Number(
+      plan.baseAmount || 0
+    );
+  };
+
+  /* =========================================================
+     CALCULATE TOTAL AMOUNT
+
+     TOTAL =
+     PLACE / ACTIVITY
+     +
+     HOTEL
+     +
+     BASE TRIP AMOUNT
+  ========================================================= */
+
+  const getTotalAmount = (plan) => {
+    if (!plan) {
+      return 0;
+    }
+
+    const placeCharges =
+      getPlaceCharges(plan);
+
+    const hotelCharges =
+      getHotelCharges(plan);
+
+    const baseAmount =
+      getBaseAmount(plan);
+
+    return (
+      placeCharges +
+      hotelCharges +
+      baseAmount
+    );
   };
 
   /* =========================================================
@@ -657,6 +966,10 @@ export default function TravelPlansPage() {
     <>
       <style>
         {`
+          /* =====================================================
+             PLAN LIST
+          ===================================================== */
+
           .travel-plan-page-scope .plans-list {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -796,13 +1109,19 @@ export default function TravelPlansPage() {
             border: none;
             border-radius: 50%;
             cursor: pointer;
-            transition: background 0.2s ease, transform 0.2s ease;
+            transition:
+              background 0.2s ease,
+              transform 0.2s ease;
           }
 
           .travel-plan-page-scope .plan-expand-button:hover {
             background: #99f6e4;
             transform: translateY(2px);
           }
+
+          /* =====================================================
+             MODAL
+          ===================================================== */
 
           .travel-plan-modal-overlay {
             position: fixed;
@@ -817,12 +1136,14 @@ export default function TravelPlansPage() {
           }
 
           .travel-plan-modal {
-            width: min(950px, 100%);
+            width: min(1200px, 100%);
             max-height: calc(100vh - 40px);
             overflow-y: auto;
             background: #ffffff;
             border-radius: 12px;
-            box-shadow: 0 25px 70px rgba(15, 23, 42, 0.30);
+            box-shadow:
+              0 25px 70px
+              rgba(15, 23, 42, 0.30);
           }
 
           .travel-plan-modal-header {
@@ -877,9 +1198,14 @@ export default function TravelPlansPage() {
             padding: 22px;
           }
 
+          /* =====================================================
+             SUMMARY
+          ===================================================== */
+
           .travel-plan-modal-summary {
             display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
+            grid-template-columns:
+              repeat(3, minmax(0, 1fr));
             gap: 12px;
             margin-bottom: 22px;
           }
@@ -914,10 +1240,19 @@ export default function TravelPlansPage() {
             font-size: 12px;
           }
 
+          /* =====================================================
+             DAY PLANNING
+          ===================================================== */
+
           .travel-plan-day-planning {
             margin-bottom: 15px;
             padding: 16px;
-            background: linear-gradient(135deg, #f8fafc, #ecfeff);
+            background:
+              linear-gradient(
+                135deg,
+                #f8fafc,
+                #ecfeff
+              );
             border: 1px solid #cbd5e1;
             border-left: 4px solid var(--primary);
             border-radius: 10px;
@@ -932,7 +1267,8 @@ export default function TravelPlansPage() {
 
           .travel-plan-day-stats {
             display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
+            grid-template-columns:
+              repeat(3, minmax(0, 1fr));
             gap: 8px;
             margin-bottom: 11px;
           }
@@ -956,13 +1292,19 @@ export default function TravelPlansPage() {
             font-size: 13px;
           }
 
+          /* =====================================================
+             DAY BOX
+          ===================================================== */
+
           .travel-plan-popup-day {
             margin-bottom: 20px;
             padding: 18px;
             background: #ffffff;
             border: 1px solid #cbd5e1;
             border-radius: 12px;
-            box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+            box-shadow:
+              0 4px 14px
+              rgba(15, 23, 42, 0.06);
           }
 
           .travel-plan-popup-day-header {
@@ -992,6 +1334,10 @@ export default function TravelPlansPage() {
             font-size: 19px;
           }
 
+          /* =====================================================
+             ACTIVITY
+          ===================================================== */
+
           .travel-plan-activity-list {
             display: flex;
             flex-direction: column;
@@ -1000,19 +1346,26 @@ export default function TravelPlansPage() {
 
           .travel-plan-activity {
             display: grid;
-            grid-template-columns: 140px minmax(0, 1fr) 120px;
+            grid-template-columns:
+              140px
+              minmax(0, 1fr)
+              120px;
             align-items: center;
             gap: 14px;
             padding: 14px 15px;
             background: #f8fafc;
             border: 1px solid #cbd5e1;
             border-radius: 10px;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            transition:
+              transform 0.2s ease,
+              box-shadow 0.2s ease;
           }
 
           .travel-plan-activity:hover {
             transform: translateY(-1px);
-            box-shadow: 0 5px 16px rgba(15, 23, 42, 0.08);
+            box-shadow:
+              0 5px 16px
+              rgba(15, 23, 42, 0.08);
           }
 
           .travel-plan-activity-time {
@@ -1093,15 +1446,24 @@ export default function TravelPlansPage() {
             font-size: 13px;
           }
 
-          /* FOOD */
+          /* =====================================================
+             FOOD
+          ===================================================== */
 
           .travel-plan-food-box {
             display: grid;
-            grid-template-columns: 140px minmax(0, 1fr);
+            grid-template-columns:
+              140px
+              minmax(0, 1fr);
             align-items: center;
             gap: 14px;
             padding: 15px;
-            background: linear-gradient(135deg, #fff7ed, #fffbeb);
+            background:
+              linear-gradient(
+                135deg,
+                #fff7ed,
+                #fffbeb
+              );
             border: 1px solid #fed7aa;
             border-left: 5px solid #f59e0b;
             border-radius: 10px;
@@ -1126,25 +1488,25 @@ export default function TravelPlansPage() {
             gap: 10px;
           }
 
-          .travel-plan-food-content svg {
+          .travel-plan-food-content > svg {
             flex-shrink: 0;
-            margin-top: 2px;
-            color: #d97706;
+            color: #f59e0b;
           }
 
           .travel-plan-food-content div {
             display: flex;
             flex-direction: column;
             gap: 3px;
+            min-width: 0;
           }
 
           .travel-plan-food-content strong {
-            color: #78350f;
+            color: #92400e;
             font-size: 15px;
           }
 
           .travel-plan-food-content span {
-            color: #92400e;
+            color: #a16207;
             font-size: 12px;
           }
 
@@ -1160,51 +1522,107 @@ export default function TravelPlansPage() {
             width: fit-content;
             margin-top: 5px;
             padding: 5px 9px;
-            color: #92400e;
+            color: #b45309 !important;
             background: #fef3c7;
             border-radius: 999px;
-            font-size: 10px;
+            font-size: 10px !important;
             font-weight: 700;
           }
 
-          /* HOTEL */
+          /* =====================================================
+             MEAL OVERRIDE - ALWAYS ORANGE
+          ===================================================== */
 
-          .travel-plan-hotel-box {
+          .travel-plan-page-scope .travel-plan-food-box {
+            background: linear-gradient(135deg, #fff7ed, #fffbeb) !important;
+            border: 1px solid #fed7aa !important;
+            border-left: 5px solid #f59e0b !important;
+            color: #92400e !important;
+          }
+
+          .travel-plan-page-scope .travel-plan-food-box * {
+            border-color: #fed7aa;
+          }
+
+          .travel-plan-page-scope .travel-plan-food-time,
+          .travel-plan-page-scope .travel-plan-food-time strong,
+          .travel-plan-page-scope .travel-plan-food-time span {
+            color: #b45309 !important;
+          }
+
+          .travel-plan-page-scope .travel-plan-food-time svg,
+          .travel-plan-page-scope .travel-plan-food-content > svg {
+            color: #f59e0b !important;
+          }
+
+          .travel-plan-page-scope .travel-plan-food-content strong {
+            color: #92400e !important;
+          }
+
+          .travel-plan-page-scope .travel-plan-food-content span {
+            color: #a16207 !important;
+          }
+
+          .travel-plan-page-scope .travel-plan-food-content p {
+            color: #78350f !important;
+          }
+
+          .travel-plan-page-scope .travel-plan-food-label {
+            color: #b45309 !important;
+            background: #fef3c7 !important;
+          }
+
+          /* =====================================================
+             HOTEL
+          ===================================================== */
+
+          /* HARD HOTEL COLOR OVERRIDE: hotel cards are always blue. */
+          .travel-plan-page-scope .travel-plan-activity-list [data-activity-type="hotel"].travel-plan-hotel-box {
+            background: #dbeafe !important;
+            background-color: #dbeafe !important;
+            border: 1px solid #60a5fa !important;
+            border-left: 6px solid #1d4ed8 !important;
+          }
+
+          .travel-plan-page-scope .travel-plan-hotel-box {
             display: grid;
-            grid-template-columns: 140px minmax(0, 1fr) 120px;
+            grid-template-columns:
+              140px
+              minmax(0, 1fr)
+              120px;
             align-items: center;
             gap: 14px;
             padding: 15px;
-            background: linear-gradient(135deg, #eff6ff, #f8fafc);
-            border: 1px solid #bfdbfe;
-            border-left: 5px solid #2563eb;
+            background: #dbeafe !important;
+            border: 1px solid #60a5fa !important;
+            border-left: 6px solid #1d4ed8 !important;
+            box-shadow: 0 3px 10px rgba(37, 99, 235, 0.10) !important;
             border-radius: 10px;
           }
 
-          .travel-plan-hotel-time {
+          .travel-plan-page-scope .travel-plan-hotel-time {
             display: flex;
             flex-direction: column;
             gap: 4px;
-            color: #1d4ed8;
+            color: #1d4ed8 !important;
             font-size: 13px;
           }
 
-          .travel-plan-hotel-time span {
+          .travel-plan-page-scope .travel-plan-hotel-time span {
             color: #64748b;
             font-size: 12px;
           }
 
-          .travel-plan-hotel-content {
+          .travel-plan-page-scope .travel-plan-hotel-content {
             display: flex;
             align-items: flex-start;
             gap: 10px;
-            min-width: 0;
           }
 
-          .travel-plan-hotel-content > svg {
+          .travel-plan-page-scope .travel-plan-hotel-content > svg {
             flex-shrink: 0;
             margin-top: 2px;
-            color: #2563eb;
+            color: #1d4ed8 !important;
           }
 
           .travel-plan-hotel-content div {
@@ -1214,20 +1632,20 @@ export default function TravelPlansPage() {
             min-width: 0;
           }
 
-          .travel-plan-hotel-content strong {
-            color: #1e3a8a;
+          .travel-plan-page-scope .travel-plan-hotel-content strong {
+            color: #1e3a8a !important;
             font-size: 15px;
             line-height: 1.35;
           }
 
-          .travel-plan-hotel-content span {
-            color: #64748b;
+          .travel-plan-page-scope .travel-plan-hotel-content span {
+            color: #475569 !important;
             font-size: 12px;
           }
 
-          .travel-plan-hotel-content p {
+          .travel-plan-page-scope .travel-plan-hotel-content p {
             margin: 5px 0 0;
-            color: #334155;
+            color: #334155 !important;
             font-size: 13px;
             line-height: 1.5;
           }
@@ -1238,13 +1656,14 @@ export default function TravelPlansPage() {
             margin-top: 5px;
             padding: 5px 9px;
             color: #1d4ed8;
-            background: #dbeafe;
+            background: #bfdbfe !important;
+            border: 1px solid #93c5fd !important;
             border-radius: 999px;
             font-size: 10px;
             font-weight: 700;
           }
 
-          .travel-plan-hotel-amount {
+          .travel-plan-page-scope .travel-plan-hotel-amount {
             display: flex;
             flex-direction: column;
             align-items: flex-end;
@@ -1252,7 +1671,8 @@ export default function TravelPlansPage() {
             color: #1d4ed8;
           }
 
-          .travel-plan-hotel-amount strong {
+          .travel-plan-page-scope .travel-plan-hotel-amount strong {
+            color: #1d4ed8 !important;
             font-size: 16px;
           }
 
@@ -1261,46 +1681,114 @@ export default function TravelPlansPage() {
             font-size: 10px;
           }
 
-          /* TOTALS */
+          /* =====================================================
+             FOUR TOTAL BOXES
+          ===================================================== */
 
           .travel-plan-modal-total {
             display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
+            grid-template-columns:
+              repeat(4, minmax(0, 1fr));
             gap: 12px;
             margin-top: 20px;
           }
 
           .travel-plan-total-box {
+            min-height: 84px;
             padding: 15px;
             background: #f8fafc;
             border: 1px solid var(--border);
-            border-radius: 9px;
+            border-radius: 10px;
           }
 
           .travel-plan-total-box small {
             display: block;
-            margin-bottom: 3px;
+            margin-bottom: 6px;
             color: var(--muted);
             font-size: 11px;
+            line-height: 1.4;
           }
 
           .travel-plan-total-box strong {
             color: var(--primary);
-            font-size: 20px;
+            font-size: 22px;
+          }
+
+          .travel-plan-place-total {
+            background:
+              linear-gradient(
+                135deg,
+                #f0fdf4,
+                #f8fafc
+              );
+            border-color: #bbf7d0;
+          }
+
+          .travel-plan-place-total strong {
+            color: #0f766e;
+          }
+
+          .travel-plan-hotel-total {
+            background:
+              linear-gradient(
+                135deg,
+                #eff6ff,
+                #f8fafc
+              );
+            border-color: #bfdbfe;
           }
 
           .travel-plan-hotel-total strong {
             color: #2563eb;
           }
 
-          /* BASE AMOUNT */
+          .travel-plan-base-total {
+            background:
+              linear-gradient(
+                135deg,
+                #faf5ff,
+                #f8fafc
+              );
+            border-color: #ddd6fe;
+          }
+
+          .travel-plan-base-total strong {
+            color: #6d28d9;
+          }
+
+          .travel-plan-grand-total {
+            background:
+              linear-gradient(
+                135deg,
+                #fff7ed,
+                #fffbeb
+              );
+            border-color: #fed7aa;
+          }
+
+          .travel-plan-grand-total strong {
+            color: #d97706;
+          }
+
+          /* =====================================================
+             BASE AMOUNT + TOTAL AMOUNT SECTION
+          ===================================================== */
+
+          .travel-plan-amount-details {
+            display: grid;
+            grid-template-columns:
+              minmax(0, 1.8fr)
+              minmax(300px, 0.9fr);
+            gap: 20px;
+            margin-top: 12px;
+          }
 
           .travel-plan-base-box {
-            margin-top: 12px;
-            padding: 17px;
+            height: 100%;
+            padding: 20px;
             background: #ffffff;
             border: 1px solid var(--border);
-            border-radius: 9px;
+            border-radius: 10px;
           }
 
           .travel-plan-base-header {
@@ -1308,14 +1796,14 @@ export default function TravelPlansPage() {
             align-items: center;
             justify-content: space-between;
             gap: 15px;
-            padding-bottom: 12px;
+            padding-bottom: 14px;
             border-bottom: 1px solid var(--border);
           }
 
           .travel-plan-base-header div {
             display: flex;
             flex-direction: column;
-            gap: 2px;
+            gap: 3px;
           }
 
           .travel-plan-base-header small {
@@ -1326,58 +1814,178 @@ export default function TravelPlansPage() {
 
           .travel-plan-base-header strong {
             color: var(--primary);
-            font-size: 23px;
+            font-size: 27px;
           }
 
           .travel-plan-base-header > span {
             color: var(--muted);
-            font-size: 12px;
+            font-size: 13px;
           }
 
           .travel-plan-base-content {
-            padding-top: 13px;
+            padding-top: 14px;
           }
 
           .travel-plan-base-content h4 {
-            margin-bottom: 8px;
+            margin: 0 0 10px;
             color: var(--text);
-            font-size: 13px;
+            font-size: 14px;
           }
 
           .travel-plan-base-content ul {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 9px;
             margin: 0;
             padding: 0;
             list-style: none;
           }
 
           .travel-plan-base-content li {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
             margin: 0;
-            padding: 6px 9px;
+            padding: 8px 11px;
             color: #475569;
             background: #f1f5f9;
-            border-radius: 6px;
+            border-radius: 7px;
             font-size: 11px;
           }
 
-          .travel-plan-base-content p {
-            margin-top: 9px;
-            color: var(--muted);
+          .travel-plan-base-content li::before {
+            content: "✓";
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 17px;
+            height: 17px;
+            color: #ffffff;
+            background: #0f766e;
+            border-radius: 50%;
             font-size: 10px;
+            font-weight: 800;
           }
 
-          /* FOOTER */
+          .travel-plan-base-content p {
+            margin: 11px 0 0;
+            color: var(--muted);
+            font-size: 11px;
+            line-height: 1.5;
+          }
+
+          /* =====================================================
+             ALL INCLUSIVE TOTAL BOX
+          ===================================================== */
+
+          .travel-plan-all-inclusive {
+            height: 100%;
+            padding: 20px;
+            background:
+              linear-gradient(
+                135deg,
+                #fffaf0,
+                #ffffff
+              );
+            border: 1px solid #fed7aa;
+            border-radius: 10px;
+          }
+
+          .travel-plan-all-inclusive-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #fed7aa;
+          }
+
+          .travel-plan-all-inclusive-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            flex-shrink: 0;
+            color: #d97706;
+            background: #ffedd5;
+            border-radius: 50%;
+          }
+
+          .travel-plan-all-inclusive-header div {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+          }
+
+          .travel-plan-all-inclusive-header small {
+            color: #64748b;
+            font-size: 11px;
+          }
+
+          .travel-plan-all-inclusive-header strong {
+            color: #d97706;
+            font-size: 27px;
+          }
+
+          .travel-plan-all-inclusive-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+          }
+
+          .travel-plan-all-inclusive-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            color: #64748b;
+            font-size: 13px;
+          }
+
+          .travel-plan-all-inclusive-row strong {
+            color: #475569;
+            font-size: 13px;
+          }
+
+          .travel-plan-all-inclusive-final {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            margin-top: 15px;
+            padding: 13px 15px;
+            color: #d97706;
+            background: #fff1dc;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 800;
+          }
+
+          .travel-plan-all-inclusive-final strong {
+            color: #d97706;
+            font-size: 20px;
+          }
+
+          /* =====================================================
+             FOOTER
+          ===================================================== */
 
           .travel-plan-modal-footer {
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 20px;
-            margin-top: 18px;
-            padding-top: 17px;
-            border-top: 1px solid var(--border);
+            margin-top: 20px;
+            padding: 18px;
+            background:
+              linear-gradient(
+                135deg,
+                #ecfdf5,
+                #f0fdfa
+              );
+            border: 1px solid #a7f3d0;
+            border-radius: 10px;
           }
 
           .travel-plan-modal-price {
@@ -1391,16 +1999,18 @@ export default function TravelPlansPage() {
           }
 
           .travel-plan-modal-price strong {
-            color: var(--text);
-            font-size: 24px;
+            color: #047857;
+            font-size: 29px;
           }
 
           .travel-plan-modal-price span {
             color: var(--muted);
-            font-size: 10px;
+            font-size: 11px;
           }
 
-          /* SUCCESS */
+          /* =====================================================
+             SUCCESS
+          ===================================================== */
 
           .travel-plan-success-overlay {
             position: fixed;
@@ -1410,56 +2020,65 @@ export default function TravelPlansPage() {
             align-items: center;
             justify-content: center;
             padding: 20px;
-            background: rgba(15, 23, 42, 0.55);
+            background: rgba(15, 23, 42, 0.65);
           }
 
           .travel-plan-success-popup {
-            width: min(430px, 100%);
+            width: min(450px, 100%);
             padding: 30px;
-            background: #ffffff;
-            border-radius: 12px;
             text-align: center;
-            box-shadow: 0 25px 70px rgba(15, 23, 42, 0.30);
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow:
+              0 25px 70px
+              rgba(15, 23, 42, 0.3);
           }
 
           .travel-plan-success-icon {
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 60px;
-            height: 60px;
+            width: 65px;
+            height: 65px;
             margin: 0 auto 15px;
-            color: var(--primary);
-            background: var(--primary-light);
+            color: #047857;
+            background: #d1fae5;
             border-radius: 50%;
           }
 
           .travel-plan-success-popup h2 {
-            margin-bottom: 7px;
+            margin: 0 0 10px;
             color: var(--text);
-            font-size: 23px;
+            font-size: 22px;
           }
 
           .travel-plan-success-popup p {
-            margin-bottom: 20px;
+            margin: 0 0 20px;
             color: var(--muted);
-            font-size: 13px;
+            line-height: 1.6;
           }
 
-          @media (max-width: 760px) {
+          /* =====================================================
+             RESPONSIVE
+          ===================================================== */
+
+          @media (max-width: 1000px) {
+            .travel-plan-modal-total {
+              grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+            }
+
+            .travel-plan-amount-details {
+              grid-template-columns: 1fr;
+            }
+          }
+
+          @media (max-width: 800px) {
             .travel-plan-page-scope .plans-list {
               grid-template-columns: 1fr;
             }
 
-            .travel-plan-day-stats {
-              grid-template-columns: 1fr;
-            }
-
             .travel-plan-modal-summary {
-              grid-template-columns: 1fr;
-            }
-
-            .travel-plan-modal-total {
               grid-template-columns: 1fr;
             }
 
@@ -1468,22 +2087,43 @@ export default function TravelPlansPage() {
               gap: 8px;
             }
 
-            .travel-plan-food-box {
-              grid-template-columns: 1fr;
-              gap: 8px;
+            .travel-plan-activity-amount {
+              justify-content: flex-start;
             }
 
-            .travel-plan-hotel-box {
+            .travel-plan-food-box {
               grid-template-columns: 1fr;
-              gap: 8px;
+            }
+
+            .travel-plan-page-scope .travel-plan-hotel-box {
+              grid-template-columns: 1fr;
             }
 
             .travel-plan-hotel-amount {
               align-items: flex-start;
             }
 
-            .travel-plan-activity-amount {
-              justify-content: flex-start;
+            .travel-plan-day-stats {
+              grid-template-columns: 1fr;
+            }
+          }
+
+          @media (max-width: 600px) {
+            .travel-plan-modal-overlay {
+              padding: 8px;
+            }
+
+            .travel-plan-modal-content {
+              padding: 14px;
+            }
+
+            .travel-plan-modal-total {
+              grid-template-columns: 1fr;
+            }
+
+            .travel-plan-base-header {
+              align-items: flex-start;
+              flex-direction: column;
             }
 
             .travel-plan-modal-footer {
@@ -1491,34 +2131,8 @@ export default function TravelPlansPage() {
               flex-direction: column;
             }
 
-            .travel-plan-modal-image {
-              width: min(100%, 320px);
-            }
-          }
-
-          @media (max-width: 480px) {
-            .travel-plan-page-scope .travel-plan-main {
-              padding: 14px;
-            }
-
-            .travel-plan-page-scope .travel-plan-image {
-              height: 205px;
-            }
-
-            .travel-plan-modal-header {
-              padding: 15px;
-            }
-
-            .travel-plan-modal-header h2 {
-              font-size: 19px;
-            }
-
-            .travel-plan-modal-content {
-              padding: 15px;
-            }
-
-            .travel-plan-popup-day {
-              padding: 12px;
+            .travel-plan-modal-footer button {
+              width: 100%;
             }
 
             .travel-plan-modal-image {
@@ -1534,7 +2148,9 @@ export default function TravelPlansPage() {
 
       <main className="travel-plan-page-scope">
 
-        {/* HEADER */}
+        {/* =====================================================
+            HEADER
+        ===================================================== */}
 
         <section className="page-header travelplans-page-header">
           <div className="page-header-content">
@@ -1562,13 +2178,14 @@ export default function TravelPlansPage() {
           </div>
         </section>
 
-        {/* MAIN */}
+        {/* =====================================================
+            MAIN
+        ===================================================== */}
 
         <section className="section">
 
           {selectedDestination && (
             <div className="plan-back-link">
-
               <Link
                 to="/destinations"
                 className="card-button"
@@ -1576,7 +2193,6 @@ export default function TravelPlansPage() {
                 <ArrowLeft size={16} />
                 Back to Destinations
               </Link>
-
             </div>
           )}
 
@@ -1648,7 +2264,9 @@ export default function TravelPlansPage() {
 
           </div>
 
-          {/* PLAN CARDS */}
+          {/* =================================================
+              PLAN CARDS
+          ================================================= */}
 
           <div className="plans-list">
 
@@ -1720,40 +2338,30 @@ export default function TravelPlansPage() {
                           </span>
 
                           <strong>
-
-                            ₹
-                            {Number(
-                              plan.price || 0
-                            ).toLocaleString(
-                              "en-IN"
+                            {formatAmount(
+                              plan.price
                             )}
-
                           </strong>
 
                         </div>
 
                         <div className="plan-highlights">
 
-                          {highlights
-                            .slice(0, 4)
-                            .map(
-                              (
-                                item,
-                                index
-                              ) => (
-                                <span
-                                  key={`${item}-${index}`}
-                                >
-
-                                  <Check
-                                    size={14}
-                                  />
-
-                                  {item}
-
-                                </span>
-                              )
-                            )}
+                          {highlights.map(
+                            (
+                              highlight,
+                              index
+                            ) => (
+                              <span
+                                key={`${highlight}-${index}`}
+                              >
+                                <Check
+                                  size={13}
+                                />
+                                {highlight}
+                              </span>
+                            )
+                          )}
 
                         </div>
 
@@ -1767,10 +2375,10 @@ export default function TravelPlansPage() {
                                 plan
                               )
                             }
-                            aria-label="Open full travel plan"
+                            aria-label={`View ${plan.title}`}
                           >
                             <ChevronDown
-                              size={22}
+                              size={20}
                             />
                           </button>
 
@@ -1787,34 +2395,38 @@ export default function TravelPlansPage() {
 
           </div>
 
-          {/* EMPTY */}
+          {/* =================================================
+              NO RESULTS
+          ================================================= */}
 
           {filteredPlans.length === 0 && (
-            <div className="empty-state">
-
-              <Search size={40} />
-
+            <div
+              className="travel-plan-popup-day"
+              style={{
+                marginTop: "20px",
+                textAlign: "center",
+              }}
+            >
               <h3>
                 No travel plans found
               </h3>
 
               <p>
-                Try another search,
-                category or destination.
+                Try another search or
+                category.
               </p>
 
               <button
                 type="button"
+                className="primary-button"
                 onClick={clearFilters}
               >
-                Clear filters
+                Clear Filters
               </button>
-
             </div>
           )}
 
         </section>
-
       </main>
 
       {/* =====================================================
@@ -1824,7 +2436,7 @@ export default function TravelPlansPage() {
       {selectedPlan && (
         <div
           className="travel-plan-modal-overlay"
-          onMouseDown={(event) => {
+          onClick={(event) => {
             if (
               event.target ===
               event.currentTarget
@@ -1836,7 +2448,9 @@ export default function TravelPlansPage() {
 
           <div className="travel-plan-modal">
 
-            {/* HEADER */}
+            {/* =================================================
+                MODAL HEADER
+            ================================================= */}
 
             <div className="travel-plan-modal-header">
 
@@ -1857,7 +2471,9 @@ export default function TravelPlansPage() {
 
             </div>
 
-            {/* IMAGE */}
+            {/* =================================================
+                IMAGE
+            ================================================= */}
 
             <div className="travel-plan-modal-image">
 
@@ -1870,7 +2486,9 @@ export default function TravelPlansPage() {
 
             <div className="travel-plan-modal-content">
 
-              {/* SUMMARY */}
+              {/* =================================================
+                  SUMMARY
+              ================================================= */}
 
               <div className="travel-plan-modal-summary">
 
@@ -1951,40 +2569,19 @@ export default function TravelPlansPage() {
                     const dayPlanning =
                       getDayPlanning(day);
 
-                    /*
-                     * IMPORTANT:
-                     * Keep ALL activities together
-                     * and sort them by their time.
-                     */
-                    const orderedActivities =
-                      getOrderedActivities(
-                        Array.isArray(
-                          day.activities
-                        )
-                          ? day.activities
-                          : []
-                      );
-
-                    /*
-                     * Final day = no hotel display.
-                     */
                     const isFinalDay =
                       dayIndex ===
                       selectedPlan.itinerary.length -
                         1;
 
+                    // Always render the normalized itinerary so every day
+                    // has breakfast/lunch/dinner and every non-final day
+                    // has exactly one hotel immediately after dinner.
                     const visibleActivities =
-                      orderedActivities.filter(
-                        (activity) => {
-                          if (
-                            isFinalDay &&
-                            isHotel(activity)
-                          ) {
-                            return false;
-                          }
-
-                          return true;
-                        }
+                      buildDayActivities(
+                        day,
+                        dayIndex,
+                        selectedPlan
                       );
 
                     return (
@@ -1993,7 +2590,9 @@ export default function TravelPlansPage() {
                         key={`${day.day}-${dayIndex}`}
                       >
 
-                        {/* DAY HEADER */}
+                        {/* =================================================
+                            DAY HEADER
+                        ================================================= */}
 
                         <div className="travel-plan-popup-day-header">
 
@@ -2025,7 +2624,9 @@ export default function TravelPlansPage() {
 
                         </div>
 
-                        {/* DAY PLANNING */}
+                        {/* =================================================
+                            DAY PLANNING
+                        ================================================= */}
 
                         <div className="travel-plan-day-planning">
 
@@ -2040,14 +2641,12 @@ export default function TravelPlansPage() {
                             <div>
 
                               <small>
-                                Main stops
+                                Start
                               </small>
 
                               <strong>
                                 {
-                                  dayPlanning
-                                    .mainStops
-                                    ?.length || 0
+                                  dayPlanning.startTime
                                 }
                               </strong>
 
@@ -2056,15 +2655,13 @@ export default function TravelPlansPage() {
                             <div>
 
                               <small>
-                                Food
+                                Main Places
                               </small>
 
                               <strong>
                                 {
-                                  orderedActivities.filter(
-                                    (item) =>
-                                      isFood(item)
-                                  ).length
+                                  dayPlanning.mainStops?.length ||
+                                  0
                                 }
                               </strong>
 
@@ -2073,15 +2670,14 @@ export default function TravelPlansPage() {
                             <div>
 
                               <small>
-                                Hotel
+                                Night Stay
                               </small>
 
                               <strong>
                                 {
-                                  visibleActivities.filter(
-                                    (item) =>
-                                      isHotel(item)
-                                  ).length
+                                  isFinalDay
+                                    ? "No hotel"
+                                    : "Included separately"
                                 }
                               </strong>
 
@@ -2092,27 +2688,139 @@ export default function TravelPlansPage() {
                         </div>
 
                         {/* =================================================
-                            CHRONOLOGICAL ACTIVITY LIST
+                            ACTIVITIES
                         ================================================= */}
 
                         <div className="travel-plan-activity-list">
 
                           {visibleActivities.map(
                             (
-                              item,
+                              activity,
                               index
                             ) => {
 
-                              const activity =
-                                typeof item ===
+                              if (
+                                typeof activity ===
                                 "string"
-                                  ? {
-                                      time: "Time not set",
-                                      name: item,
-                                      amount: 0,
-                                      type: "place",
-                                    }
-                                  : item || {};
+                              ) {
+                                return (
+                                  <div
+                                    key={`${activity}-${index}`}
+                                    className="travel-plan-activity"
+                                  >
+
+                                    <div className="travel-plan-activity-time">
+
+                                      <Clock
+                                        size={15}
+                                      />
+
+                                      <strong>
+                                        Time not set
+                                      </strong>
+
+                                    </div>
+
+                                    <div className="travel-plan-activity-place">
+
+                                      <MapPin
+                                        size={18}
+                                      />
+
+                                      <div>
+
+                                        <strong>
+                                          {activity}
+                                        </strong>
+
+                                        <span>
+                                          Place / activity
+                                        </span>
+
+                                      </div>
+
+                                    </div>
+
+                                    <div className="travel-plan-activity-amount">
+
+                                      <Ticket
+                                        size={15}
+                                      />
+
+                                      <strong>
+                                        Free
+                                      </strong>
+
+                                    </div>
+
+                                  </div>
+                                );
+                              }
+
+                              /* =========================================
+                                 FOOD / MEAL
+
+                                 IMPORTANT: Food is rendered BEFORE hotel.
+                                 This guarantees that names such as
+                                 "Dinner - Marari Beach Resort Restaurant"
+                                 can never become blue hotel cards.
+                              ========================================= */
+
+                              if (isFood(activity)) {
+
+                                let foodLabel = "Meal";
+
+                                if (isBreakfast(activity)) {
+                                  foodLabel = "Breakfast";
+                                } else if (isLunch(activity)) {
+                                  foodLabel = "Lunch";
+                                } else if (isDinner(activity)) {
+                                  foodLabel = "Dinner";
+                                }
+
+                                return (
+                                  <div
+                                    key={`food-${activity.name}-${index}`}
+                                    className="travel-plan-food-box"
+                                  >
+
+                                    <div className="travel-plan-food-time">
+                                      <Clock size={15} />
+
+                                      <strong>
+                                        {activity.time || "Time not set"}
+                                      </strong>
+
+                                      <span>
+                                        {activity.duration || "45-60 min"}
+                                      </span>
+                                    </div>
+
+                                    <div className="travel-plan-food-content">
+                                      <Utensils size={20} />
+
+                                      <div>
+                                        <strong>
+                                          {activity.name || foodLabel}
+                                        </strong>
+
+                                        <span>{foodLabel}</span>
+
+                                        <p>
+                                          {
+                                            activity.description ||
+                                            "Recommended food stop for the day. Take a short break and enjoy the local meal."
+                                          }
+                                        </p>
+
+                                        <span className="travel-plan-food-label">
+                                          Food expense not included
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                );
+                              }
 
                               /* =========================================
                                  HOTEL
@@ -2124,13 +2832,36 @@ export default function TravelPlansPage() {
                                 )
                               ) {
 
+                                // Final day is never allowed to show a hotel,
+                                // even if an unexpected source item slips in.
+                                if (isFinalDay) {
+                                  return null;
+                                }
+
                                 return (
                                   <div
                                     key={`hotel-${activity.name}-${index}`}
                                     className="travel-plan-hotel-box"
+                                    data-activity-type="hotel"
+                                    style={{
+                                      display: "grid",
+                                      gridTemplateColumns: "140px minmax(0, 1fr) 120px",
+                                      alignItems: "center",
+                                      gap: "14px",
+                                      padding: "15px",
+                                      backgroundColor: "#dbeafe",
+                                      background: "#dbeafe",
+                                      border: "1px solid #60a5fa",
+                                      borderLeft: "6px solid #1d4ed8",
+                                      borderRadius: "10px",
+                                      boxShadow: "0 3px 10px rgba(37, 99, 235, 0.12)"
+                                    }}
                                   >
 
-                                    <div className="travel-plan-hotel-time">
+                                    <div
+                                      className="travel-plan-hotel-time"
+                                      style={{ color: "#1d4ed8" }}
+                                    >
 
                                       <Clock
                                         size={15}
@@ -2139,20 +2870,23 @@ export default function TravelPlansPage() {
                                       <strong>
                                         {
                                           activity.time ||
-                                          "09:15 PM"
+                                          "9:15 PM"
                                         }
                                       </strong>
 
                                       <span>
                                         {
                                           activity.duration ||
-                                          "Overnight"
+                                          "Overnight stay"
                                         }
                                       </span>
 
                                     </div>
 
-                                    <div className="travel-plan-hotel-content">
+                                    <div
+                                      className="travel-plan-hotel-content"
+                                      style={{ color: "#1e3a8a" }}
+                                    >
 
                                       <BedDouble
                                         size={20}
@@ -2163,35 +2897,33 @@ export default function TravelPlansPage() {
                                         <strong>
                                           {
                                             activity.name ||
-                                            "Recommended Hotel"
+                                            "Hotel / Night Stay"
                                           }
                                         </strong>
 
                                         <span>
-                                          {
-                                            activity.location ||
-                                            selectedPlan.destination
-                                          }
+                                          Hotel stay
                                         </span>
 
                                         <p>
                                           {
                                             activity.description ||
-                                            "Check in after dinner and relax overnight at the recommended hotel."
+                                            "Check in, relax and stay overnight before continuing the next day's journey."
                                           }
                                         </p>
 
                                         <span className="travel-plan-hotel-label">
-                                          Night stay only
+                                          Night stay
                                         </span>
 
                                       </div>
 
                                     </div>
 
-                                    {/* HOTEL AMOUNT */}
-
-                                    <div className="travel-plan-hotel-amount">
+                                    <div
+                                      className="travel-plan-hotel-amount"
+                                      style={{ color: "#1d4ed8" }}
+                                    >
 
                                       <strong>
                                         {formatAmount(
@@ -2202,110 +2934,6 @@ export default function TravelPlansPage() {
                                       <span>
                                         / night
                                       </span>
-
-                                    </div>
-
-                                  </div>
-                                );
-                              }
-
-                              /* =========================================
-                                 FOOD
-                              ========================================= */
-
-                              if (
-                                isFood(
-                                  activity
-                                )
-                              ) {
-
-                                let foodLabel =
-                                  "Food";
-
-                                if (
-                                  isBreakfast(
-                                    activity
-                                  )
-                                ) {
-                                  foodLabel =
-                                    "Breakfast";
-                                } else if (
-                                  isLunch(
-                                    activity
-                                  )
-                                ) {
-                                  foodLabel =
-                                    "Lunch";
-                                } else if (
-                                  isDinner(
-                                    activity
-                                  )
-                                ) {
-                                  foodLabel =
-                                    "Dinner";
-                                }
-
-                                return (
-                                  <div
-                                    key={`food-${activity.name}-${index}`}
-                                    className="travel-plan-food-box"
-                                  >
-
-                                    <div className="travel-plan-food-time">
-
-                                      <Clock
-                                        size={15}
-                                      />
-
-                                      <strong>
-                                        {
-                                          activity.time ||
-                                          "Time not set"
-                                        }
-                                      </strong>
-
-                                      <span>
-                                        {
-                                          activity.duration ||
-                                          "1 hr"
-                                        }
-                                      </span>
-
-                                    </div>
-
-                                    <div className="travel-plan-food-content">
-
-                                      <Utensils
-                                        size={20}
-                                      />
-
-                                      <div>
-
-                                        <strong>
-                                          {
-                                            activity.name ||
-                                            foodLabel
-                                          }
-                                        </strong>
-
-                                        <span>
-                                          {
-                                            foodLabel
-                                          }
-                                        </span>
-
-                                        <p>
-                                          {
-                                            activity.description ||
-                                            "Enjoy a relaxed meal at a recommended local restaurant."
-                                          }
-                                        </p>
-
-                                        <span className="travel-plan-food-label">
-                                          Food expense not included
-                                        </span>
-
-                                      </div>
 
                                     </div>
 
@@ -2443,10 +3071,11 @@ export default function TravelPlansPage() {
                   </p>
 
                 </div>
+
               )}
 
               {/* =================================================
-                  CALCULATE CHARGES
+                  CALCULATE ALL CHARGES
               ================================================= */}
 
               {(() => {
@@ -2461,164 +3090,341 @@ export default function TravelPlansPage() {
                     selectedPlan
                   );
 
+                const baseAmount =
+                  getBaseAmount(
+                    selectedPlan
+                  );
+
+                /*
+                 * IMPORTANT:
+                 *
+                 * TOTAL AMOUNT =
+                 * PLACE / ACTIVITY
+                 * +
+                 * HOTEL
+                 * +
+                 * BASE TRIP AMOUNT
+                 */
+
+                const totalAmount =
+                  placeCharges +
+                  hotelCharges +
+                  baseAmount;
+
                 return (
-                  <div className="travel-plan-modal-total">
+                  <>
+                    {/* =================================================
+                        FOUR TOP TOTAL BOXES
+                    ================================================= */}
 
-                    <div className="travel-plan-total-box">
+                    <div className="travel-plan-modal-total">
 
-                      <small>
-                        Total Place / Activity Charges
-                      </small>
+                      {/* PLACE / ACTIVITY */}
 
-                      <strong>
-                        {formatAmount(
-                          placeCharges
-                        )}
-                      </strong>
+                      <div className="travel-plan-total-box travel-plan-place-total">
+
+                        <small>
+                          Total Place / Activity Charges
+                        </small>
+
+                        <strong>
+                          {formatAmount(
+                            placeCharges
+                          )}
+                        </strong>
+
+                      </div>
+
+                      {/* HOTEL */}
+
+                      <div className="travel-plan-total-box travel-plan-hotel-total">
+
+                        <small>
+                          Total Hotel Charges
+                        </small>
+
+                        <strong>
+                          {formatAmount(
+                            hotelCharges
+                          )}
+                        </strong>
+
+                      </div>
+
+                      {/* BASE */}
+
+                      <div className="travel-plan-total-box travel-plan-base-total">
+
+                        <small>
+                          Base Trip Amount
+                        </small>
+
+                        <strong>
+                          {formatAmount(
+                            baseAmount
+                          )}
+                        </strong>
+
+                      </div>
+
+                      {/* TOTAL */}
+
+                      <div className="travel-plan-total-box travel-plan-grand-total">
+
+                        <small>
+                          Total Amount
+                        </small>
+
+                        <strong>
+                          {formatAmount(
+                            totalAmount
+                          )}
+                        </strong>
+
+                      </div>
 
                     </div>
 
-                    <div className="travel-plan-total-box travel-plan-hotel-total">
+                    {/* =================================================
+                        BASE + ALL INCLUSIVE TOTAL
+                    ================================================= */}
 
-                      <small>
-                        Total Hotel Charges
-                      </small>
+                    <div className="travel-plan-amount-details">
 
-                      <strong>
-                        {formatAmount(
-                          hotelCharges
-                        )}
-                      </strong>
+                      {/* =================================================
+                          BASE TRIP AMOUNT BOX
+                      ================================================= */}
+
+                      <div className="travel-plan-base-box">
+
+                        <div className="travel-plan-base-header">
+
+                          <div>
+
+                            <small>
+                              Base Trip Amount
+                            </small>
+
+                            <strong>
+                              {formatAmount(
+                                baseAmount
+                              )}
+                            </strong>
+
+                          </div>
+
+                          <span>
+
+                            {formatAmount(
+                              selectedPlan.baseAmountPerDay
+                            )}
+
+                            {" "}
+                            / day
+
+                          </span>
+
+                        </div>
+
+                        <div className="travel-plan-base-content">
+
+                          <h4>
+                            Included in base amount:
+                          </h4>
+
+                          {Array.isArray(
+                            selectedPlan.baseIncludes
+                          ) &&
+                          selectedPlan.baseIncludes.length >
+                            0 ? (
+
+                            <ul>
+
+                              {selectedPlan.baseIncludes.map(
+                                (
+                                  item,
+                                  index
+                                ) => (
+                                  <li
+                                    key={`${item}-${index}`}
+                                  >
+                                    {item}
+                                  </li>
+                                )
+                              )}
+
+                            </ul>
+
+                          ) : (
+
+                            <ul>
+
+                              <li>
+                                Local transportation
+                              </li>
+
+                              <li>
+                                Parking / toll estimate
+                              </li>
+
+                              <li>
+                                Local travel & miscellaneous trip expenses
+                              </li>
+
+                            </ul>
+
+                          )}
+
+                          <p>
+                            Food expenses are not
+                            included. Hotel stay is
+                            displayed separately with
+                            its applicable night-stay
+                            amount.
+                          </p>
+
+                        </div>
+
+                      </div>
+
+                      {/* =================================================
+                          TOTAL AMOUNT ALL INCLUSIVE
+                      ================================================= */}
+
+                      <div className="travel-plan-all-inclusive">
+
+                        <div className="travel-plan-all-inclusive-header">
+
+                          <div className="travel-plan-all-inclusive-icon">
+
+                            <Calculator
+                              size={24}
+                            />
+
+                          </div>
+
+                          <div>
+
+                            <small>
+                              Total Amount (All Inclusive)
+                            </small>
+
+                            <strong>
+                              {formatAmount(
+                                totalAmount
+                              )}
+                            </strong>
+
+                          </div>
+
+                        </div>
+
+                        <div className="travel-plan-all-inclusive-list">
+
+                          <div className="travel-plan-all-inclusive-row">
+
+                            <span>
+                              Place / Activity Charges
+                            </span>
+
+                            <strong>
+                              {formatAmount(
+                                placeCharges
+                              )}
+                            </strong>
+
+                          </div>
+
+                          <div className="travel-plan-all-inclusive-row">
+
+                            <span>
+                              Hotel Charges
+                            </span>
+
+                            <strong>
+                              {formatAmount(
+                                hotelCharges
+                              )}
+                            </strong>
+
+                          </div>
+
+                          <div className="travel-plan-all-inclusive-row">
+
+                            <span>
+                              Base Trip Amount
+                            </span>
+
+                            <strong>
+                              {formatAmount(
+                                baseAmount
+                              )}
+                            </strong>
+
+                          </div>
+
+                        </div>
+
+                        <div className="travel-plan-all-inclusive-final">
+
+                          <span>
+                            Total Amount
+                          </span>
+
+                          <strong>
+                            {formatAmount(
+                              totalAmount
+                            )}
+                          </strong>
+
+                        </div>
+
+                      </div>
 
                     </div>
 
-                    <div className="travel-plan-total-box">
+                    {/* =================================================
+                        FINAL ESTIMATED TOTAL
+                    ================================================= */}
 
-                      <small>
-                        Base Trip Amount
-                      </small>
+                    <div className="travel-plan-modal-footer">
 
-                      <strong>
-                        {formatAmount(
-                          selectedPlan.baseAmount
-                        )}
-                      </strong>
+                      <div className="travel-plan-modal-price">
+
+                        <small>
+                          Estimated Total
+                        </small>
+
+                        <strong>
+                          {formatAmount(
+                            totalAmount
+                          )}
+                        </strong>
+
+                        <span>
+                          / person
+                        </span>
+
+                      </div>
+
+                      <button
+                        type="button"
+                        className="primary-button"
+                        onClick={() =>
+                          selectPlan(
+                            selectedPlan
+                          )
+                        }
+                      >
+                        Select Plan
+                      </button>
 
                     </div>
 
-                  </div>
+                  </>
                 );
 
               })()}
-
-              {/* =================================================
-                  BASE INCLUDES
-              ================================================= */}
-
-              {Array.isArray(
-                selectedPlan.baseIncludes
-              ) &&
-              selectedPlan.baseIncludes.length >
-                0 && (
-
-                <div className="travel-plan-base-box">
-
-                  <div className="travel-plan-base-header">
-
-                    <div>
-
-                      <small>
-                        Base Trip Amount
-                      </small>
-
-                      <strong>
-                        {formatAmount(
-                          selectedPlan.baseAmount
-                        )}
-                      </strong>
-
-                    </div>
-
-                    <span>
-                      {formatAmount(
-                        selectedPlan.baseAmountPerDay
-                      )}
-                      {" "} / day
-                    </span>
-
-                  </div>
-
-                  <div className="travel-plan-base-content">
-
-                    <h4>
-                      Included in base amount:
-                    </h4>
-
-                    <ul>
-
-                      {selectedPlan.baseIncludes.map(
-                        (
-                          item,
-                          index
-                        ) => (
-                          <li
-                            key={`${item}-${index}`}
-                          >
-                            {item}
-                          </li>
-                        )
-                      )}
-
-                    </ul>
-
-                    <p>
-                      Food expenses are not
-                      included. Hotel stay is
-                      displayed separately with
-                      its applicable night-stay
-                      amount.
-                    </p>
-
-                  </div>
-
-                </div>
-              )}
-
-              {/* FOOTER */}
-
-              <div className="travel-plan-modal-footer">
-
-                <div className="travel-plan-modal-price">
-
-                  <small>
-                    Estimated Total
-                  </small>
-
-                  <strong>
-                    {formatAmount(
-                      selectedPlan.price
-                    )}
-                  </strong>
-
-                  <span>
-                    / person
-                  </span>
-
-                </div>
-
-                <button
-                  type="button"
-                  className="primary-button"
-                  onClick={() =>
-                    selectPlan(
-                      selectedPlan
-                    )
-                  }
-                >
-                  Select Plan
-                </button>
-
-              </div>
 
             </div>
 
@@ -2649,12 +3455,16 @@ export default function TravelPlansPage() {
             </h2>
 
             <p>
+
               You have successfully
               selected{" "}
+
               <strong>
                 {successPlan.title}
               </strong>
+
               .
+
             </p>
 
             <button
@@ -2671,6 +3481,7 @@ export default function TravelPlansPage() {
 
         </div>
       )}
+
     </>
   );
 }

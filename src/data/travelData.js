@@ -1,6 +1,27 @@
-// =========================================================
+// ============================================================
+// HAPPY MAPPY - TRAVEL DATA
+// ============================================================
+// Daily schedule:
+// Multi-day plans:
+//   Breakfast : 8:00 AM - 9:00 AM
+//   Places    : Morning
+//   Lunch     : 1:00 PM - 2:00 PM
+//   Places    : Afternoon / Evening
+//   Dinner    : 7:30 PM - 8:30 PM
+//   Hotel     : 9:15 PM
+//
+// 1-day plans:
+//   Breakfast : 8:00 AM - 9:00 AM
+//   Lunch     : 1:00 PM - 2:00 PM
+//   Dinner    : 8:00 PM - 9:00 PM
+//   NO HOTEL
+//   NO EVENING SNACK
+// ============================================================
+
+
+// ============================================================
 // DESTINATIONS
-// =========================================================
+// ============================================================
 
 export const destinations = [
   {
@@ -19,7 +40,11 @@ export const destinations = [
       "Mattupetty Dam",
       "Top Station",
     ],
-    food: ["Appam & Stew", "Kerala Sadya", "Banana Chips"],
+    food: [
+      "Appam & Stew",
+      "Kerala Sadya",
+      "Banana Chips",
+    ],
   },
 
   {
@@ -38,7 +63,11 @@ export const destinations = [
       "Alappuzha Beach",
       "Kuttanad",
     ],
-    food: ["Fish Curry", "Appam & Stew", "Kerala Sadya"],
+    food: [
+      "Fish Curry",
+      "Appam & Stew",
+      "Kerala Sadya",
+    ],
   },
 
   {
@@ -57,7 +86,11 @@ export const destinations = [
       "Mattancherry Palace",
       "Jew Town",
     ],
-    food: ["Kerala Parotta", "Fish Curry", "Appam & Stew"],
+    food: [
+      "Kerala Parotta",
+      "Fish Curry",
+      "Appam & Stew",
+    ],
   },
 
   {
@@ -76,7 +109,11 @@ export const destinations = [
       "Banasura Sagar Dam",
       "Chembra Peak",
     ],
-    food: ["Malabar Biryani", "Pathiri", "Banana Chips"],
+    food: [
+      "Malabar Biryani",
+      "Pathiri",
+      "Banana Chips",
+    ],
   },
 
   {
@@ -95,7 +132,11 @@ export const destinations = [
       "Doddabetta Peak",
       "Nilgiri Mountain Railway",
     ],
-    food: ["Ooty Varkey", "South Indian Meals", "Homemade Chocolates"],
+    food: [
+      "Ooty Varkey",
+      "South Indian Meals",
+      "Homemade Chocolates",
+    ],
   },
 
   {
@@ -114,7 +155,11 @@ export const destinations = [
       "Pillar Rocks",
       "Bryant Park",
     ],
-    food: ["Parotta", "South Indian Meals", "Homemade Chocolates"],
+    food: [
+      "Parotta",
+      "South Indian Meals",
+      "Homemade Chocolates",
+    ],
   },
 
   {
@@ -133,7 +178,11 @@ export const destinations = [
       "Fort St George",
       "San Thome Basilica",
     ],
-    food: ["Idli & Sambar", "Masala Dosa", "Filter Coffee"],
+    food: [
+      "Idli & Sambar",
+      "Masala Dosa",
+      "Filter Coffee",
+    ],
   },
 
   {
@@ -152,7 +201,11 @@ export const destinations = [
       "Pancha Rathas",
       "Mahabalipuram Beach",
     ],
-    food: ["Seafood", "Idli & Sambar", "Masala Dosa"],
+    food: [
+      "Seafood",
+      "Idli & Sambar",
+      "Masala Dosa",
+    ],
   },
 
   {
@@ -171,7 +224,11 @@ export const destinations = [
       "Gandhi Memorial Museum",
       "Vandiyur Mariamman Teppakulam",
     ],
-    food: ["Jigarthanda", "Parotta", "Idli & Sambar"],
+    food: [
+      "Jigarthanda",
+      "Parotta",
+      "Idli & Sambar",
+    ],
   },
 
   {
@@ -190,13 +247,18 @@ export const destinations = [
       "Saraswathi Mahal Library",
       "Art Gallery",
     ],
-    food: ["Thanjavur Meals", "Pongal", "Filter Coffee"],
+    food: [
+      "Thanjavur Meals",
+      "Pongal",
+      "Filter Coffee",
+    ],
   },
 ];
 
-// =========================================================
+
+// ============================================================
 // HELPER FUNCTIONS
-// =========================================================
+// ============================================================
 
 const place = (name, time, amount = 0) => ({
   name,
@@ -205,11 +267,12 @@ const place = (name, time, amount = 0) => ({
   type: "place",
 });
 
-const food = (name, time) => ({
+const food = (name, time, meal) => ({
   name,
   time,
   amount: 0,
   type: "food",
+  meal,
 });
 
 const travel = (name, time, amount = 0) => ({
@@ -219,21 +282,28 @@ const travel = (name, time, amount = 0) => ({
   type: "place",
 });
 
-const commonIncludes = [
-  "Local sightseeing",
-  "Basic transportation",
-  "Trip planning assistance",
-  "Entry-level activity charges",
-];
+const hotel = (
+  name,
+  time = "9:15 PM",
+  amount = 1200
+) => ({
+  name,
+  time,
+  amount,
+  type: "hotel",
+  duration: "Overnight",
+});
 
-// =========================================================
+
+// ============================================================
 // TRAVEL PLANS
-// =========================================================
+// ============================================================
 
 export const plans = [
-  // =======================================================
-  // 1. KERALA DREAM ESCAPE
-  // =======================================================
+
+  // ==========================================================
+  // PLAN 1 - KERALA DREAM ESCAPE
+  // ==========================================================
 
   {
     id: 1,
@@ -246,15 +316,23 @@ export const plans = [
     baseAmount: 12000,
     baseAmountPerDay: 2400,
     placeAmount: 6500,
+
     baseIncludes: [
       "Basic transportation",
       "Hotel accommodation support",
       "Local sightseeing",
       "Trip planning assistance",
     ],
+
     image:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLs1CKXG8MI4a7GAYUiiF3QnIa5yuxQWj5EXq2P31W8A&s=10",
-    highlights: ["Tea Gardens", "Houseboat", "Fort Kochi"],
+
+    highlights: [
+      "Tea Gardens",
+      "Houseboat",
+      "Fort Kochi",
+    ],
+
     places: [
       "Munnar Tea Gardens",
       "Alleppey Houseboat",
@@ -262,95 +340,283 @@ export const plans = [
     ],
 
     itinerary: [
+
       {
         day: 1,
         title: "Arrival in Munnar",
+
         activities: [
-          travel("Hotel check-in", "10:00 AM - 11:00 AM"),
-          place("Munnar Tea Gardens", "11:30 AM - 1:00 PM", 500),
-          food("Lunch at local Kerala restaurant", "1:00 PM - 2:00 PM"),
-          place("Evening leisure", "4:00 PM - 6:00 PM"),
-          food("Dinner at hotel", "7:30 PM - 8:30 PM"),
+          food(
+            "Breakfast at hotel",
+            "8:00 AM - 9:00 AM",
+            "breakfast"
+          ),
+
+          place(
+            "Munnar Tea Gardens",
+            "9:15 AM - 10:45 AM",
+            500
+          ),
+
+          place(
+            "Tea Museum",
+            "11:00 AM - 12:30 PM",
+            100
+          ),
+
+          food(
+            "Lunch at local Kerala restaurant",
+            "1:00 PM - 2:00 PM",
+            "lunch"
+          ),
+
+          place(
+            "Mattupetty Dam",
+            "2:15 PM - 3:45 PM",
+            100
+          ),
+
+          place(
+            "Echo Point",
+            "4:00 PM - 5:30 PM",
+            50
+          ),
+
+          food(
+            "Dinner at hotel",
+            "7:30 PM - 8:30 PM",
+            "dinner"
+          ),
+
+          hotel("Munnar Hotel"),
         ],
       },
 
       {
         day: 2,
         title: "Explore Munnar",
+
         activities: [
-          food("Breakfast at hotel", "8:00 AM - 9:00 AM"),
-          place("Eravikulam National Park", "9:30 AM - 12:00 PM", 200),
-          food("Lunch at local restaurant", "12:30 PM - 1:30 PM"),
-          place("Mattupetty Dam", "2:00 PM - 3:30 PM", 100),
-          place("Echo Point", "4:00 PM - 5:30 PM", 50),
-          food("Dinner at hotel", "7:30 PM - 8:30 PM"),
+          food(
+            "Breakfast at hotel",
+            "8:00 AM - 9:00 AM",
+            "breakfast"
+          ),
+
+          place(
+            "Eravikulam National Park",
+            "9:15 AM - 10:45 AM",
+            200
+          ),
+
+          place(
+            "Rajamalai View Point",
+            "11:00 AM - 12:30 PM"
+          ),
+
+          food(
+            "Lunch at local restaurant",
+            "1:00 PM - 2:00 PM",
+            "lunch"
+          ),
+
+          place(
+            "Mattupetty Dam",
+            "2:15 PM - 3:45 PM",
+            100
+          ),
+
+          place(
+            "Echo Point",
+            "4:00 PM - 5:30 PM",
+            50
+          ),
+
+          food(
+            "Dinner at hotel",
+            "7:30 PM - 8:30 PM",
+            "dinner"
+          ),
+
+          hotel("Munnar Hotel"),
         ],
       },
 
       {
         day: 3,
         title: "Munnar to Alleppey",
+
         activities: [
-          food("Breakfast at hotel", "7:30 AM - 8:30 AM"),
-          travel("Travel to Alleppey", "9:00 AM - 2:00 PM", 1500),
-          food("Lunch during travel", "1:00 PM - 2:00 PM"),
-          travel("Houseboat check-in", "3:00 PM - 4:00 PM", 2500),
-          place("Backwater cruise", "4:00 PM - 6:00 PM", 500),
-          food("Dinner on houseboat", "7:30 PM - 8:30 PM"),
+          food(
+            "Breakfast at hotel",
+            "8:00 AM - 9:00 AM",
+            "breakfast"
+          ),
+
+          travel(
+            "Travel to Alleppey",
+            "9:15 AM - 12:15 PM",
+            1000
+          ),
+
+          food(
+            "Lunch at local restaurant",
+            "1:00 PM - 2:00 PM",
+            "lunch"
+          ),
+
+          place(
+            "Alleppey Backwaters",
+            "2:15 PM - 4:00 PM",
+            500
+          ),
+
+          place(
+            "Alappuzha Beach",
+            "4:15 PM - 5:45 PM"
+          ),
+
+          food(
+            "Dinner at hotel",
+            "7:30 PM - 8:30 PM",
+            "dinner"
+          ),
+
+          hotel("Alleppey Hotel"),
         ],
       },
 
       {
         day: 4,
         title: "Alleppey to Kochi",
+
         activities: [
-          food("Breakfast on houseboat", "7:30 AM - 8:30 AM"),
-          travel("Travel to Kochi", "9:00 AM - 11:00 AM", 700),
-          place("Fort Kochi", "11:30 AM - 1:00 PM"),
-          food("Lunch at Kochi restaurant", "1:00 PM - 2:00 PM"),
-          place("Chinese Fishing Nets", "3:00 PM - 4:00 PM"),
-          food("Dinner at hotel", "7:30 PM - 8:30 PM"),
+          food(
+            "Breakfast at hotel",
+            "8:00 AM - 9:00 AM",
+            "breakfast"
+          ),
+
+          place(
+            "Houseboat Cruise",
+            "9:15 AM - 11:15 AM",
+            800
+          ),
+
+          travel(
+            "Travel to Kochi",
+            "11:30 AM - 12:30 PM",
+            500
+          ),
+
+          food(
+            "Lunch at local restaurant",
+            "1:00 PM - 2:00 PM",
+            "lunch"
+          ),
+
+          place(
+            "Fort Kochi",
+            "2:15 PM - 4:00 PM"
+          ),
+
+          place(
+            "Chinese Fishing Nets",
+            "4:15 PM - 5:30 PM"
+          ),
+
+          food(
+            "Dinner at hotel",
+            "7:30 PM - 8:30 PM",
+            "dinner"
+          ),
+
+          hotel("Kochi Hotel"),
         ],
       },
 
       {
         day: 5,
-        title: "Kochi Departure",
+        title: "Kochi Sightseeing and Departure",
+
         activities: [
-          food("Breakfast at hotel", "8:00 AM - 9:00 AM"),
-          place("Mattancherry Palace", "9:30 AM - 11:00 AM", 100),
-          place("Jew Town", "11:15 AM - 12:30 PM"),
-          food("Lunch at local restaurant", "12:30 PM - 1:30 PM"),
-          travel("Departure", "2:00 PM - 3:00 PM"),
+          food(
+            "Breakfast at hotel",
+            "8:00 AM - 9:00 AM",
+            "breakfast"
+          ),
+
+          place(
+            "Mattancherry Palace",
+            "9:15 AM - 10:45 AM"
+          ),
+
+          place(
+            "Jew Town",
+            "11:00 AM - 12:30 PM"
+          ),
+
+          food(
+            "Lunch at local restaurant",
+            "1:00 PM - 2:00 PM",
+            "lunch"
+          ),
+
+          place(
+            "Fort Kochi Shopping",
+            "2:15 PM - 4:00 PM"
+          ),
+
+          place(
+            "Departure",
+            "4:15 PM - 6:00 PM"
+          ),
+
+          food(
+            "Dinner at hotel",
+            "7:30 PM - 8:30 PM",
+            "dinner"
+          ),
         ],
       },
     ],
   },
 
-  // =======================================================
-  // 2. TAMIL NADU TEMPLE TRAIL
-  // =======================================================
+
+  // ==========================================================
+  // PLAN 2 - TAMIL NADU HERITAGE EXPLORER
+  // ==========================================================
 
   {
     id: 2,
-    title: "Tamil Nadu Temple Trail",
-    destination: "Chennai • Mahabalipuram • Thanjavur • Madurai",
+    title: "Tamil Nadu Heritage Explorer",
+    destination:
+      "Chennai • Mahabalipuram • Thanjavur • Madurai",
     days: 7,
     nights: 6,
     category: "Heritage",
-    price: 22000,
-    baseAmount: 14500,
-    baseAmountPerDay: 2071,
-    placeAmount: 7500,
+    price: 24000,
+    baseAmount: 15000,
+    baseAmountPerDay: 2143,
+    placeAmount: 9000,
+
     baseIncludes: [
       "Basic transportation",
       "Hotel accommodation support",
-      "Temple sightseeing",
+      "Heritage sightseeing",
       "Trip planning assistance",
     ],
+
     image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmASq3HMG-DmgA1BnvAaEFD-IpkWQAv8Koq0eN8MSFcw&s=10",
-    highlights: ["Ancient Temples", "UNESCO Heritage", "Tamil Culture"],
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5y6wGq6u7mX9bZ8uY5J7n2L6s4p8Q0t3H9r5s7w1Q&s=10",
+
+    highlights: [
+      "Chennai",
+      "Mahabalipuram",
+      "Thanjavur",
+      "Madurai",
+    ],
+
     places: [
       "Marina Beach",
       "Shore Temple",
@@ -359,120 +625,379 @@ export const plans = [
     ],
 
     itinerary: [
+
+      // DAY 1
       {
         day: 1,
-        title: "Explore Chennai",
+        title: "Chennai City Tour",
+
         activities: [
-          travel("Hotel check-in", "9:00 AM - 10:00 AM"),
-          place("Marina Beach", "10:30 AM - 12:00 PM"),
-          food("Lunch at local restaurant", "12:30 PM - 1:30 PM"),
-          place("Kapaleeshwarar Temple", "2:00 PM - 3:30 PM"),
-          food("Local food experience", "4:00 PM - 5:00 PM"),
-          food("Dinner at hotel", "7:30 PM - 8:30 PM"),
+          food(
+            "Breakfast at hotel",
+            "8:00 AM - 9:00 AM",
+            "breakfast"
+          ),
+
+          place(
+            "Marina Beach",
+            "9:15 AM - 10:45 AM"
+          ),
+
+          place(
+            "Kapaleeshwarar Temple",
+            "11:00 AM - 12:30 PM"
+          ),
+
+          food(
+            "Lunch at local restaurant",
+            "1:00 PM - 2:00 PM",
+            "lunch"
+          ),
+
+          place(
+            "Fort St George",
+            "2:15 PM - 3:45 PM",
+            200
+          ),
+
+          place(
+            "San Thome Basilica",
+            "4:00 PM - 5:30 PM"
+          ),
+
+          food(
+            "Dinner at hotel",
+            "7:30 PM - 8:30 PM",
+            "dinner"
+          ),
+
+          hotel("Chennai Hotel"),
         ],
       },
 
+      // DAY 2
       {
         day: 2,
         title: "Chennai to Mahabalipuram",
+
         activities: [
-          food("Breakfast at hotel", "7:30 AM - 8:30 AM"),
-          travel("Travel to Mahabalipuram", "9:00 AM - 11:00 AM", 500),
-          place("Shore Temple", "11:00 AM - 12:30 PM", 40),
-          food("Lunch at local restaurant", "1:00 PM - 2:00 PM"),
-          place("Pancha Rathas", "2:30 PM - 4:00 PM", 40),
-          place("Mahabalipuram Beach", "4:30 PM - 6:00 PM"),
+          food(
+            "Breakfast at hotel",
+            "8:00 AM - 9:00 AM",
+            "breakfast"
+          ),
+
+          travel(
+            "Travel to Mahabalipuram",
+            "9:15 AM - 10:30 AM",
+            500
+          ),
+
+          place(
+            "Shore Temple",
+            "10:45 AM - 12:15 PM",
+            40
+          ),
+
+          food(
+            "Lunch at local restaurant",
+            "1:00 PM - 2:00 PM",
+            "lunch"
+          ),
+
+          place(
+            "Arjuna's Penance",
+            "2:15 PM - 3:45 PM",
+            40
+          ),
+
+          place(
+            "Mahabalipuram Beach",
+            "4:30 PM - 6:00 PM"
+          ),
+
+          food(
+            "Dinner at hotel",
+            "7:30 PM - 8:30 PM",
+            "dinner"
+          ),
+
+          hotel("Mahabalipuram Hotel"),
         ],
       },
 
+      // DAY 3
       {
         day: 3,
         title: "Mahabalipuram to Thanjavur",
+
         activities: [
-          food("Breakfast at hotel", "7:30 AM - 8:30 AM"),
-          travel("Travel to Thanjavur", "9:00 AM - 2:00 PM", 1200),
-          food("Lunch during travel", "1:00 PM - 2:00 PM"),
-          place("Brihadeeswarar Temple", "3:00 PM - 5:00 PM"),
-          food("Dinner at hotel", "7:30 PM - 8:30 PM"),
+          food(
+            "Breakfast at hotel",
+            "8:00 AM - 9:00 AM",
+            "breakfast"
+          ),
+
+          travel(
+            "Travel to Thanjavur",
+            "9:15 AM - 12:15 PM",
+            1200
+          ),
+
+          food(
+            "Lunch at local restaurant",
+            "1:00 PM - 2:00 PM",
+            "lunch"
+          ),
+
+          place(
+            "Thanjavur Palace",
+            "2:15 PM - 3:45 PM",
+            100
+          ),
+
+          place(
+            "Art Gallery",
+            "4:00 PM - 5:30 PM",
+            50
+          ),
+
+          food(
+            "Dinner at hotel",
+            "7:30 PM - 8:30 PM",
+            "dinner"
+          ),
+
+          hotel("Thanjavur Hotel"),
         ],
       },
 
+      // DAY 4
       {
         day: 4,
-        title: "Thanjavur to Madurai",
+        title: "Thanjavur Heritage",
+
         activities: [
-          food("Breakfast at hotel", "7:30 AM - 8:30 AM"),
-          place("Thanjavur Palace", "9:00 AM - 10:30 AM", 100),
-          travel("Travel to Madurai", "11:00 AM - 2:00 PM", 900),
-          food("Lunch at local restaurant", "1:00 PM - 2:00 PM"),
-          place("Meenakshi Amman Temple", "4:00 PM - 6:00 PM"),
-          food("Dinner at hotel", "7:30 PM - 8:30 PM"),
+          food(
+            "Breakfast at hotel",
+            "8:00 AM - 9:00 AM",
+            "breakfast"
+          ),
+
+          place(
+            "Brihadeeswarar Temple",
+            "9:15 AM - 10:45 AM"
+          ),
+
+          place(
+            "Saraswathi Mahal Library",
+            "11:00 AM - 12:30 PM",
+            50
+          ),
+
+          food(
+            "Lunch at local restaurant",
+            "1:00 PM - 2:00 PM",
+            "lunch"
+          ),
+
+          place(
+            "Thanjavur Palace",
+            "2:15 PM - 3:45 PM",
+            100
+          ),
+
+          place(
+            "Local Handicraft Shopping",
+            "4:00 PM - 5:30 PM"
+          ),
+
+          food(
+            "Dinner at hotel",
+            "7:30 PM - 8:30 PM",
+            "dinner"
+          ),
+
+          hotel("Madurai Hotel"),
         ],
       },
 
+      // DAY 5
       {
         day: 5,
-        title: "Explore Madurai",
+        title: "Thanjavur to Madurai",
+
         activities: [
-          food("Breakfast at hotel", "8:00 AM - 9:00 AM"),
-          place("Thirumalai Nayakkar Palace", "9:30 AM - 11:00 AM", 50),
-          food("Lunch at local restaurant", "12:30 PM - 1:30 PM"),
-          place("Gandhi Memorial Museum", "2:00 PM - 4:00 PM"),
-          food("Jigarthanda experience", "4:30 PM - 5:00 PM"),
-          food("Dinner at hotel", "7:30 PM - 8:30 PM"),
+          food(
+            "Breakfast at hotel",
+            "8:00 AM - 9:00 AM",
+            "breakfast"
+          ),
+
+          travel(
+            "Travel to Madurai",
+            "9:15 AM - 12:15 PM",
+            1200
+          ),
+
+          food(
+            "Lunch at local restaurant",
+            "1:00 PM - 2:00 PM",
+            "lunch"
+          ),
+
+          place(
+            "Gandhi Memorial Museum",
+            "2:15 PM - 3:45 PM",
+            20
+          ),
+
+          place(
+            "Vandiyur Mariamman Teppakulam",
+            "4:00 PM - 5:30 PM"
+          ),
+
+          food(
+            "Dinner at hotel",
+            "7:30 PM - 8:30 PM",
+            "dinner"
+          ),
+
+          hotel("Madurai Hotel"),
         ],
       },
 
+      // DAY 6
       {
         day: 6,
-        title: "Madurai Culture",
+        title: "Madurai Temple Tour",
+
         activities: [
-          food("Breakfast at hotel", "8:00 AM - 9:00 AM"),
-          place("Vandiyur Mariamman Teppakulam", "9:30 AM - 11:00 AM"),
-          food("Lunch at local restaurant", "12:30 PM - 1:30 PM"),
-          place("Local market", "2:00 PM - 4:00 PM"),
-          food("Traditional Tamil snacks", "4:30 PM - 5:00 PM"),
-          food("Dinner at hotel", "7:30 PM - 8:30 PM"),
+          food(
+            "Breakfast at hotel",
+            "8:00 AM - 9:00 AM",
+            "breakfast"
+          ),
+
+          place(
+            "Meenakshi Amman Temple",
+            "9:15 AM - 11:00 AM"
+          ),
+
+          place(
+            "Thirumalai Nayakkar Palace",
+            "11:15 AM - 12:30 PM",
+            50
+          ),
+
+          food(
+            "Lunch at local restaurant",
+            "1:00 PM - 2:00 PM",
+            "lunch"
+          ),
+
+          place(
+            "Gandhi Memorial Museum",
+            "2:15 PM - 3:45 PM",
+            20
+          ),
+
+          place(
+            "Local Market",
+            "4:00 PM - 5:30 PM"
+          ),
+
+          food(
+            "Dinner at hotel",
+            "7:30 PM - 8:30 PM",
+            "dinner"
+          ),
+
+          hotel("Madurai Hotel"),
         ],
       },
 
+      // DAY 7 - FINAL
       {
         day: 7,
-        title: "Departure",
+        title: "Madurai Departure",
+
         activities: [
-          food("Breakfast at hotel", "8:00 AM - 9:00 AM"),
-          place("Shopping", "9:30 AM - 11:00 AM"),
-          food("Lunch at local restaurant", "12:00 PM - 1:00 PM"),
-          travel("Departure", "2:00 PM - 3:00 PM"),
+          food(
+            "Breakfast at hotel",
+            "8:00 AM - 9:00 AM",
+            "breakfast"
+          ),
+
+          place(
+            "Morning Temple Visit",
+            "9:15 AM - 10:45 AM"
+          ),
+
+          place(
+            "Local Shopping",
+            "11:00 AM - 12:30 PM"
+          ),
+
+          food(
+            "Lunch at local restaurant",
+            "1:00 PM - 2:00 PM",
+            "lunch"
+          ),
+
+          place(
+            "Departure Preparation",
+            "2:15 PM - 4:00 PM"
+          ),
+
+          place(
+            "Departure",
+            "4:15 PM - 6:00 PM"
+          ),
+
+          food(
+            "Dinner at hotel",
+            "7:30 PM - 8:30 PM",
+            "dinner"
+          ),
         ],
       },
     ],
   },
 
-  // =======================================================
-  // 3. KERALA BACKWATER EXPERIENCE
-  // =======================================================
+
+  // ==========================================================
+  // PLAN 3 - KERALA BACKWATER BLISS
+  // ==========================================================
 
   {
     id: 3,
-    title: "Kerala Backwater Experience",
+    title: "Kerala Backwater Bliss",
     destination: "Alleppey • Kochi",
-    days: 4,
-    nights: 3,
+    days: 3,
+    nights: 2,
     category: "Backwaters",
-    price: 14000,
-    baseAmount: 9000,
-    baseAmountPerDay: 2250,
-    placeAmount: 5000,
+    price: 12500,
+    baseAmount: 8000,
+    baseAmountPerDay: 2667,
+    placeAmount: 4500,
+
     baseIncludes: [
-      "Basic transportation",
-      "Houseboat accommodation support",
+      "Transportation",
+      "Hotel accommodation support",
       "Backwater sightseeing",
       "Trip planning assistance",
     ],
+
     image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTnC0D8kg3t8mp7xfFulCt7jhzjt6a8fZsHjdVfNOxAA&s=10",
-    highlights: ["Houseboat", "Backwaters", "Fort Kochi"],
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnwUzWOCOhvoIM_gB0u0LJOQWmqCq7hjK6NZ8sXcxvkA&s=10",
+
+    highlights: [
+      "Backwaters",
+      "Houseboat",
+      "Fort Kochi",
+    ],
+
     places: [
       "Alleppey Backwaters",
       "Houseboat Cruise",
@@ -480,82 +1005,184 @@ export const plans = [
     ],
 
     itinerary: [
+
       {
         day: 1,
-        title: "Arrival in Alleppey",
+        title: "Alleppey Arrival",
+
         activities: [
-          travel("Houseboat check-in", "11:00 AM - 12:00 PM", 2500),
-          food("Lunch on houseboat", "12:30 PM - 1:30 PM"),
-          place("Backwater cruise", "2:00 PM - 5:00 PM", 500),
-          place("Sunset view", "5:30 PM - 6:30 PM"),
-          food("Dinner on houseboat", "7:30 PM - 8:30 PM"),
+          food(
+            "Breakfast at hotel",
+            "8:00 AM - 9:00 AM",
+            "breakfast"
+          ),
+
+          place(
+            "Alleppey Backwaters",
+            "9:15 AM - 10:45 AM",
+            300
+          ),
+
+          place(
+            "Kuttanad",
+            "11:00 AM - 12:30 PM"
+          ),
+
+          food(
+            "Lunch at local restaurant",
+            "1:00 PM - 2:00 PM",
+            "lunch"
+          ),
+
+          place(
+            "Alappuzha Beach",
+            "2:15 PM - 4:00 PM"
+          ),
+
+          place(
+            "Evening Backwater Walk",
+            "4:15 PM - 5:30 PM"
+          ),
+
+          food(
+            "Dinner at hotel",
+            "7:30 PM - 8:30 PM",
+            "dinner"
+          ),
+
+          hotel("Alleppey Hotel"),
         ],
       },
 
       {
         day: 2,
-        title: "Explore Alleppey",
+        title: "Houseboat and Kochi",
+
         activities: [
-          food("Breakfast on houseboat", "7:30 AM - 8:30 AM"),
-          place("Kuttanad", "9:00 AM - 11:00 AM"),
-          food("Lunch at local restaurant", "12:30 PM - 1:30 PM"),
-          place("Alappuzha Beach", "2:00 PM - 4:00 PM"),
-          place("Village walk", "4:30 PM - 5:30 PM"),
-          food("Dinner at hotel", "7:30 PM - 8:30 PM"),
+          food(
+            "Breakfast at hotel",
+            "8:00 AM - 9:00 AM",
+            "breakfast"
+          ),
+
+          place(
+            "Houseboat Cruise",
+            "9:15 AM - 11:15 AM",
+            800
+          ),
+
+          travel(
+            "Travel to Kochi",
+            "11:30 AM - 12:30 PM",
+            500
+          ),
+
+          food(
+            "Lunch at local restaurant",
+            "1:00 PM - 2:00 PM",
+            "lunch"
+          ),
+
+          place(
+            "Fort Kochi",
+            "2:15 PM - 4:00 PM"
+          ),
+
+          place(
+            "Chinese Fishing Nets",
+            "4:15 PM - 5:30 PM"
+          ),
+
+          food(
+            "Dinner at hotel",
+            "7:30 PM - 8:30 PM",
+            "dinner"
+          ),
+
+          hotel("Kochi Hotel"),
         ],
       },
 
       {
         day: 3,
-        title: "Alleppey to Kochi",
-        activities: [
-          food("Breakfast at hotel", "7:30 AM - 8:30 AM"),
-          travel("Travel to Kochi", "9:00 AM - 11:00 AM", 700),
-          place("Fort Kochi", "11:30 AM - 1:00 PM"),
-          food("Lunch at Kochi restaurant", "1:00 PM - 2:00 PM"),
-          place("Chinese Fishing Nets", "3:00 PM - 4:00 PM"),
-          food("Dinner at hotel", "7:30 PM - 8:30 PM"),
-        ],
-      },
-
-      {
-        day: 4,
         title: "Kochi Departure",
+
         activities: [
-          food("Breakfast at hotel", "8:00 AM - 9:00 AM"),
-          place("Mattancherry Palace", "9:30 AM - 11:00 AM", 100),
-          place("Jew Town", "11:15 AM - 12:30 PM"),
-          food("Lunch at local restaurant", "12:30 PM - 1:30 PM"),
-          travel("Departure", "2:00 PM - 3:00 PM"),
+          food(
+            "Breakfast at hotel",
+            "8:00 AM - 9:00 AM",
+            "breakfast"
+          ),
+
+          place(
+            "Mattancherry Palace",
+            "9:15 AM - 10:45 AM"
+          ),
+
+          place(
+            "Jew Town",
+            "11:00 AM - 12:30 PM"
+          ),
+
+          food(
+            "Lunch at local restaurant",
+            "1:00 PM - 2:00 PM",
+            "lunch"
+          ),
+
+          place(
+            "Fort Kochi Shopping",
+            "2:15 PM - 4:00 PM"
+          ),
+
+          place(
+            "Departure",
+            "4:15 PM - 6:00 PM"
+          ),
+
+          food(
+            "Dinner at hotel",
+            "7:30 PM - 8:30 PM",
+            "dinner"
+          ),
         ],
       },
     ],
   },
 
-  // =======================================================
-  // 4. WAYANAD ADVENTURE
-  // =======================================================
+
+  // ==========================================================
+  // PLAN 4 - WAYANAD ADVENTURE
+  // ==========================================================
 
   {
     id: 4,
-    title: "Wayanad Adventure",
+    title: "Wayanad Adventure Escape",
     destination: "Wayanad",
     days: 3,
     nights: 2,
     category: "Adventure",
-    price: 11000,
-    baseAmount: 7000,
-    baseAmountPerDay: 2333,
+    price: 11500,
+    baseAmount: 7500,
+    baseAmountPerDay: 2500,
     placeAmount: 4000,
+
     baseIncludes: [
-      "Basic transportation",
+      "Transportation",
       "Hotel accommodation support",
       "Adventure sightseeing",
       "Trip planning assistance",
     ],
+
     image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8MytDb2VWAcVo1rdcupa-qwHbCBha9LhE4r_lFqR1GQ&s=10",
-    highlights: ["Edakkal Caves", "Waterfalls", "Mountain Views"],
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTicXJ0_-NWChd5H2lZsUIJ7gUVDGEkBGd4igNorw0e9A&s=10",
+
+    highlights: [
+      "Edakkal Caves",
+      "Soochipara Falls",
+      "Banasura Dam",
+    ],
+
     places: [
       "Edakkal Caves",
       "Soochipara Falls",
@@ -563,68 +1190,184 @@ export const plans = [
     ],
 
     itinerary: [
+
       {
         day: 1,
         title: "Wayanad Arrival",
+
         activities: [
-          travel("Hotel check-in", "10:00 AM - 11:00 AM"),
-          place("Edakkal Caves", "11:30 AM - 2:00 PM", 50),
-          food("Lunch at local restaurant", "2:00 PM - 3:00 PM"),
-          place("Evening leisure", "4:00 PM - 6:00 PM"),
-          food("Dinner at hotel", "7:30 PM - 8:30 PM"),
+          food(
+            "Breakfast at hotel",
+            "8:00 AM - 9:00 AM",
+            "breakfast"
+          ),
+
+          place(
+            "Edakkal Caves",
+            "9:15 AM - 11:00 AM",
+            100
+          ),
+
+          place(
+            "Heritage Village",
+            "11:15 AM - 12:30 PM"
+          ),
+
+          food(
+            "Lunch at local restaurant",
+            "1:00 PM - 2:00 PM",
+            "lunch"
+          ),
+
+          place(
+            "Soochipara Falls",
+            "2:15 PM - 4:15 PM",
+            100
+          ),
+
+          place(
+            "Tea Garden Visit",
+            "4:30 PM - 5:30 PM"
+          ),
+
+          food(
+            "Dinner at hotel",
+            "7:30 PM - 8:30 PM",
+            "dinner"
+          ),
+
+          hotel("Wayanad Hotel"),
         ],
       },
 
       {
         day: 2,
-        title: "Adventure Day",
+        title: "Wayanad Adventure",
+
         activities: [
-          food("Breakfast at hotel", "7:30 AM - 8:30 AM"),
-          place("Soochipara Falls", "9:00 AM - 12:00 PM", 100),
-          food("Lunch at local restaurant", "12:30 PM - 1:30 PM"),
-          place("Banasura Sagar Dam", "2:00 PM - 4:00 PM", 40),
-          place("Nature walk", "4:30 PM - 5:30 PM"),
-          food("Dinner at hotel", "7:30 PM - 8:30 PM"),
+          food(
+            "Breakfast at hotel",
+            "8:00 AM - 9:00 AM",
+            "breakfast"
+          ),
+
+          place(
+            "Banasura Sagar Dam",
+            "9:15 AM - 11:00 AM",
+            50
+          ),
+
+          place(
+            "Banasura Hill View",
+            "11:15 AM - 12:30 PM"
+          ),
+
+          food(
+            "Lunch at local restaurant",
+            "1:00 PM - 2:00 PM",
+            "lunch"
+          ),
+
+          place(
+            "Chembra Peak Viewpoint",
+            "2:15 PM - 4:00 PM"
+          ),
+
+          place(
+            "Local Market",
+            "4:15 PM - 5:30 PM"
+          ),
+
+          food(
+            "Dinner at hotel",
+            "7:30 PM - 8:30 PM",
+            "dinner"
+          ),
+
+          hotel("Wayanad Hotel"),
         ],
       },
 
       {
         day: 3,
-        title: "Departure",
+        title: "Wayanad Departure",
+
         activities: [
-          food("Breakfast at hotel", "8:00 AM - 9:00 AM"),
-          place("Shopping", "9:30 AM - 11:00 AM"),
-          food("Lunch at local restaurant", "12:00 PM - 1:00 PM"),
-          travel("Departure", "2:00 PM - 3:00 PM"),
+          food(
+            "Breakfast at hotel",
+            "8:00 AM - 9:00 AM",
+            "breakfast"
+          ),
+
+          place(
+            "Morning Nature Walk",
+            "9:15 AM - 10:45 AM"
+          ),
+
+          place(
+            "Local Village Visit",
+            "11:00 AM - 12:30 PM"
+          ),
+
+          food(
+            "Lunch at local restaurant",
+            "1:00 PM - 2:00 PM",
+            "lunch"
+          ),
+
+          place(
+            "Shopping",
+            "2:15 PM - 3:45 PM"
+          ),
+
+          place(
+            "Departure",
+            "4:00 PM - 6:00 PM"
+          ),
+
+          food(
+            "Dinner at hotel",
+            "7:30 PM - 8:30 PM",
+            "dinner"
+          ),
         ],
       },
     ],
   },
 
-  // =======================================================
-  // 5. OOTY HILL STATION ESCAPE
-  // =======================================================
+
+  // ==========================================================
+  // PLAN 5 - OOTY HILLS
+  // ==========================================================
 
   {
     id: 5,
-    title: "Ooty Hill Station Escape",
+    title: "Ooty Hills Retreat",
     destination: "Ooty",
     days: 3,
     nights: 2,
     category: "Hill Station",
-    price: 10500,
+    price: 11000,
     baseAmount: 7000,
     baseAmountPerDay: 2333,
-    placeAmount: 3500,
+    placeAmount: 4000,
+
     baseIncludes: [
-      "Basic transportation",
+      "Transportation",
       "Hotel accommodation support",
       "Hill station sightseeing",
       "Trip planning assistance",
     ],
+
     image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9wLylDURmR4inEt3eSQOFzQWyWt3g93U_h2hg0YNdLQ&s=10",
-    highlights: ["Ooty Lake", "Botanical Garden", "Tea Estates"],
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJhjCMcidBzYYTj-cwZXI6CDCeSVDjbsYf0YWF4Ld63A&s=10",
+
+    highlights: [
+      "Ooty Lake",
+      "Doddabetta Peak",
+      "Botanical Garden",
+    ],
+
     places: [
       "Ooty Lake",
       "Botanical Garden",
@@ -632,69 +1375,183 @@ export const plans = [
     ],
 
     itinerary: [
+
       {
         day: 1,
         title: "Ooty Arrival",
+
         activities: [
-          travel("Hotel check-in", "10:00 AM - 11:00 AM"),
-          place("Ooty Lake", "11:30 AM - 1:00 PM", 50),
-          food("Lunch at local restaurant", "1:00 PM - 2:00 PM"),
-          place("Botanical Garden", "2:30 PM - 4:30 PM", 50),
-          place("Town walk", "5:00 PM - 6:00 PM"),
-          food("Dinner at hotel", "7:30 PM - 8:30 PM"),
+          food(
+            "Breakfast at hotel",
+            "8:00 AM - 9:00 AM",
+            "breakfast"
+          ),
+
+          place(
+            "Ooty Lake",
+            "9:15 AM - 10:45 AM"
+          ),
+
+          place(
+            "Botanical Garden",
+            "11:00 AM - 12:30 PM",
+            50
+          ),
+
+          food(
+            "Lunch at local restaurant",
+            "1:00 PM - 2:00 PM",
+            "lunch"
+          ),
+
+          place(
+            "Rose Garden",
+            "2:15 PM - 3:45 PM"
+          ),
+
+          place(
+            "Ooty Market",
+            "4:00 PM - 5:30 PM"
+          ),
+
+          food(
+            "Dinner at hotel",
+            "7:30 PM - 8:30 PM",
+            "dinner"
+          ),
+
+          hotel("Ooty Hotel"),
         ],
       },
 
       {
         day: 2,
-        title: "Coonoor Day Trip",
+        title: "Ooty Sightseeing",
+
         activities: [
-          food("Breakfast at hotel", "7:30 AM - 8:30 AM"),
-          place("Toy train", "9:00 AM - 11:00 AM", 500),
-          place("Tea estates", "11:30 AM - 1:00 PM"),
-          food("Lunch at local restaurant", "1:00 PM - 2:00 PM"),
-          place("Doddabetta Peak", "2:30 PM - 4:00 PM", 30),
-          food("Dinner at hotel", "7:30 PM - 8:30 PM"),
+          food(
+            "Breakfast at hotel",
+            "8:00 AM - 9:00 AM",
+            "breakfast"
+          ),
+
+          place(
+            "Doddabetta Peak",
+            "9:15 AM - 10:45 AM"
+          ),
+
+          place(
+            "Tea Factory",
+            "11:00 AM - 12:30 PM"
+          ),
+
+          food(
+            "Lunch at local restaurant",
+            "1:00 PM - 2:00 PM",
+            "lunch"
+          ),
+
+          place(
+            "Nilgiri Mountain Railway",
+            "2:15 PM - 4:15 PM",
+            500
+          ),
+
+          place(
+            "Tea Garden",
+            "4:30 PM - 5:30 PM"
+          ),
+
+          food(
+            "Dinner at hotel",
+            "7:30 PM - 8:30 PM",
+            "dinner"
+          ),
+
+          hotel("Ooty Hotel"),
         ],
       },
 
       {
         day: 3,
-        title: "Departure",
+        title: "Ooty Departure",
+
         activities: [
-          food("Breakfast at hotel", "8:00 AM - 9:00 AM"),
-          place("Shopping", "9:30 AM - 11:00 AM"),
-          food("Lunch at local restaurant", "12:00 PM - 1:00 PM"),
-          travel("Departure", "2:00 PM - 3:00 PM"),
+          food(
+            "Breakfast at hotel",
+            "8:00 AM - 9:00 AM",
+            "breakfast"
+          ),
+
+          place(
+            "Morning Walk",
+            "9:15 AM - 10:45 AM"
+          ),
+
+          place(
+            "Local Shopping",
+            "11:00 AM - 12:30 PM"
+          ),
+
+          food(
+            "Lunch at local restaurant",
+            "1:00 PM - 2:00 PM",
+            "lunch"
+          ),
+
+          place(
+            "Departure Preparation",
+            "2:15 PM - 4:00 PM"
+          ),
+
+          place(
+            "Departure",
+            "4:15 PM - 6:00 PM"
+          ),
+
+          food(
+            "Dinner at hotel",
+            "7:30 PM - 8:30 PM",
+            "dinner"
+          ),
         ],
       },
     ],
   },
 
-  // =======================================================
-  // 6. KODAIKANAL NATURE TRIP
-  // =======================================================
+
+  // ==========================================================
+  // PLAN 6 - KODAIKANAL
+  // ==========================================================
 
   {
     id: 6,
-    title: "Kodaikanal Nature Trip",
+    title: "Kodaikanal Nature Escape",
     destination: "Kodaikanal",
     days: 3,
     nights: 2,
     category: "Nature",
-    price: 9000,
-    baseAmount: 6000,
-    baseAmountPerDay: 2000,
-    placeAmount: 3000,
+    price: 10800,
+    baseAmount: 7000,
+    baseAmountPerDay: 2333,
+    placeAmount: 3800,
+
     baseIncludes: [
-      "Basic transportation",
+      "Transportation",
       "Hotel accommodation support",
       "Nature sightseeing",
       "Trip planning assistance",
     ],
+
     image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIN4FcFaTUazH23bFSHFtIHHk0Bgsc-Iqb3k_J3QoxBQ&s=10",
-    highlights: ["Lake", "Pillar Rocks", "Forest Walks"],
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1SgZ9A8lADcE17I0UFNa3vflj9O4BLPXHiPyk7lqEjw&s=10",
+
+    highlights: [
+      "Kodaikanal Lake",
+      "Coaker's Walk",
+      "Pillar Rocks",
+    ],
+
     places: [
       "Kodaikanal Lake",
       "Coaker's Walk",
@@ -702,94 +1559,267 @@ export const plans = [
     ],
 
     itinerary: [
+
       {
         day: 1,
         title: "Kodaikanal Arrival",
+
         activities: [
-          travel("Hotel check-in", "10:00 AM - 11:00 AM"),
-          place("Kodaikanal Lake", "11:30 AM - 1:00 PM", 100),
-          food("Lunch at local restaurant", "1:00 PM - 2:00 PM"),
-          place("Coaker's Walk", "2:30 PM - 4:00 PM", 30),
-          place("Local market", "4:30 PM - 6:00 PM"),
-          food("Dinner at hotel", "7:30 PM - 8:30 PM"),
+          food(
+            "Breakfast at hotel",
+            "8:00 AM - 9:00 AM",
+            "breakfast"
+          ),
+
+          place(
+            "Kodaikanal Lake",
+            "9:15 AM - 10:45 AM"
+          ),
+
+          place(
+            "Coaker's Walk",
+            "11:00 AM - 12:30 PM"
+          ),
+
+          food(
+            "Lunch at local restaurant",
+            "1:00 PM - 2:00 PM",
+            "lunch"
+          ),
+
+          place(
+            "Bryant Park",
+            "2:15 PM - 3:45 PM"
+          ),
+
+          place(
+            "Kodaikanal Market",
+            "4:00 PM - 5:30 PM"
+          ),
+
+          food(
+            "Dinner at hotel",
+            "7:30 PM - 8:30 PM",
+            "dinner"
+          ),
+
+          hotel("Kodaikanal Hotel"),
         ],
       },
 
       {
         day: 2,
-        title: "Nature Day",
+        title: "Kodaikanal Sightseeing",
+
         activities: [
-          food("Breakfast at hotel", "7:30 AM - 8:30 AM"),
-          place("Pillar Rocks", "9:00 AM - 11:00 AM", 50),
-          place("Bryant Park", "11:30 AM - 1:00 PM", 30),
-          food("Lunch at local restaurant", "1:00 PM - 2:00 PM"),
-          place("Forest views", "2:30 PM - 5:00 PM"),
-          food("Dinner at hotel", "7:30 PM - 8:30 PM"),
+          food(
+            "Breakfast at hotel",
+            "8:00 AM - 9:00 AM",
+            "breakfast"
+          ),
+
+          place(
+            "Pillar Rocks",
+            "9:15 AM - 10:45 AM"
+          ),
+
+          place(
+            "Guna Caves",
+            "11:00 AM - 12:30 PM",
+            50
+          ),
+
+          food(
+            "Lunch at local restaurant",
+            "1:00 PM - 2:00 PM",
+            "lunch"
+          ),
+
+          place(
+            "Pine Forest",
+            "2:15 PM - 3:45 PM"
+          ),
+
+          place(
+            "Moir Point",
+            "4:00 PM - 5:30 PM"
+          ),
+
+          food(
+            "Dinner at hotel",
+            "7:30 PM - 8:30 PM",
+            "dinner"
+          ),
+
+          hotel("Kodaikanal Hotel"),
         ],
       },
 
       {
         day: 3,
-        title: "Departure",
+        title: "Kodaikanal Departure",
+
         activities: [
-          food("Breakfast at hotel", "8:00 AM - 9:00 AM"),
-          place("Shopping", "9:30 AM - 11:00 AM"),
-          food("Lunch at local restaurant", "12:00 PM - 1:00 PM"),
-          travel("Departure", "2:00 PM - 3:00 PM"),
+          food(
+            "Breakfast at hotel",
+            "8:00 AM - 9:00 AM",
+            "breakfast"
+          ),
+
+          place(
+            "Morning Lake Walk",
+            "9:15 AM - 10:45 AM"
+          ),
+
+          place(
+            "Local Shopping",
+            "11:00 AM - 12:30 PM"
+          ),
+
+          food(
+            "Lunch at local restaurant",
+            "1:00 PM - 2:00 PM",
+            "lunch"
+          ),
+
+          place(
+            "Departure Preparation",
+            "2:15 PM - 4:00 PM"
+          ),
+
+          place(
+            "Departure",
+            "4:15 PM - 6:00 PM"
+          ),
+
+          food(
+            "Dinner at hotel",
+            "7:30 PM - 8:30 PM",
+            "dinner"
+          ),
         ],
       },
     ],
   },
 
-  // =======================================================
-  // 7. CHENNAI CITY BREAK
-  // =======================================================
+
+  // ==========================================================
+  // PLAN 7 - CHENNAI ONE DAY
+  // ==========================================================
+  // IMPORTANT:
+  // NO HOTEL
+  // NO EVENING SNACK
+  // NO COFFEE CARD
+  // DINNER ENDS AT 9:00 PM
+  // ==========================================================
 
   {
     id: 7,
-    title: "Chennai City Break",
+    title: "Chennai City Explorer",
     destination: "Chennai",
     days: 1,
     nights: 0,
     category: "City",
-    price: 2500,
-    baseAmount: 1500,
-    baseAmountPerDay: 1500,
+    price: 2600,
+    baseAmount: 1600,
+    baseAmountPerDay: 1600,
     placeAmount: 1000,
+
     baseIncludes: [
       "Local transportation",
       "City sightseeing",
       "Trip planning assistance",
     ],
+
     image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4MhydjQeQbKTk9UZsQLhJkZ713tnZvJA4Au57ifcW_A&s=10",
-    highlights: ["Marina Beach", "Temples", "City Food"],
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQntzvYHW4eHnJeMjPuipRngACGXplSWt0N9Q2m7keLhg&s=10",
+
+    highlights: [
+      "Marina Beach",
+      "Kapaleeshwarar Temple",
+      "Fort St George",
+    ],
+
     places: [
       "Marina Beach",
       "Kapaleeshwarar Temple",
       "Fort St George",
+      "San Thome Basilica",
     ],
 
     itinerary: [
       {
         day: 1,
         title: "Chennai City Tour",
+
         activities: [
-          place("Marina Beach", "8:00 AM - 9:30 AM", 0),
-          food("Breakfast at local hotel", "9:30 AM - 10:00 AM"),
-          place("Fort St George", "10:30 AM - 12:00 PM", 200),
-          food("Lunch at local restaurant", "12:30 PM - 1:30 PM"),
-          place("Kapaleeshwarar Temple", "2:00 PM - 3:30 PM", 0),
-          place("San Thome Basilica", "4:00 PM - 5:00 PM", 0),
-          food("Filter Coffee", "5:00 PM - 5:30 PM"),
+
+          // 8:00 AM
+          food(
+            "Breakfast at local hotel",
+            "8:00 AM - 9:00 AM",
+            "breakfast"
+          ),
+
+          // Morning
+          place(
+            "Marina Beach",
+            "9:15 AM - 10:45 AM"
+          ),
+
+          place(
+            "Kapaleeshwarar Temple",
+            "11:00 AM - 12:30 PM"
+          ),
+
+          // Lunch
+          food(
+            "Lunch at local restaurant",
+            "1:00 PM - 2:00 PM",
+            "lunch"
+          ),
+
+          // Afternoon
+          place(
+            "Fort St George",
+            "2:15 PM - 3:45 PM",
+            200
+          ),
+
+          place(
+            "San Thome Basilica",
+            "4:00 PM - 5:15 PM"
+          ),
+
+          place(
+            "Chennai Local Market",
+            "5:30 PM - 6:45 PM"
+          ),
+
+          place(
+            "Marina Beach Evening Walk",
+            "7:00 PM - 7:45 PM"
+          ),
+
+          // Dinner
+          food(
+            "Dinner - Saravana Bhavan",
+            "8:00 PM - 9:00 PM",
+            "dinner"
+          ),
         ],
       },
     ],
   },
 
-  // =======================================================
-  // 8. MAHABALIPURAM HERITAGE
-  // =======================================================
+
+  // ==========================================================
+  // PLAN 8 - MAHABALIPURAM ONE DAY
+  // ==========================================================
+  // NO HOTEL
+  // NO EVENING SNACK
+  // NO COFFEE CARD
+  // ==========================================================
 
   {
     id: 8,
@@ -802,40 +1832,104 @@ export const plans = [
     baseAmount: 1800,
     baseAmountPerDay: 1800,
     placeAmount: 1200,
+
     baseIncludes: [
       "Local transportation",
       "Heritage sightseeing",
       "Trip planning assistance",
     ],
+
     image:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS09Z73-x0qqLAUd7YkZUVxedBVDnqDOdin1s1vU-wG8A&s=10",
-    highlights: ["Shore Temple", "Pancha Rathas", "Beach"],
+
+    highlights: [
+      "Shore Temple",
+      "Pancha Rathas",
+      "Mahabalipuram Beach",
+    ],
+
     places: [
       "Shore Temple",
       "Arjuna's Penance",
       "Pancha Rathas",
+      "Mahabalipuram Beach",
     ],
 
     itinerary: [
       {
         day: 1,
         title: "Mahabalipuram Heritage Tour",
+
         activities: [
-          food("Breakfast at local hotel", "8:00 AM - 8:30 AM"),
-          place("Shore Temple", "9:00 AM - 10:30 AM", 40),
-          place("Pancha Rathas", "11:00 AM - 12:30 PM", 40),
-          food("Lunch at local restaurant", "12:30 PM - 1:30 PM"),
-          place("Arjuna's Penance", "2:00 PM - 3:00 PM", 40),
-          place("Mahabalipuram Beach", "3:30 PM - 5:00 PM", 0),
-          food("Evening snacks", "5:00 PM - 5:30 PM"),
+
+          // Breakfast
+          food(
+            "Breakfast at local hotel",
+            "8:00 AM - 9:00 AM",
+            "breakfast"
+          ),
+
+          // Morning
+          place(
+            "Shore Temple",
+            "9:15 AM - 10:45 AM",
+            40
+          ),
+
+          place(
+            "Pancha Rathas",
+            "11:00 AM - 12:30 PM",
+            40
+          ),
+
+          // Lunch
+          food(
+            "Lunch at local restaurant",
+            "1:00 PM - 2:00 PM",
+            "lunch"
+          ),
+
+          // Afternoon
+          place(
+            "Arjuna's Penance",
+            "2:15 PM - 3:45 PM",
+            40
+          ),
+
+          place(
+            "Krishna's Butter Ball",
+            "4:00 PM - 5:00 PM"
+          ),
+
+          place(
+            "Mahabalipuram Beach",
+            "5:15 PM - 6:30 PM"
+          ),
+
+          place(
+            "Local Handicraft Shopping",
+            "6:45 PM - 7:45 PM"
+          ),
+
+          // Dinner
+          food(
+            "Dinner - Sea View Restaurant",
+            "8:00 PM - 9:00 PM",
+            "dinner"
+          ),
         ],
       },
     ],
   },
 
-  // =======================================================
-  // 9. MADURAI CULTURAL JOURNEY
-  // =======================================================
+
+  // ==========================================================
+  // PLAN 9 - MADURAI ONE DAY
+  // ==========================================================
+  // NO HOTEL
+  // NO EVENING SNACK
+  // NO JIGARTHANDA CARD
+  // ==========================================================
 
   {
     id: 9,
@@ -848,40 +1942,99 @@ export const plans = [
     baseAmount: 1700,
     baseAmountPerDay: 1700,
     placeAmount: 1100,
+
     baseIncludes: [
       "Local transportation",
       "Temple sightseeing",
       "Trip planning assistance",
     ],
+
     image:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQicfGeTba1kLPdwm4bB75Tr4F_Q87112V2b1mCN-zvGw&s=10",
-    highlights: ["Meenakshi Temple", "Palace", "Local Food"],
+
+    highlights: [
+      "Meenakshi Temple",
+      "Thirumalai Nayakkar Palace",
+      "Gandhi Museum",
+    ],
+
     places: [
       "Meenakshi Amman Temple",
       "Thirumalai Nayakkar Palace",
-      "Gandhi Museum",
+      "Gandhi Memorial Museum",
+      "Vandiyur Mariamman Teppakulam",
     ],
 
     itinerary: [
       {
         day: 1,
         title: "Madurai Cultural Tour",
+
         activities: [
-          place("Meenakshi Amman Temple", "8:00 AM - 10:00 AM", 0),
-          food("Breakfast at local hotel", "10:00 AM - 10:30 AM"),
-          place("Thirumalai Nayakkar Palace", "11:00 AM - 12:30 PM", 50),
-          food("Lunch at local restaurant", "12:30 PM - 1:30 PM"),
-          place("Gandhi Memorial Museum", "2:00 PM - 3:30 PM", 20),
-          place("Vandiyur Mariamman Teppakulam", "4:00 PM - 5:00 PM", 0),
-          food("Jigarthanda", "5:00 PM - 5:30 PM"),
+
+          // Breakfast
+          food(
+            "Breakfast at local hotel",
+            "8:00 AM - 9:00 AM",
+            "breakfast"
+          ),
+
+          // Morning
+          place(
+            "Meenakshi Amman Temple",
+            "9:15 AM - 10:45 AM"
+          ),
+
+          place(
+            "Thirumalai Nayakkar Palace",
+            "11:00 AM - 12:30 PM",
+            50
+          ),
+
+          // Lunch
+          food(
+            "Lunch at local restaurant",
+            "1:00 PM - 2:00 PM",
+            "lunch"
+          ),
+
+          // Afternoon
+          place(
+            "Gandhi Memorial Museum",
+            "2:15 PM - 3:45 PM",
+            20
+          ),
+
+          place(
+            "Vandiyur Mariamman Teppakulam",
+            "4:00 PM - 5:15 PM"
+          ),
+
+          place(
+            "Madurai Local Market",
+            "5:30 PM - 6:45 PM"
+          ),
+
+          place(
+            "Temple Street Walk",
+            "7:00 PM - 7:45 PM"
+          ),
+
+          // Dinner
+          food(
+            "Dinner - Murugan Idli Shop",
+            "8:00 PM - 9:00 PM",
+            "dinner"
+          ),
         ],
       },
     ],
   },
 
-  // =======================================================
-  // 10. THANJAVUR HERITAGE TRAIL
-  // =======================================================
+
+  // ==========================================================
+  // PLAN 10 - THANJAVUR HERITAGE
+  // ==========================================================
 
   {
     id: 10,
@@ -894,15 +2047,23 @@ export const plans = [
     baseAmount: 4500,
     baseAmountPerDay: 2250,
     placeAmount: 2300,
+
     baseIncludes: [
       "Basic transportation",
       "Hotel accommodation support",
       "Heritage sightseeing",
       "Trip planning assistance",
     ],
+
     image:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5c9gkG2UksnUss2XCzsx_qgCRleHw4eraLI2B7dKdOw&s=10",
-    highlights: ["Brihadeeswarar Temple", "Palace", "Art"],
+
+    highlights: [
+      "Brihadeeswarar Temple",
+      "Thanjavur Palace",
+      "Art",
+    ],
+
     places: [
       "Brihadeeswarar Temple",
       "Thanjavur Palace",
@@ -910,28 +2071,99 @@ export const plans = [
     ],
 
     itinerary: [
+
       {
         day: 1,
         title: "Temple and Palace",
+
         activities: [
-          travel("Hotel check-in", "10:00 AM - 11:00 AM"),
-          place("Brihadeeswarar Temple", "11:30 AM - 1:00 PM", 0),
-          food("Lunch at local restaurant", "1:00 PM - 2:00 PM"),
-          place("Thanjavur Palace", "2:30 PM - 4:00 PM", 100),
-          place("Art Gallery", "4:30 PM - 5:30 PM", 50),
-          food("Dinner at hotel", "7:30 PM - 8:30 PM"),
+          food(
+            "Breakfast at hotel",
+            "8:00 AM - 9:00 AM",
+            "breakfast"
+          ),
+
+          place(
+            "Brihadeeswarar Temple",
+            "9:15 AM - 10:45 AM"
+          ),
+
+          place(
+            "Thanjavur Palace",
+            "11:00 AM - 12:30 PM",
+            100
+          ),
+
+          food(
+            "Lunch at local restaurant",
+            "1:00 PM - 2:00 PM",
+            "lunch"
+          ),
+
+          place(
+            "Art Gallery",
+            "2:15 PM - 3:45 PM",
+            50
+          ),
+
+          place(
+            "Local Handicraft Shopping",
+            "4:00 PM - 5:30 PM"
+          ),
+
+          food(
+            "Dinner at hotel",
+            "7:30 PM - 8:30 PM",
+            "dinner"
+          ),
+
+          hotel("Thanjavur Hotel"),
         ],
       },
 
       {
         day: 2,
         title: "Library and Departure",
+
         activities: [
-          food("Breakfast at hotel", "8:00 AM - 9:00 AM"),
-          place("Saraswathi Mahal Library", "9:30 AM - 11:00 AM", 50),
-          place("Shopping", "11:30 AM - 12:30 PM"),
-          food("Lunch at local restaurant", "12:30 PM - 1:30 PM"),
-          travel("Departure", "2:00 PM - 3:00 PM"),
+          food(
+            "Breakfast at hotel",
+            "8:00 AM - 9:00 AM",
+            "breakfast"
+          ),
+
+          place(
+            "Saraswathi Mahal Library",
+            "9:15 AM - 10:45 AM",
+            50
+          ),
+
+          place(
+            "Thanjavur Local Shopping",
+            "11:00 AM - 12:30 PM"
+          ),
+
+          food(
+            "Lunch at local restaurant",
+            "1:00 PM - 2:00 PM",
+            "lunch"
+          ),
+
+          place(
+            "Departure Preparation",
+            "2:15 PM - 4:00 PM"
+          ),
+
+          place(
+            "Departure",
+            "4:15 PM - 6:00 PM"
+          ),
+
+          food(
+            "Dinner at hotel",
+            "7:30 PM - 8:30 PM",
+            "dinner"
+          ),
         ],
       },
     ],
