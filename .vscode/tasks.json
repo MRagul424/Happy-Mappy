@@ -9,6 +9,9 @@
 				"run",
 				"dev"
 			],
+			"options": {
+				"cwd": "${workspaceFolder}/Frontend"
+			},
 			"isBackground": true,
 			"problemMatcher": []
 		}

@@ -24,6 +24,12 @@ import {
   useNavigate,
 } from "react-router-dom";
 
+/* ==================================================
+   HAPPY MAPPY BACKEND
+================================================== */
+
+const API_BASE_URL = "http://localhost:5000";
+
 export default function AuthPage() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -166,10 +172,27 @@ export default function AuthPage() {
   };
 
   /* ==================================================
+     RESET FORM
+  ================================================== */
+
+  const resetForm = () => {
+    setForm({
+      name: "",
+      email: "",
+      contact: "",
+      password: "",
+      confirmPassword: "",
+    });
+
+    setShowPassword(false);
+    setShowConfirmPassword(false);
+  };
+
+  /* ==================================================
      SUBMIT
   ================================================== */
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     const email =
@@ -250,129 +273,168 @@ export default function AuthPage() {
       }
 
       /* ================================================
-         EXISTING USERS
+         REGISTER WITH BACKEND
       ================================================ */
 
-      const existingUsers =
-        JSON.parse(
-          localStorage.getItem(
-            "happyMappyUsers"
-          ) || "[]"
+      try {
+        const response = await fetch(
+          `${API_BASE_URL}/api/auth/register`,
+          {
+            method: "POST",
+
+            headers: {
+              "Content-Type": "application/json",
+            },
+
+            body: JSON.stringify({
+              name: form.name.trim(),
+              email,
+              contact: form.contact,
+              password: form.password,
+            }),
+          }
         );
 
-      /* ================================================
-         CHECK USER
-      ================================================ */
+        /* ==============================================
+           READ RESPONSE
+        ============================================== */
 
-      const userExists =
-        existingUsers.some(
-          (user) =>
-            user.email === email
+        const data = await response.json();
+
+        /* ==============================================
+           BACKEND ERROR
+        ============================================== */
+
+        if (!response.ok) {
+          showPopup({
+            type:
+              response.status === 409
+                ? "warning"
+                : "error",
+
+            title:
+              response.status === 409
+                ? "Account Already Exists"
+                : "Registration Failed",
+
+            message:
+              data.message ||
+              "Unable to create your account. Please try again.",
+
+            buttonText:
+              response.status === 409
+                ? "Go to Sign In"
+                : "Try Again",
+
+            action:
+              response.status === 409
+                ? () => {
+                    setIsRegister(false);
+
+                    setForm({
+                      name: "",
+                      email,
+                      contact: "",
+                      password: "",
+                      confirmPassword: "",
+                    });
+                  }
+                : null,
+          });
+
+          return;
+        }
+
+        /* ==============================================
+           CHECK TOKEN
+        ============================================== */
+
+        if (!data.token || !data.user) {
+          showPopup({
+            type: "error",
+            title: "Registration Error",
+            message:
+              "Your account may have been created, but the login session could not be created. Please try signing in.",
+            buttonText: "OK",
+          });
+
+          return;
+        }
+
+        /* ==============================================
+           SAVE JWT TOKEN
+        ============================================== */
+
+        localStorage.setItem(
+          "happyMappyToken",
+          data.token
         );
 
-      if (userExists) {
+        /* ==============================================
+           SAVE CURRENT USER
+        ============================================== */
+
+        const currentUser = {
+          id: data.user.id,
+          name: data.user.name,
+          email: data.user.email,
+          contact: data.user.contact || "",
+        };
+
+        localStorage.setItem(
+          "happyMappyCurrentUser",
+          JSON.stringify(currentUser)
+        );
+
+        /* ==============================================
+           AUTH CHANGE EVENT
+        ============================================== */
+
+        window.dispatchEvent(
+          new Event(
+            "happyMappyAuthChanged"
+          )
+        );
+
+        /* ==============================================
+           SUCCESS POPUP
+        ============================================== */
+
         showPopup({
-          type: "warning",
-          title: "Account Already Exists",
+          type: "success",
+          title: "Account Created!",
           message:
-            "An account with this email already exists. Please sign in instead.",
-          buttonText: "Go to Sign In",
+            `Welcome ${data.user.name}! Your Happy Mappy account has been created successfully. You are now logged in.`,
+          buttonText: "Continue",
           action: () => {
-            setIsRegister(false);
-
-            setForm({
-              name: "",
-              email: email,
-              contact: "",
-              password: "",
-              confirmPassword: "",
-            });
+            navigate(
+              location.state?.from || "/",
+              {
+                replace: true,
+              }
+            );
           },
         });
 
-        return;
+        /* ==============================================
+           CLEAR FORM
+        ============================================== */
+
+        resetForm();
+      } catch (error) {
+        console.error(
+          "Registration Error:",
+          error
+        );
+
+        showPopup({
+          type: "error",
+          title: "Connection Error",
+          message:
+            "Unable to connect to the Happy Mappy server. Please make sure the backend is running and try again.",
+          buttonText: "Try Again",
+        });
       }
-
-      /* ================================================
-         CREATE NEW USER
-      ================================================ */
-
-      const newUser = {
-        id: Date.now(),
-        name: form.name.trim(),
-        email,
-        contact: form.contact,
-        password: form.password,
-      };
-
-      /* ================================================
-         SAVE USER
-      ================================================ */
-
-      localStorage.setItem(
-        "happyMappyUsers",
-        JSON.stringify([
-          ...existingUsers,
-          newUser,
-        ])
-      );
-
-      /* ================================================
-         AUTOMATIC LOGIN
-      ================================================ */
-
-      const currentUser = {
-        id: newUser.id,
-        name: newUser.name,
-        email: newUser.email,
-        contact: newUser.contact,
-      };
-
-      localStorage.setItem(
-        "happyMappyCurrentUser",
-        JSON.stringify(currentUser)
-      );
-
-      window.dispatchEvent(
-        new Event(
-          "happyMappyAuthChanged"
-        )
-      );
-
-      /* ================================================
-         SUCCESS POPUP
-      ================================================ */
-
-      showPopup({
-        type: "success",
-        title: "Account Created!",
-        message:
-          `Welcome ${newUser.name}! Your Happy Mappy account has been created successfully. You are now logged in.`,
-        buttonText: "Continue",
-        action: () => {
-          navigate(
-            location.state?.from || "/",
-            {
-              replace: true,
-            }
-          );
-        },
-      });
-
-      /* ================================================
-         CLEAR FORM
-      ================================================ */
-
-      setForm({
-        name: "",
-        email: "",
-        contact: "",
-        password: "",
-        confirmPassword: "",
-      });
-
-      setShowPassword(false);
-      setShowConfirmPassword(false);
 
       return;
     }
@@ -381,83 +443,160 @@ export default function AuthPage() {
        LOGIN
     ================================================== */
 
-    const existingUsers =
-      JSON.parse(
-        localStorage.getItem(
-          "happyMappyUsers"
-        ) || "[]"
-      );
+    /* ==================================================
+       LOGIN VALIDATION
+    ================================================== */
 
-    const user =
-      existingUsers.find(
-        (account) =>
-          account.email === email &&
-          account.password ===
-            form.password
-      );
-
-    if (!user) {
+    if (!email || !form.password) {
       showPopup({
         type: "error",
-        title: "Login Failed",
+        title: "Login Details Required",
         message:
-          "Invalid email or password. Please check your login details and try again.",
+          "Please enter your email and password.",
         buttonText: "Try Again",
       });
 
       return;
     }
 
-    /* ================================================
-       SAVE CURRENT USER
-       CONTACT INCLUDED
-    ================================================ */
+    /* ==================================================
+       LOGIN WITH BACKEND
+    ================================================== */
 
-    const currentUser = {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      contact: user.contact || "",
-    };
+    try {
+      const response = await fetch(
+        `${API_BASE_URL}/api/auth/login`,
+        {
+          method: "POST",
 
-    localStorage.setItem(
-      "happyMappyCurrentUser",
-      JSON.stringify(currentUser)
-    );
+          headers: {
+            "Content-Type": "application/json",
+          },
 
-    window.dispatchEvent(
-      new Event(
-        "happyMappyAuthChanged"
-      )
-    );
+          body: JSON.stringify({
+            email,
+            password: form.password,
+          }),
+        }
+      );
 
-    /* ================================================
-       RETURN LOCATION
-    ================================================ */
+      /* ================================================
+         READ RESPONSE
+      ================================================ */
 
-    const returnPath =
-      location.state?.from || "/";
+      const data = await response.json();
 
-    showPopup({
-      type: "success",
-      title: "Welcome Back!",
-      message:
-        `Hi ${user.name}! You have successfully logged in to Happy Mappy.`,
-      buttonText: "Continue",
-      action: () => {
-        navigate(returnPath, {
-          replace: true,
+      /* ================================================
+         LOGIN ERROR
+      ================================================ */
+
+      if (!response.ok) {
+        showPopup({
+          type: "error",
+          title: "Login Failed",
+          message:
+            data.message ||
+            "Invalid email or password. Please check your login details and try again.",
+          buttonText: "Try Again",
         });
-      },
-    });
 
-    setForm({
-      name: "",
-      email: "",
-      contact: "",
-      password: "",
-      confirmPassword: "",
-    });
+        return;
+      }
+
+      /* ================================================
+         CHECK TOKEN + USER
+      ================================================ */
+
+      if (!data.token || !data.user) {
+        showPopup({
+          type: "error",
+          title: "Login Error",
+          message:
+            "Login was successful, but the login session could not be created. Please try again.",
+          buttonText: "Try Again",
+        });
+
+        return;
+      }
+
+      /* ================================================
+         SAVE JWT TOKEN
+      ================================================ */
+
+      localStorage.setItem(
+        "happyMappyToken",
+        data.token
+      );
+
+      /* ================================================
+         SAVE CURRENT USER
+      ================================================ */
+
+      const currentUser = {
+        id: data.user.id,
+        name: data.user.name,
+        email: data.user.email,
+        contact: data.user.contact || "",
+      };
+
+      localStorage.setItem(
+        "happyMappyCurrentUser",
+        JSON.stringify(currentUser)
+      );
+
+      /* ================================================
+         AUTH CHANGE EVENT
+      ================================================ */
+
+      window.dispatchEvent(
+        new Event(
+          "happyMappyAuthChanged"
+        )
+      );
+
+      /* ================================================
+         RETURN LOCATION
+      ================================================ */
+
+      const returnPath =
+        location.state?.from || "/";
+
+      /* ================================================
+         SUCCESS POPUP
+      ================================================ */
+
+      showPopup({
+        type: "success",
+        title: "Welcome Back!",
+        message:
+          `Hi ${data.user.name}! You have successfully logged in to Happy Mappy.`,
+        buttonText: "Continue",
+        action: () => {
+          navigate(returnPath, {
+            replace: true,
+          });
+        },
+      });
+
+      /* ================================================
+         CLEAR FORM
+      ================================================ */
+
+      resetForm();
+    } catch (error) {
+      console.error(
+        "Login Error:",
+        error
+      );
+
+      showPopup({
+        type: "error",
+        title: "Connection Error",
+        message:
+          "Unable to connect to the Happy Mappy server. Please make sure the backend is running and try again.",
+        buttonText: "Try Again",
+      });
+    }
   };
 
   /* ==================================================
