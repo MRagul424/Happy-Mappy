@@ -189,7 +189,12 @@ export default function Navbar() {
             >
               Dual Plans
             </Link>
-
+            <Link
+               to="/my-plan"
+               className="nav-link"
+              >
+                 My Plan
+            </Link>
             <Link
               to="/contact"
               className="nav-link"
@@ -434,7 +439,14 @@ export default function Navbar() {
             >
               Dual Plans
             </Link>
+            {/* MY PLAN */}
 
+            <Link
+              to="/my-plan"
+               onClick={closeMenu}
+              >
+                  My Plan
+            </Link>
             {/* CONTACT */}
 
             <Link

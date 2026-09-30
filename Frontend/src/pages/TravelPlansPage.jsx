@@ -24,6 +24,7 @@ import {
 
 import { plans } from "../data/travelData";
 import { destinationPlans } from "../data/destinationPlans";
+import { saveMyPlan } from "../utils/myPlanStorage";
 
 export default function TravelPlansPage() {
   const navigate = useNavigate();
@@ -72,8 +73,10 @@ export default function TravelPlansPage() {
       .trim()
       .toUpperCase();
 
+    // Read the FIRST time from both single times and ranges such as
+    // "8:00 AM - 9:00 AM".
     const match = value.match(
-      /^(\d{1,2}):(\d{2})\s*(AM|PM)?$/
+      /(\d{1,2}):(\d{2})\s*(AM|PM)?/
     );
 
     if (!match) return 9999;
@@ -495,7 +498,7 @@ export default function TravelPlansPage() {
       return [];
     }
 
-    return [...activities].sort(
+    const ordered = [...activities].sort(
       (a, b) => {
         const timeA =
           getTimeMinutes(a?.time);
@@ -506,6 +509,47 @@ export default function TravelPlansPage() {
         return timeA - timeB;
       }
     );
+
+    /*
+     * Night stay must come immediately after dinner.
+     * This prevents an old/incorrect hotel time from placing the hotel
+     * before dinner. The actual hotel time is still displayed on the card.
+     */
+    const dinnerIndex = ordered.findIndex(
+      (activity) => isDinner(activity)
+    );
+
+    if (dinnerIndex !== -1) {
+      const firstHotel = ordered.find(
+        (activity) => isHotel(activity)
+      );
+
+      if (firstHotel) {
+        const withoutHotels = ordered.filter(
+          (activity) => !isHotel(activity)
+        );
+
+        const newDinnerIndex =
+          withoutHotels.findIndex(
+            (activity) => isDinner(activity)
+          );
+
+        if (newDinnerIndex !== -1) {
+          return [
+            ...withoutHotels.slice(
+              0,
+              newDinnerIndex + 1
+            ),
+            firstHotel,
+            ...withoutHotels.slice(
+              newDinnerIndex + 1
+            ),
+          ];
+        }
+      }
+    }
+
+    return ordered;
   };
 
   /* =========================================================
@@ -706,6 +750,8 @@ export default function TravelPlansPage() {
 
       return;
     }
+
+    saveMyPlan(plan);
 
     setSelectedPlan(null);
     setSuccessPlan(plan);

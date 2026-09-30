@@ -605,7 +605,7 @@ export const plans = [
     ],
 
     image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5y6wGq6u7mX9bZ8uY5J7n2L6s4p8Q0t3H9r5s7w1Q&s=10",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSe1geHESCKoUttZQW7mkdnCspWj2zW3G6KCUTT565DaQ&s=10",
 
     highlights: [
       "Chennai",

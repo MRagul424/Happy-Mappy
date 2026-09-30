@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import dualPlans from "../data/dualPlans";
+import { saveMyPlan } from "../utils/myPlanStorage";
 
 export default function DualPlansPage() {
   const navigate = useNavigate();
@@ -1079,6 +1080,11 @@ export default function DualPlansPage() {
       return;
     }
 
+    saveMyPlan({
+      ...plan,
+      selectedDuration,
+    });
+
     setSelectedPlan(null);
     setSuccessPlan(plan);
   };
@@ -1105,7 +1111,7 @@ export default function DualPlansPage() {
             Explore Two Destinations
             <br />
             <span>
-              In One Amazing Trip
+              Dual Plan
             </span>
           </h1>
 
@@ -2222,12 +2228,12 @@ export default function DualPlansPage() {
             </div>
 
             <h2>
-              Plan Selected!
+              Plan Saved!
             </h2>
 
             <p>
               Your dual travel plan has
-              been selected successfully.
+              been saved successfully.
             </p>
 
             <strong>

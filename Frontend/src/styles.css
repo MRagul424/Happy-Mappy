@@ -5008,3 +5008,904 @@ img {
 .travel-plan-page-scope .travel-plan-hotel-amount span {
   color: #64748b !important;
 }
+
+/* ============================================================
+   HAPPY MAPPY - MY PLAN
+============================================================ */
+
+.my-plan-page {
+  min-height: 100vh;
+  padding: 50px 6%;
+  background: #f8fafc;
+  color: #073b35;
+}
+
+.my-plan-header {
+  max-width: 1200px;
+  margin: 0 auto 35px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+}
+
+.my-plan-label {
+  display: inline-block;
+  margin-bottom: 8px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #0f766e;
+}
+
+.my-plan-header h1 {
+  margin: 0;
+  font-size: 42px;
+  font-weight: 800;
+}
+
+.my-plan-header p {
+  margin: 10px 0 0;
+  color: #64748b;
+  font-size: 16px;
+}
+
+.my-plan-user {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 12px 18px;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  font-weight: 700;
+}
+
+.my-plan-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+  gap: 25px;
+}
+
+.my-plan-card {
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  box-shadow:
+    0 8px 30px
+    rgba(15, 23, 42, 0.08);
+}
+
+.my-plan-image {
+  position: relative;
+  height: 220px;
+  overflow: hidden;
+  background: #e2e8f0;
+}
+
+.my-plan-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.my-plan-image > span {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  padding: 7px 11px;
+  border-radius: 999px;
+  background: rgba(7, 59, 53, 0.9);
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.7px;
+}
+
+.my-plan-image-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  color: #64748b;
+}
+
+.my-plan-card-content {
+  padding: 24px;
+}
+
+.my-plan-card-content h2 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 23px;
+}
+
+.my-plan-destination {
+  margin: 8px 0 0;
+  color: #0f766e;
+  font-weight: 700;
+}
+
+.my-plan-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 14px;
+}
+
+.my-plan-meta span {
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: #f1f5f9;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.my-plan-price {
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.my-plan-price small {
+  display: block;
+  color: #64748b;
+  margin-bottom: 4px;
+}
+
+.my-plan-price strong {
+  color: #073b35;
+  font-size: 27px;
+}
+
+.my-plan-actions {
+  display: grid;
+  grid-template-columns:
+    1fr 1fr;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.my-plan-remove-btn,
+.my-plan-buy-btn {
+  min-height: 45px;
+  border: 0;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 800;
+}
+
+.my-plan-remove-btn {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.my-plan-buy-btn {
+  background: #073b35;
+  color: #ffffff;
+}
+
+.my-plan-remove-btn:hover {
+  background: #fecaca;
+}
+
+.my-plan-buy-btn:hover {
+  background: #0f766e;
+}
+
+/* ============================================================
+   EMPTY STATE
+============================================================ */
+
+.my-plan-empty,
+.my-plan-login-box {
+  max-width: 650px;
+  margin: 70px auto;
+  padding: 55px 30px;
+  text-align: center;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  box-shadow:
+    0 8px 30px
+    rgba(15, 23, 42, 0.06);
+}
+
+.my-plan-empty-icon {
+  width: 78px;
+  height: 78px;
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #ccfbf1;
+  color: #0f766e;
+}
+
+.my-plan-empty h2,
+.my-plan-login-box h1 {
+  margin: 0;
+  color: #0f172a;
+}
+
+.my-plan-empty p,
+.my-plan-login-box p {
+  max-width: 500px;
+  margin: 12px auto 25px;
+  color: #64748b;
+  line-height: 1.7;
+}
+
+.my-plan-empty button,
+.my-plan-login-box button,
+.trip-success-modal > button {
+  border: 0;
+  padding: 12px 22px;
+  border-radius: 10px;
+  background: #073b35;
+  color: #ffffff;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+/* ============================================================
+   OVERLAY
+============================================================ */
+
+.my-plan-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  padding: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+  background: rgba(15, 23, 42, 0.68);
+}
+
+/* ============================================================
+   BOOKING MODAL
+============================================================ */
+
+.my-plan-booking-modal,
+.payment-modal,
+.trip-success-modal {
+  position: relative;
+  width: min(720px, 100%);
+  max-height: 92vh;
+  overflow-y: auto;
+  padding: 32px;
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow:
+    0 25px 80px
+    rgba(0, 0, 0, 0.25);
+}
+
+.my-plan-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 38px;
+  height: 38px;
+  border: 0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f1f5f9;
+  color: #334155;
+  cursor: pointer;
+}
+
+.my-plan-booking-header {
+  padding-right: 45px;
+  margin-bottom: 28px;
+}
+
+.my-plan-booking-header > span,
+.payment-header > span {
+  color: #0f766e;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.my-plan-booking-header h2,
+.payment-header h2 {
+  margin: 8px 0;
+  color: #0f172a;
+  font-size: 28px;
+}
+
+.my-plan-booking-header p,
+.payment-header p {
+  margin: 0;
+  color: #64748b;
+  line-height: 1.6;
+}
+
+/* ============================================================
+   BOOKING SECTION
+============================================================ */
+
+.booking-section {
+  margin-top: 23px;
+}
+
+.booking-section h3 {
+  margin: 0 0 13px;
+  color: #0f172a;
+  font-size: 17px;
+}
+
+.booking-user-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.booking-user-grid > div {
+  padding: 15px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #f8fafc;
+}
+
+.booking-user-grid small {
+  display: block;
+  margin-bottom: 5px;
+  color: #64748b;
+}
+
+.booking-user-grid strong {
+  color: #0f172a;
+  word-break: break-word;
+}
+
+/* ============================================================
+   PEOPLE
+============================================================ */
+
+.people-control {
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  border: 1px solid #cbd5e1;
+  border-radius: 11px;
+  overflow: hidden;
+}
+
+.people-control button {
+  width: 48px;
+  height: 46px;
+  border: 0;
+  background: #f1f5f9;
+  color: #0f172a;
+  cursor: pointer;
+}
+
+.people-control input {
+  width: 80px;
+  height: 46px;
+  border: 0;
+  border-left: 1px solid #e2e8f0;
+  border-right: 1px solid #e2e8f0;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 800;
+  outline: none;
+}
+
+.booking-section > small {
+  display: block;
+  margin-top: 8px;
+  color: #64748b;
+}
+
+/* ============================================================
+   DATE
+============================================================ */
+
+.booking-date {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 11px;
+}
+
+.booking-date svg {
+  color: #0f766e;
+}
+
+.booking-date input {
+  width: 100%;
+  height: 48px;
+  border: 0;
+  outline: none;
+  background: transparent;
+  font-size: 15px;
+}
+
+/* ============================================================
+   PRICE BOX
+============================================================ */
+
+.booking-price-box {
+  margin-top: 25px;
+  padding: 20px;
+  border-radius: 14px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+}
+
+.booking-price-box > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 8px 0;
+}
+
+.booking-price-box span {
+  color: #64748b;
+}
+
+.booking-price-box strong {
+  color: #0f172a;
+}
+
+.booking-discount strong {
+  color: #059669;
+}
+
+.booking-total {
+  margin-top: 10px;
+  padding-top: 16px !important;
+  border-top: 1px solid #cbd5e1;
+}
+
+.booking-total span {
+  color: #0f172a;
+  font-weight: 800;
+}
+
+.booking-total strong {
+  color: #073b35;
+  font-size: 25px;
+}
+
+.discount-success {
+  margin-top: 13px;
+  padding: 11px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 10px;
+  background: #dcfce7;
+  color: #166534;
+  font-weight: 800;
+}
+
+.proceed-payment-btn,
+.demo-pay-btn,
+.confirm-trip-btn {
+  width: 100%;
+  min-height: 48px;
+  margin-top: 20px;
+  border: 0;
+  border-radius: 11px;
+  background: #073b35;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.proceed-payment-btn:hover,
+.demo-pay-btn:hover,
+.confirm-trip-btn:hover {
+  background: #0f766e;
+}
+
+/* ============================================================
+   PAYMENT
+============================================================ */
+
+.payment-modal {
+  width: min(600px, 100%);
+}
+
+.payment-header {
+  padding-right: 40px;
+}
+
+.payment-methods {
+  display: grid;
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 25px;
+}
+
+.payment-methods button {
+  min-height: 85px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #334155;
+  cursor: pointer;
+  font-weight: 800;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.payment-methods button.active {
+  border-color: #0f766e;
+  background: #ccfbf1;
+  color: #0f766e;
+}
+
+.payment-input-area {
+  margin-top: 22px;
+}
+
+.payment-input-area label {
+  display: block;
+  margin-bottom: 8px;
+  color: #334155;
+  font-weight: 800;
+}
+
+.payment-input-area input,
+.payment-input-area select {
+  width: 100%;
+  height: 48px;
+  padding: 0 13px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  outline: none;
+  background: #ffffff;
+}
+
+.payment-total {
+  margin-top: 25px;
+  padding: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  border-radius: 12px;
+  background: #f1f5f9;
+}
+
+.payment-total span {
+  color: #475569;
+  font-weight: 700;
+}
+
+.payment-total strong {
+  color: #073b35;
+  font-size: 24px;
+}
+
+.payment-success {
+  margin-top: 22px;
+  padding: 25px;
+  text-align: center;
+  border-radius: 14px;
+  background: #ecfdf5;
+  color: #047857;
+}
+
+.payment-success h3 {
+  margin: 12px 0 6px;
+}
+
+.payment-success p {
+  margin: 0;
+  color: #64748b;
+}
+
+/* ============================================================
+   FINAL SUCCESS
+============================================================ */
+
+.trip-success-modal {
+  max-width: 560px;
+  text-align: center;
+}
+
+.trip-success-icon {
+  width: 85px;
+  height: 85px;
+  margin: 0 auto 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.trip-success-modal h2 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 30px;
+}
+
+.trip-success-modal > p {
+  color: #64748b;
+  line-height: 1.6;
+}
+
+.trip-summary {
+  margin: 25px 0;
+  display: grid;
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  text-align: left;
+}
+
+.trip-summary > div {
+  padding: 15px;
+  border-radius: 10px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+}
+
+.trip-summary span {
+  display: block;
+  margin-bottom: 5px;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.trip-summary strong {
+  color: #0f172a;
+}
+
+/* ============================================================
+   MOBILE
+============================================================ */
+
+@media (max-width: 850px) {
+
+  .my-plan-page {
+    padding: 35px 20px;
+  }
+
+  .my-plan-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .my-plan-header h1 {
+    font-size: 34px;
+  }
+
+  .my-plan-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .booking-user-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+@media (max-width: 600px) {
+
+  .my-plan-page {
+    padding: 25px 14px;
+  }
+
+  .my-plan-header h1 {
+    font-size: 30px;
+  }
+
+  .my-plan-card-content {
+    padding: 18px;
+  }
+
+  .my-plan-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .my-plan-overlay {
+    padding: 10px;
+  }
+
+  .my-plan-booking-modal,
+  .payment-modal,
+  .trip-success-modal {
+    padding: 22px;
+    border-radius: 15px;
+  }
+
+  .my-plan-booking-header h2,
+  .payment-header h2 {
+    font-size: 23px;
+  }
+
+  .payment-methods {
+    grid-template-columns: 1fr;
+  }
+
+  .payment-methods button {
+    min-height: 55px;
+    flex-direction: row;
+  }
+
+  .trip-summary {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+/* =========================================================
+   HAPPY MAPPY - AUTH PAGE VISIBILITY / AUTOFILL FIX
+   Only overrides the existing AuthPage styles.
+   No other page logic or styling is changed.
+   ========================================================= */
+.auth-heading h1,
+.auth-heading h1 span {
+  color: #172033 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  -webkit-text-fill-color: #172033 !important;
+}
+
+.input-wrapper {
+  background: #ffffff !important;
+}
+
+.input-wrapper input {
+  color: #172033 !important;
+  background: transparent !important;
+  opacity: 1 !important;
+  -webkit-text-fill-color: #172033 !important;
+  caret-color: #172033 !important;
+}
+
+.input-wrapper input::placeholder {
+  color: #94a3b8 !important;
+  opacity: 1 !important;
+  -webkit-text-fill-color: #94a3b8 !important;
+}
+
+.input-wrapper input:-webkit-autofill,
+.input-wrapper input:-webkit-autofill:hover,
+.input-wrapper input:-webkit-autofill:focus,
+.input-wrapper input:-webkit-autofill:active {
+  -webkit-text-fill-color: #172033 !important;
+  caret-color: #172033 !important;
+  -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
+  box-shadow: 0 0 0 1000px #ffffff inset !important;
+  background-color: #ffffff !important;
+  transition: background-color 9999s ease-in-out 0s;
+}
+/* =========================================
+   FIX CONTACT PAGE HEADING VISIBILITY
+========================================= */
+
+.contact-heading h2,
+.contact-form-heading h2 {
+  color: #0f172a !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  -webkit-text-fill-color: #0f172a !important;
+  background: none !important;
+  text-shadow: none !important;
+}
+
+/* Keep headings readable on smaller screens */
+@media (max-width: 768px) {
+  .contact-heading h2,
+  .contact-form-heading h2 {
+    color: #0f172a !important;
+    opacity: 1 !important;
+    -webkit-text-fill-color: #0f172a !important;
+  }
+}
+
+/* Match the Destinations page heading style */
+
+.travelplans-page-header .page-header-content h1 {
+  font-family: inherit;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+/* =====================================================
+   MY PLAN - MAKE ALL PLAN CARDS EQUAL HEIGHT
+===================================================== */
+
+.my-plan-page .my-plan-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+  grid-auto-rows: 1fr;
+  gap: 24px;
+}
+
+.my-plan-page .my-plan-grid > * {
+  height: 100%;
+  min-width: 0;
+}
+
+/* Keep plan images the same height */
+.my-plan-page .my-plan-image {
+  height: 185px !important;
+  width: 100%;
+  object-fit: cover;
+}
+
+/* Keep the card layout consistent */
+.my-plan-page .my-plan-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+/* Keep action buttons at the bottom */
+.my-plan-page .my-plan-buy-btn,
+.my-plan-page .my-plan-remove-btn {
+  margin-top: auto;
+}
+
+/* Mobile layout */
+@media (max-width: 650px) {
+  .my-plan-page .my-plan-grid {
+    grid-template-columns: 1fr !important;
+    grid-auto-rows: auto;
+  }
+
+  .my-plan-page .my-plan-grid > * {
+    height: auto;
+  }
+}
+/* Remove number input up/down arrows in Chrome, Edge, Safari */
+.my-plan-page input[type="number"]::-webkit-inner-spin-button,
+.my-plan-page input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Remove number input arrows in Firefox */
+.my-plan-page input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+/* =========================================================
+   CONTACT PAGE HERO TITLE FONT
+   Match the Contact Us heading to the existing page heading style.
+   No layout, color, responsive, or application logic changed.
+   ========================================================= */
+.contact-page-header .page-header-content h1 {
+  font-family: inherit;
+  font-weight: 800;
+  letter-spacing: -1px;
+}

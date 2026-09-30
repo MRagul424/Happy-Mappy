@@ -1,4 +1,8 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+} from "react-router-dom";
 
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
@@ -7,20 +11,36 @@ import Home from "./pages/Home";
 import DestinationsPage from "./pages/DestinationsPage";
 import TravelPlansPage from "./pages/TravelPlansPage";
 import DualPlansPage from "./pages/DualPlansPage";
+import MyPlanPage from "./pages/MyPlanPage";
 import AuthPage from "./pages/AuthPage";
 import ContactPage from "./pages/ContactPage";
+
+import "./App.css";
+import "./index.css";
+import "./styles.css";
 
 function App() {
   return (
     <BrowserRouter>
-      {/* NAVBAR - appears on every page */}
-      <Navbar />
+      <div className="app">
 
-      {/* PAGE CONTENT */}
-      <main>
+        {/* =====================================================
+            NAVBAR
+        ===================================================== */}
+
+        <Navbar />
+
+        {/* =====================================================
+            ROUTES
+        ===================================================== */}
+
         <Routes>
+
           {/* HOME */}
-          <Route path="/" element={<Home />} />
+          <Route
+            path="/"
+            element={<Home />}
+          />
 
           {/* DESTINATIONS */}
           <Route
@@ -40,7 +60,13 @@ function App() {
             element={<DualPlansPage />}
           />
 
-          {/* LOGIN / SIGN UP */}
+          {/* MY PLAN */}
+          <Route
+            path="/my-plan"
+            element={<MyPlanPage />}
+          />
+
+          {/* AUTHENTICATION */}
           <Route
             path="/auth"
             element={<AuthPage />}
@@ -52,16 +78,15 @@ function App() {
             element={<ContactPage />}
           />
 
-          {/* UNKNOWN URL */}
-          <Route
-            path="*"
-            element={<Home />}
-          />
         </Routes>
-      </main>
 
-      {/* FOOTER - appears on every page */}
-      <Footer />
+        {/* =====================================================
+            FOOTER
+        ===================================================== */}
+
+        <Footer />
+
+      </div>
     </BrowserRouter>
   );
 }

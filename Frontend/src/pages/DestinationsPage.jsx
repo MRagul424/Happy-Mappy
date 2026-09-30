@@ -362,14 +362,14 @@ export default function DestinationsPage() {
                   </div>
 
                   <div className="destination-bottom">
-                    <div className="destination-card-price">
+                    {/* <div className="destination-card-price">
                       <small>Plan Amount</small>
                       <strong>
                         {totalAmount > 0
                           ? `₹${totalAmount.toLocaleString("en-IN")}`
                           : "Free"}
                       </strong>
-                    </div>
+                    </div> */}
 
                     <Link
                       to={`/travel-plans?destination=${encodeURIComponent(
