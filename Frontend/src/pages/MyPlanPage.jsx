@@ -25,12 +25,9 @@ import {
   useNavigate,
 } from "react-router-dom";
 
-import {
-  getMyPlans,
-  removeMyPlan,
-} from "../utils/myPlanStorage";
-
-const API_URL = (import.meta.env.VITE_API_URL || "http://localhost:5000").replace(/\/+$/, "");
+const API_URL = (
+  import.meta.env.VITE_API_URL || "http://localhost:5000"
+).replace(/\/+$/, "");
 
 function getStoredUser() {
   try {
@@ -43,6 +40,7 @@ function getStoredUser() {
 
 function getAuthToken() {
   const user = getStoredUser();
+
   return (
     localStorage.getItem("happyMappyToken") ||
     localStorage.getItem("token") ||
@@ -54,31 +52,59 @@ function getAuthToken() {
 
 function getPlanKey(plan) {
   return String(
-    plan?.savedPlanKey ||
+    plan?.planKey ||
+      plan?.savedPlanKey ||
+      plan?.planId ||
       plan?.id ||
-      `${plan?.title || "plan"}-${plan?.destination || plan?.destinationName || ""}`
+      `${plan?.title || "plan"}-${
+        plan?.destination ||
+        plan?.destinationName ||
+        ""
+      }`
   );
 }
 
 function isPastTripDate(dateValue) {
   if (!dateValue) return true;
-  const parts = String(dateValue).slice(0, 10).split("-").map(Number);
-  if (parts.length !== 3 || parts.some((part) => !Number.isFinite(part))) return true;
-  const selected = new Date(parts[0], parts[1] - 1, parts[2]);
+
+  const parts = String(dateValue)
+    .slice(0, 10)
+    .split("-")
+    .map(Number);
+
+  if (
+    parts.length !== 3 ||
+    parts.some((part) => !Number.isFinite(part))
+  ) {
+    return true;
+  }
+
+  const selected = new Date(
+    parts[0],
+    parts[1] - 1,
+    parts[2]
+  );
+
   selected.setHours(0, 0, 0, 0);
+
   const today = new Date();
   today.setHours(0, 0, 0, 0);
+
   return selected < today;
 }
 
 async function apiRequest(path, options = {}) {
   const token = getAuthToken();
+
   if (!token) {
-    throw new Error("Your login token was not found. Please log out and log in again.");
+    throw new Error(
+      "Your login token was not found. Please log out and log in again."
+    );
   }
 
   const response = await fetch(`${API_URL}${path}`, {
     ...options,
+
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
@@ -86,10 +112,18 @@ async function apiRequest(path, options = {}) {
     },
   });
 
-  const data = await response.json().catch(() => ({}));
+  const data = await response
+    .json()
+    .catch(() => ({}));
+
   if (!response.ok) {
-    throw new Error(data.message || data.error || `Request failed (${response.status})`);
+    throw new Error(
+      data.message ||
+        data.error ||
+        `Request failed (${response.status})`
+    );
   }
+
   return data;
 }
 
@@ -102,21 +136,18 @@ export default function MyPlanPage() {
 
   const getCurrentUser = () => getStoredUser();
 
-  const currentUser =
-    getCurrentUser();
+  const currentUser = getCurrentUser();
 
   /* ============================================================
      STATE
   ============================================================ */
 
-  const [plans, setPlans] =
-    useState([]);
+  const [plans, setPlans] = useState([]);
 
   const [selectedPlan, setSelectedPlan] =
     useState(null);
 
-  const [people, setPeople] =
-    useState(1);
+  const [people, setPeople] = useState(1);
 
   const [tripDate, setTripDate] =
     useState("");
@@ -145,47 +176,209 @@ export default function MyPlanPage() {
   const [bookingReference, setBookingReference] =
     useState("");
 
-  const [bookings, setBookings] = useState([]);
-  const [viewBooking, setViewBooking] = useState(null);
-  const [loadingBookings, setLoadingBookings] = useState(false);
-  const [savingBooking, setSavingBooking] = useState(false);
-  const [bookingLoadError, setBookingLoadError] = useState("");
+  const [bookings, setBookings] =
+    useState([]);
+
+  const [viewBooking, setViewBooking] =
+    useState(null);
+
+  const [loadingBookings, setLoadingBookings] =
+    useState(false);
+
+  const [savingBooking, setSavingBooking] =
+    useState(false);
+
+  const [bookingLoadError, setBookingLoadError] =
+    useState("");
 
   /* ============================================================
      LOAD PLANS
   ============================================================ */
 
-  const loadPlans = () => {
-    setPlans(getMyPlans());
+  const loadPlans = async () => {
+    const token = getAuthToken();
+
+    if (!token) {
+      setPlans([]);
+      return;
+    }
+
+    try {
+      const data = await apiRequest(
+        "/api/saved-plans"
+      );
+
+      /*
+        MongoDB backend returns:
+
+        {
+          plans: [...]
+        }
+
+        Keep the frontend tolerant of either:
+        { plans: [...] }
+        { data: [...] }
+        [...]
+      */
+
+      const list = Array.isArray(data)
+        ? data
+        : Array.isArray(data?.plans)
+        ? data.plans
+        : Array.isArray(data?.data)
+        ? data.data
+        : [];
+
+      setPlans(
+        Array.isArray(list)
+          ? list.filter(Boolean)
+          : []
+      );
+    } catch (error) {
+      console.error(
+        "Load Saved Plans Error:",
+        error
+      );
+
+      setPlans([]);
+
+      window.alert(
+        `Load Saved Plans Error: ${
+          error.message
+        }`
+      );
+    }
   };
+
+  /* ============================================================
+     LOAD BOOKINGS
+  ============================================================ */
 
   const loadBookings = async () => {
     if (!getAuthToken()) {
       setBookings([]);
-      setBookingLoadError("Your login token was not found. Please log out and log in again.");
+
+      setBookingLoadError(
+        "Your login token was not found. Please log out and log in again."
+      );
+
       return;
     }
 
     setLoadingBookings(true);
     setBookingLoadError("");
+
     try {
-      const data = await apiRequest("/api/bookings");
-      const list = Array.isArray(data) ? data : data.bookings || data.data || [];
-      setBookings(list);
+      const data = await apiRequest(
+        "/api/bookings"
+      );
+
+      const list = Array.isArray(data)
+        ? data
+        : data.bookings ||
+          data.data ||
+          [];
+
+      setBookings(
+        Array.isArray(list)
+          ? list
+          : []
+      );
     } catch (error) {
-      setBookingLoadError(error.message || "Unable to load your bookings.");
+      setBookingLoadError(
+        error.message ||
+          "Unable to load your bookings."
+      );
     } finally {
       setLoadingBookings(false);
     }
   };
 
+  /* ============================================================
+     FIND BOOKING FOR PLAN
+  ============================================================ */
+
   const findBookingForPlan = (plan) => {
     const key = getPlanKey(plan);
-    return bookings.find((booking) =>
-      String(booking.planKey || "") === key &&
-      !["cancelled", "canceled"].includes(String(booking.bookingStatus || "").toLowerCase())
-    );
+
+    const planTitle = String(
+      plan?.title || ""
+    )
+      .trim()
+      .toLowerCase();
+
+    const planDestination = String(
+      plan?.destination ||
+        plan?.destinationName ||
+        ""
+    )
+      .trim()
+      .toLowerCase();
+
+    return bookings.find((booking) => {
+      const samePlanKey =
+        String(
+          booking.planKey || ""
+        ) === key;
+
+      const bookingTitle = String(
+        booking.planTitle || ""
+      )
+        .trim()
+        .toLowerCase();
+
+      const bookingDestination = String(
+        booking.destination || ""
+      )
+        .trim()
+        .toLowerCase();
+
+      const sameTitle =
+        !planTitle ||
+        !bookingTitle ||
+        bookingTitle === planTitle;
+
+      const sameDestination =
+        !planDestination ||
+        !bookingDestination ||
+        bookingDestination ===
+          planDestination;
+
+      const bookingDate = String(
+        booking.tripDate || ""
+      ).slice(0, 10);
+
+      const planDate = String(
+        plan.tripDate || ""
+      ).slice(0, 10);
+
+      const sameDate =
+        !planDate ||
+        bookingDate === planDate;
+
+      const isNotCancelled =
+        ![
+          "cancelled",
+          "canceled",
+        ].includes(
+          String(
+            booking.bookingStatus || ""
+          ).toLowerCase()
+        );
+
+      return (
+        samePlanKey &&
+        sameTitle &&
+        sameDestination &&
+        sameDate &&
+        isNotCancelled
+      );
+    });
   };
+
+  /* ============================================================
+     LOAD DATA
+  ============================================================ */
 
   useEffect(() => {
     loadPlans();
@@ -229,29 +422,51 @@ export default function MyPlanPage() {
   };
 
   const formatTripDate = (dateValue) => {
-    if (!dateValue) return "Not selected";
+    if (!dateValue) {
+      return "Not selected";
+    }
 
-    // Handle MongoDB ISO dates (2026-10-02T00:00:00.000Z)
-    // by removing the time portion before formatting.
-    const rawValue = String(dateValue).trim();
-    const datePart = rawValue.split("T")[0];
-    const isoMatch = datePart.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    const rawValue =
+      String(dateValue).trim();
+
+    const datePart =
+      rawValue.split("T")[0];
+
+    const isoMatch =
+      datePart.match(
+        /^(\d{4})-(\d{2})-(\d{2})$/
+      );
+
     if (isoMatch) {
       return `${isoMatch[3]}/${isoMatch[2]}/${isoMatch[1]}`;
     }
 
-    // If it is already formatted as DD/MM/YYYY, leave it readable.
-    const displayMatch = datePart.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
-    if (displayMatch) return datePart;
+    const displayMatch =
+      datePart.match(
+        /^(\d{2})\/(\d{2})\/(\d{4})$/
+      );
 
-    const parsed = new Date(rawValue);
-    if (!Number.isNaN(parsed.getTime())) {
-      return parsed.toLocaleDateString("en-GB", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-        timeZone: "UTC",
-      });
+    if (displayMatch) {
+      return datePart;
+    }
+
+    const parsed =
+      new Date(rawValue);
+
+    if (
+      !Number.isNaN(
+        parsed.getTime()
+      )
+    ) {
+      return parsed.toLocaleDateString(
+        "en-GB",
+        {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+          timeZone: "UTC",
+        }
+      );
     }
 
     return rawValue;
@@ -262,15 +477,28 @@ export default function MyPlanPage() {
   ============================================================ */
 
   const getNumericAmount = (value) => {
-    if (typeof value === "number" && Number.isFinite(value)) {
+    if (
+      typeof value === "number" &&
+      Number.isFinite(value)
+    ) {
       return value;
     }
 
     if (typeof value === "string") {
-      const cleaned = value.replace(/[^0-9.]/g, "");
-      const parsed = Number(cleaned);
+      const cleaned =
+        value.replace(
+          /[^0-9.]/g,
+          ""
+        );
 
-      return Number.isFinite(parsed) ? parsed : 0;
+      const parsed =
+        Number(cleaned);
+
+      return Number.isFinite(
+        parsed
+      )
+        ? parsed
+        : 0;
     }
 
     return 0;
@@ -281,22 +509,38 @@ export default function MyPlanPage() {
       return 0;
     }
 
-    const possiblePrices = [
+    const perPersonPrices = [
       plan.pricePerPerson,
-      plan.price,
-      plan.totalAmount,
+      plan.pricing?.pricePerPerson,
+      plan.pricing?.perPerson,
+    ];
+
+    for (
+      const value of perPersonPrices
+    ) {
+      const amount =
+        getNumericAmount(value);
+
+      if (amount > 0) {
+        return amount;
+      }
+    }
+
+    const fallbackPrices = [
       plan.baseAmount,
       plan.amount,
       plan.cost,
-      plan.price?.perPerson,
-      plan.pricing?.pricePerPerson,
-      plan.pricing?.perPerson,
       plan.pricing?.price,
       plan.pricing?.total,
+      plan.totalAmount,
+      plan.price,
     ];
 
-    for (const value of possiblePrices) {
-      const amount = getNumericAmount(value);
+    for (
+      const value of fallbackPrices
+    ) {
+      const amount =
+        getNumericAmount(value);
 
       if (amount > 0) {
         return amount;
@@ -310,21 +554,22 @@ export default function MyPlanPage() {
      DISCOUNT RATE
   ============================================================ */
 
-  const discountRate = useMemo(() => {
-    if (people >= 11) {
-      return 15;
-    }
+  const discountRate =
+    useMemo(() => {
+      if (people >= 11) {
+        return 15;
+      }
 
-    if (people >= 8) {
-      return 10;
-    }
+      if (people >= 8) {
+        return 10;
+      }
 
-    if (people >= 5) {
-      return 5;
-    }
+      if (people >= 5) {
+        return 5;
+      }
 
-    return 0;
-  }, [people]);
+      return 0;
+    }, [people]);
 
   /* ============================================================
      BOOKING CALCULATION
@@ -379,7 +624,9 @@ export default function MyPlanPage() {
         event.target.value
       );
 
-    if (!Number.isFinite(value)) {
+    if (
+      !Number.isFinite(value)
+    ) {
       setPeople(1);
       return;
     }
@@ -399,54 +646,80 @@ export default function MyPlanPage() {
      REMOVE PLAN
   ============================================================ */
 
-  const handleRemovePlan = (plan) => {
-    // Remove only this plan from the user's saved My Plan list.
-    // The booking record in MongoDB is intentionally left untouched.
-    removeMyPlan(plan);
-    setPlans(getMyPlans());
+  const handleRemovePlan =
+    async (plan) => {
+      if (!plan?._id) {
+        console.error(
+          "Saved plan ID is missing."
+        );
 
-    window.dispatchEvent(
-      new Event("happyMappyPlansChanged")
-    );
-  };
+        return;
+      }
+
+      try {
+        await apiRequest(
+          `/api/saved-plans/${plan._id}`,
+          {
+            method: "DELETE",
+          }
+        );
+
+        await loadPlans();
+
+        window.dispatchEvent(
+          new Event(
+            "happyMappyPlansChanged"
+          )
+        );
+      } catch (error) {
+        console.error(
+          "Remove Saved Plan Error:",
+          error
+        );
+
+        window.alert(
+          error.message ||
+            "Unable to remove this plan. Please try again."
+        );
+      }
+    };
 
   /* ============================================================
      BUY PLAN
   ============================================================ */
 
-  const handleBuyPlan = (
-    plan
-  ) => {
-    const existingBooking = findBookingForPlan(plan);
-    if (existingBooking) {
-      setViewBooking(existingBooking);
-      return;
-    }
+  const handleBuyPlan =
+    (plan) => {
+      const existingBooking =
+        findBookingForPlan(
+          plan
+        );
 
-    setSelectedPlan(plan);
+      if (existingBooking) {
+        setViewBooking(
+          existingBooking
+        );
 
-    setPeople(1);
+        return;
+      }
 
-    setTripDate("");
+      setSelectedPlan(plan);
+      setPeople(1);
+      setTripDate("");
+      setShowPayment(false);
+      setShowPaymentConfirm(false);
+      setPaymentSuccess(false);
+      setPaymentError("");
+      setTripConfirmed(false);
+      setPaymentMethod("upi");
+      setPaymentValue("");
 
-    setShowPayment(false);
-
-    setShowPaymentConfirm(false);
-
-    setPaymentSuccess(false);
-
-    setPaymentError("");
-
-    setTripConfirmed(false);
-
-    setPaymentMethod("upi");
-
-    setPaymentValue("");
-
-    setBookingReference(
-      `HM-${Date.now().toString().slice(-6)}`
-    );
-  };
+      setBookingReference(
+        `HM-${Date.now()
+          .toString()
+          .slice(-6)}`
+      );
+    };
 
   /* ============================================================
      CLOSE BOOKING
@@ -454,21 +727,13 @@ export default function MyPlanPage() {
 
   const closeBooking = () => {
     setSelectedPlan(null);
-
     setShowPayment(false);
-
     setShowPaymentConfirm(false);
-
     setPaymentSuccess(false);
-
     setPaymentError("");
-
     setTripConfirmed(false);
-
     setPaymentValue("");
-
     setPaymentMethod("upi");
-
     setBookingReference("");
   };
 
@@ -476,149 +741,268 @@ export default function MyPlanPage() {
      PROCEED PAYMENT
   ============================================================ */
 
-  const handleProceedPayment = () => {
-    setPaymentError("");
+  const handleProceedPayment =
+    () => {
+      setPaymentError("");
 
-    if (!tripDate) {
-      setPaymentError("Date not selected");
-      return;
-    }
+      if (!tripDate) {
+        setPaymentError(
+          "Date not selected"
+        );
 
-    if (isPastTripDate(tripDate)) {
-      setPaymentError("Please select today or a future date.");
-      return;
-    }
+        return;
+      }
 
-    if (!Number.isInteger(Number(people)) || people < 1 || people > 100) {
-      setPaymentError("Please select a valid number of people (1–100).");
-      return;
-    }
+      if (
+        isPastTripDate(
+          tripDate
+        )
+      ) {
+        setPaymentError(
+          "Please select today or a future date."
+        );
 
-    if (pricePerPerson <= 0) {
-      setPaymentError("This plan does not have a valid price yet. Please choose another plan.");
-      return;
-    }
+        return;
+      }
 
-    setShowPayment(true);
-  };
+      if (
+        !Number.isInteger(
+          Number(people)
+        ) ||
+        people < 1 ||
+        people > 100
+      ) {
+        setPaymentError(
+          "Please select a valid number of people (1–100)."
+        );
+
+        return;
+      }
+
+      if (
+        pricePerPerson <= 0
+      ) {
+        setPaymentError(
+          "This plan does not have a valid price yet. Please choose another plan."
+        );
+
+        return;
+      }
+
+      setShowPayment(true);
+    };
 
   /* ============================================================
-     DEMO PAYMENT
+     PAYMENT DETAILS
   ============================================================ */
 
-  const handleDemoPayment = () => {
-    const value = paymentValue.trim();
+  const handleDemoPayment =
+    () => {
+      const value =
+        paymentValue.trim();
 
-    setPaymentError("");
+      setPaymentError("");
 
-    if (paymentMethod === "upi") {
-      if (!value) {
-        setPaymentError("Please enter your UPI ID before continuing.");
-        return;
+      if (
+        paymentMethod === "upi"
+      ) {
+        if (!value) {
+          setPaymentError(
+            "Please enter your UPI ID before continuing."
+          );
+
+          return;
+        }
+
+        if (
+          !/^[^\s@]+@[A-Za-z0-9._-]+$/.test(
+            value
+          )
+        ) {
+          setPaymentError(
+            "Invalid UPI ID. Please enter a valid UPI ID such as example@upi."
+          );
+
+          return;
+        }
       }
 
-      if (!/^[^\s@]+@[A-Za-z0-9._-]+$/.test(value)) {
-        setPaymentError(
-          "Invalid UPI ID. Please enter a valid UPI ID such as example@upi."
-        );
-        return;
+      if (
+        paymentMethod ===
+        "netbanking"
+      ) {
+        if (!value) {
+          setPaymentError(
+            "Please select your bank before continuing."
+          );
+
+          return;
+        }
       }
-    }
 
-    if (paymentMethod === "netbanking") {
-      if (!value) {
-        setPaymentError("Please select your bank before continuing.");
-        return;
+      if (
+        paymentMethod === "card"
+      ) {
+        if (
+          !/^\d{16}$/.test(
+            value
+          )
+        ) {
+          setPaymentError(
+            "Invalid card number. Please enter a valid 16-digit card number."
+          );
+
+          return;
+        }
       }
-    }
 
-    if (paymentMethod === "card") {
-      if (!/^\d{16}$/.test(value)) {
-        setPaymentError(
-          "Invalid card number. Please enter a valid 16-digit demo card number."
-        );
-        return;
-      }
-    }
+      setShowPaymentConfirm(
+        true
+      );
+    };
 
-    setShowPaymentConfirm(true);
-  };
+  const handleConfirmPayment =
+    () => {
+      setShowPaymentConfirm(
+        false
+      );
 
-  const handleConfirmPayment = () => {
-    setShowPaymentConfirm(false);
-    setShowPayment(false);
-    setPaymentSuccess(true);
-  };
+      setShowPayment(false);
+
+      setPaymentSuccess(true);
+    };
 
   const paymentMethodLabel =
     paymentMethod === "upi"
       ? "UPI"
-      : paymentMethod === "netbanking"
-        ? "Net Banking"
-        : "Debit / Credit Card";
+      : paymentMethod ===
+        "netbanking"
+      ? "Net Banking"
+      : "Debit / Credit Card";
 
   const paymentDetailLabel =
     paymentMethod === "upi"
-      ? paymentValue || "Not available"
-      : paymentMethod === "netbanking"
-        ? paymentValue || "Not available"
-        : paymentValue
-          ? `•••• •••• •••• ${paymentValue.slice(-4)}`
-          : "Not available";
+      ? paymentValue ||
+        "Not available"
+      : paymentMethod ===
+        "netbanking"
+      ? paymentValue ||
+        "Not available"
+      : paymentValue
+      ? `•••• •••• •••• ${paymentValue.slice(
+          -4
+        )}`
+      : "Not available";
 
   /* ============================================================
      CONFIRM TRIP
   ============================================================ */
 
-  const handleConfirmTrip = async () => {
-    if (!selectedPlan || savingBooking) return;
-
-    setSavingBooking(true);
-    setPaymentError("");
-
-    const payload = {
-      planKey: getPlanKey(selectedPlan),
-      planTitle: selectedPlan.title || "Happy Mappy Trip",
-      destination: selectedPlan.destination || selectedPlan.destinationName || "Travel Destination",
-      tripDate,
-      people: Number(people),
-      pricePerPerson: Number(pricePerPerson),
-      paymentMethod,
-      // Store only a masked card identifier; never send/store the full card number.
-      paymentDetail:
-        paymentMethod === "card"
-          ? `•••• ${paymentValue.slice(-4)}`
-          : paymentValue.trim(),
-    };
-
-    try {
-      const data = await apiRequest("/api/bookings", {
-        method: "POST",
-        body: JSON.stringify(payload),
-      });
-
-      const savedBooking = data.booking || data.data || data;
-      if (!savedBooking.bookingReference) {
-        throw new Error("The server did not return a booking reference.");
+  const handleConfirmTrip =
+    async () => {
+      if (
+        !selectedPlan ||
+        savingBooking
+      ) {
+        return;
       }
 
-      setBookingReference(savedBooking.bookingReference);
-      setBookings((previous) => [
-        savedBooking,
-        ...previous.filter(
-          (item) => String(item.bookingReference || "") !== String(savedBooking.bookingReference)
+      setSavingBooking(true);
+      setPaymentError("");
+
+      const payload = {
+        planKey:
+          getPlanKey(
+            selectedPlan
+          ),
+
+        planTitle:
+          selectedPlan.title ||
+          "Happy Mappy Trip",
+
+        destination:
+          selectedPlan.destination ||
+          selectedPlan.destinationName ||
+          "Travel Destination",
+
+        tripDate,
+
+        people: Number(
+          people
         ),
-      ]);
-      // Refresh from MongoDB after the successful save. A refresh failure
-      // must not undo the booking confirmation that the POST already returned.
-      await loadBookings();
-      setTripConfirmed(true);
-    } catch (error) {
-      setPaymentError(`Your booking could not be saved: ${error.message}`);
-    } finally {
-      setSavingBooking(false);
-    }
-  };
+
+        pricePerPerson:
+          Number(
+            pricePerPerson
+          ),
+
+        paymentMethod,
+
+        paymentDetail:
+          paymentMethod ===
+          "card"
+            ? `•••• ${paymentValue.slice(
+                -4
+              )}`
+            : paymentValue.trim(),
+      };
+
+      try {
+        const data =
+          await apiRequest(
+            "/api/bookings",
+            {
+              method: "POST",
+              body: JSON.stringify(
+                payload
+              ),
+            }
+          );
+
+        const savedBooking =
+          data.booking ||
+          data.data ||
+          data;
+
+        if (
+          !savedBooking.bookingReference
+        ) {
+          throw new Error(
+            "The server did not return a booking reference."
+          );
+        }
+
+        setBookingReference(
+          savedBooking.bookingReference
+        );
+
+        setBookings(
+          (previous) => [
+            savedBooking,
+            ...previous.filter(
+              (item) =>
+                String(
+                  item.bookingReference ||
+                    ""
+                ) !==
+                String(
+                  savedBooking.bookingReference
+                )
+            ),
+          ]
+        );
+
+        await loadBookings();
+
+        setTripConfirmed(true);
+      } catch (error) {
+        setPaymentError(
+          `Your booking could not be saved: ${error.message}`
+        );
+      } finally {
+        setSavingBooking(false);
+      }
+    };
 
   /* ============================================================
      LOGIN REQUIRED
@@ -629,7 +1013,8 @@ export default function MyPlanPage() {
       <div
         className="my-plan-page"
         style={{
-          background: "#f8fafc",
+          background:
+            "#f8fafc",
         }}
       >
         <div className="my-plan-login-box">
@@ -665,17 +1050,19 @@ export default function MyPlanPage() {
     <div
       className="my-plan-page"
       style={{
-        background: "#f8fafc",
+        background:
+          "#f8fafc",
         margin: 0,
         padding: 0,
       }}
     >
 
       <style>{`
+
         /* =====================================================
            MY PLAN VISUAL FIXES
-           These rules intentionally stay scoped to My Plan.
         ===================================================== */
+
         .my-plan-page {
           min-height: calc(100vh - 80px);
           width: 100%;
@@ -696,7 +1083,6 @@ export default function MyPlanPage() {
           z-index: 1;
         }
 
-        /* User details: one item per line */
         .booking-user-grid {
           display: flex !important;
           flex-direction: column !important;
@@ -729,7 +1115,6 @@ export default function MyPlanPage() {
           overflow-wrap: anywhere !important;
         }
 
-        /* Small people +/- control */
         .people-control {
           display: inline-flex !important;
           align-items: center !important;
@@ -768,7 +1153,6 @@ export default function MyPlanPage() {
           caret-color: #0f172a !important;
         }
 
-        /* Date input: visible text + native browser calendar */
         .booking-date {
           display: flex !important;
           align-items: center !important;
@@ -801,7 +1185,6 @@ export default function MyPlanPage() {
           cursor: pointer !important;
         }
 
-        /* Payment fields: dark readable text on white controls */
         .payment-input-area input,
         .payment-input-area select {
           width: 100% !important;
@@ -834,7 +1217,6 @@ export default function MyPlanPage() {
           opacity: 1 !important;
         }
 
-        /* Make modal controls reliably clickable above overlays */
         .my-plan-booking-modal,
         .payment-modal,
         .payment-confirm-modal,
@@ -844,7 +1226,6 @@ export default function MyPlanPage() {
           z-index: 2;
         }
 
-        /* Keep every popup fully usable on smaller screens */
         .my-plan-overlay {
           position: fixed !important;
           inset: 0 !important;
@@ -874,7 +1255,6 @@ export default function MyPlanPage() {
           margin: auto !important;
         }
 
-        /* Confirmation + success popups */
         .payment-confirm-modal,
         .payment-success-modal {
           width: min(430px, 94vw);
@@ -914,6 +1294,24 @@ export default function MyPlanPage() {
           font-size: 14px;
         }
 
+        .payment-success-modal .confirm-trip-error {
+          margin: 0 0 14px;
+          padding: 10px 12px;
+          border: 1px solid #fecaca;
+          border-radius: 9px;
+          background: #fef2f2;
+          color: #b91c1c;
+          font-size: 13px;
+          line-height: 1.45;
+          overflow-wrap: anywhere;
+          text-align: left;
+        }
+
+        .payment-success-modal .confirm-trip-action:disabled {
+          opacity: 0.7;
+          cursor: wait;
+        }
+
         .payment-confirm-actions {
           display: flex;
           gap: 10px;
@@ -940,14 +1338,65 @@ export default function MyPlanPage() {
           color: #ffffff;
         }
 
-        .payment-success-modal button {
+        .payment-success-modal button:not(.payment-success-close) {
           width: 100%;
-          min-height: 44px;
+          min-height: 48px;
+          box-sizing: border-box;
           border: none;
           border-radius: 9px;
           cursor: pointer;
           font-weight: 800;
-          padding: 10px 14px;
+          padding: 12px 14px;
+          line-height: 1.2;
+          white-space: nowrap;
+          transform: none !important;
+          animation: none !important;
+          transition: background-color 0.15s ease !important;
+        }
+
+        .my-plan-page .payment-success-modal {
+          position: relative !important;
+          padding-top: 54px !important;
+          overflow: visible !important;
+        }
+
+        .my-plan-page .payment-success-modal .payment-success-close {
+          position: absolute !important;
+          top: 12px !important;
+          right: 12px !important;
+          left: auto !important;
+          bottom: auto !important;
+          z-index: 5 !important;
+          display: inline-flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          width: 36px !important;
+          min-width: 36px !important;
+          max-width: 36px !important;
+          height: 36px !important;
+          min-height: 36px !important;
+          max-height: 36px !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          border: 0 !important;
+          border-radius: 50% !important;
+          color: #334155 !important;
+          background: #e2e8f0 !important;
+          box-shadow: none !important;
+          line-height: 1 !important;
+          cursor: pointer !important;
+          transform: none !important;
+          animation: none !important;
+        }
+
+        .my-plan-page .payment-success-modal .payment-success-close:hover {
+          background: #cbd5e1 !important;
+        }
+
+        .my-plan-page .payment-success-modal .payment-success-close svg {
+          width: 20px !important;
+          height: 20px !important;
+          flex-shrink: 0 !important;
         }
 
         @media (max-width: 600px) {
@@ -969,6 +1418,7 @@ export default function MyPlanPage() {
         /* =====================================================
            MY PLAN PAGE - MATCH THE CLEAN SITE DESIGN
         ===================================================== */
+
         .my-plan-page .my-plan-header {
           width: min(1200px, 90%);
           margin: 0 auto;
@@ -1012,7 +1462,6 @@ export default function MyPlanPage() {
           margin: 0 auto;
         }
 
-        /* More colourful booking modal */
         .my-plan-booking-modal {
           border: 1px solid #dbeafe !important;
           box-shadow: 0 30px 90px rgba(15, 23, 42, 0.32) !important;
@@ -1070,7 +1519,6 @@ export default function MyPlanPage() {
           box-shadow: 0 10px 24px rgba(8, 145, 178, 0.22);
         }
 
-        /* Invalid payment popup */
         .payment-error-modal {
           width: min(430px, 94vw);
           padding: 30px;
@@ -1125,7 +1573,6 @@ export default function MyPlanPage() {
           font-weight: 800;
         }
 
-        /* Attractive trip confirmation */
         .trip-success-modal {
           width: min(600px, 94vw) !important;
           overflow: hidden !important;
@@ -1247,7 +1694,6 @@ export default function MyPlanPage() {
           color: #cbd5e1;
         }
 
-        /* CHANGE 1: Smaller booking reference text */
         .trip-booking-reference strong {
           color: #99f6e4;
           font-size: 11px;
@@ -1696,7 +2142,6 @@ export default function MyPlanPage() {
           box-shadow: 0 8px 25px rgba(15, 23, 42, 0.07);
         }
 
-        /* Confirmation popup: scroll inside the popup, never behind the browser. */
         .trip-confirmation-overlay {
           align-items: flex-start !important;
           justify-content: center !important;
@@ -1827,7 +2272,8 @@ export default function MyPlanPage() {
           }
         }
 
-        /* Booking details modal: keep the close icon in the top-right corner. */
+        /* Booking details modal */
+
         .my-plan-page .booking-details-modal {
           position: relative !important;
           padding-top: 48px !important;
@@ -1869,7 +2315,7 @@ export default function MyPlanPage() {
       `}</style>
 
       {/* ======================================================
-          MY PLAN HERO - SAME VISUAL STRUCTURE AS DESTINATIONS
+          MY PLAN HERO
       ====================================================== */}
 
       <section className="my-plan-hero">
@@ -1903,6 +2349,7 @@ export default function MyPlanPage() {
         <section className="my-plan-header">
 
           <div>
+
             <span className="my-plan-label">
               HAPPY MAPPY
             </span>
@@ -1915,6 +2362,7 @@ export default function MyPlanPage() {
               Your saved journeys are ready for you.
               Choose a plan and book your next adventure.
             </p>
+
           </div>
 
           <div className="my-plan-user">
@@ -1933,23 +2381,41 @@ export default function MyPlanPage() {
         </section>
 
         {loadingBookings && (
-          <p className="my-plan-loading" style={{ textAlign: "center" }}>
+          <p
+            className="my-plan-loading"
+            style={{
+              textAlign: "center",
+            }}
+          >
             Loading your bookings…
           </p>
         )}
 
         {bookingLoadError && (
-          <div className="my-plan-api-error" role="alert">
+          <div
+            className="my-plan-api-error"
+            role="alert"
+          >
             {bookingLoadError}
-            <button type="button" onClick={loadBookings}>Retry</button>
+
+            <button
+              type="button"
+              onClick={
+                loadBookings
+              }
+            >
+              Retry
+            </button>
+
           </div>
         )}
 
         {/* ======================================================
-            EMPTY STATE
+            EMPTY STATE / PLAN LIST
         ====================================================== */}
 
         {plans.length === 0 ? (
+
           <section className="my-plan-empty">
 
             <div className="my-plan-empty-icon">
@@ -1969,18 +2435,17 @@ export default function MyPlanPage() {
             <button
               type="button"
               onClick={() =>
-                navigate("/travel-plans")
+                navigate(
+                  "/travel-plans"
+                )
               }
             >
               Explore Travel Plans
             </button>
 
           </section>
-        ) : (
 
-          /* ====================================================
-             PLAN LIST
-          ==================================================== */
+        ) : (
 
           <section className="my-plan-grid">
 
@@ -1991,15 +2456,23 @@ export default function MyPlanPage() {
                   getPricePerPerson(
                     plan
                   );
-                const existingBooking = findBookingForPlan(plan);
+
+                const existingBooking =
+                  findBookingForPlan(
+                    plan
+                  );
 
                 return (
+
                   <article
                     className="my-plan-card"
                     key={
+                      plan._id ||
+                      plan.planKey ||
                       plan.savedPlanKey ||
+                      plan.planId ||
                       plan.id ||
-                      `${plan.title}-${index}`
+                      `${plan.title || "plan"}-${index}`
                     }
                   >
 
@@ -2008,6 +2481,7 @@ export default function MyPlanPage() {
                     <div className="my-plan-image">
 
                       {plan.image ? (
+
                         <img
                           src={plan.image}
                           alt={
@@ -2015,14 +2489,19 @@ export default function MyPlanPage() {
                             "Travel plan"
                           }
                         />
+
                       ) : (
+
                         <div className="my-plan-image-placeholder">
                           Happy Mappy
                         </div>
+
                       )}
 
                       <span>
-                        {existingBooking ? "BOOKING CONFIRMED" : "SAVED PLAN"}
+                        {existingBooking
+                          ? "BOOKING CONFIRMED"
+                          : "SAVED PLAN"}
                       </span>
 
                     </div>
@@ -2046,16 +2525,14 @@ export default function MyPlanPage() {
 
                         {plan.days && (
                           <span>
-                            {plan.days}{" "}
-                            Days
+                            {plan.days} Days
                           </span>
                         )}
 
                         {plan.nights !==
                           undefined && (
                           <span>
-                            {plan.nights}{" "}
-                            Nights
+                            {plan.nights} Nights
                           </span>
                         )}
 
@@ -2076,43 +2553,63 @@ export default function MyPlanPage() {
                       </div>
 
                       <div className="my-plan-actions">
+
                         <button
                           type="button"
                           className="my-plan-remove-btn"
-                          onClick={() => handleRemovePlan(plan)}
+                          onClick={() =>
+                            handleRemovePlan(
+                              plan
+                            )
+                          }
                         >
                           <Trash2 size={17} />
                           Remove Plan
                         </button>
 
                         {existingBooking ? (
+
                           <button
                             type="button"
                             className="my-plan-buy-btn"
-                            onClick={() => setViewBooking(existingBooking)}
+                            onClick={() =>
+                              setViewBooking(
+                                existingBooking
+                              )
+                            }
                           >
                             <Eye size={17} />
                             View Booking
                           </button>
+
                         ) : (
+
                           <button
                             type="button"
                             className="my-plan-buy-btn"
-                            onClick={() => handleBuyPlan(plan)}
+                            onClick={() =>
+                              handleBuyPlan(
+                                plan
+                              )
+                            }
                           >
                             Buy Plan
                           </button>
+
                         )}
+
                       </div>
 
                     </div>
 
                   </article>
+
                 );
               }
             )}
 
           </section>
+
         )}
 
         {/* ======================================================
@@ -2120,6 +2617,7 @@ export default function MyPlanPage() {
         ====================================================== */}
 
         {selectedPlan && (
+
           <div
             className="my-plan-overlay"
             onClick={
@@ -2274,15 +2772,36 @@ export default function MyPlanPage() {
                   <input
                     type="date"
                     min={(() => {
-                      const today = new Date();
-                      const year = today.getFullYear();
-                      const month = String(today.getMonth() + 1).padStart(2, "0");
-                      const day = String(today.getDate()).padStart(2, "0");
+                      const today =
+                        new Date();
+
+                      const year =
+                        today.getFullYear();
+
+                      const month =
+                        String(
+                          today.getMonth() + 1
+                        ).padStart(
+                          2,
+                          "0"
+                        );
+
+                      const day =
+                        String(
+                          today.getDate()
+                        ).padStart(
+                          2,
+                          "0"
+                        );
+
                       return `${year}-${month}-${day}`;
                     })()}
                     value={tripDate}
                     onChange={(event) => {
-                      setTripDate(event.target.value);
+                      setTripDate(
+                        event.target.value
+                      );
+
                       setPaymentError("");
                     }}
                   />
@@ -2330,6 +2849,7 @@ export default function MyPlanPage() {
                 </div>
 
                 {discountRate > 0 && (
+
                   <div className="booking-discount">
 
                     <span>
@@ -2345,6 +2865,7 @@ export default function MyPlanPage() {
                     </strong>
 
                   </div>
+
                 )}
 
                 <div className="booking-total">
@@ -2364,17 +2885,19 @@ export default function MyPlanPage() {
               </div>
 
               {discountRate > 0 && (
+
                 <div className="discount-success">
+
                   <CheckCircle
                     size={18}
                   />
 
                   {discountRate}% group
                   discount applied!
-                </div>
-              )}
 
-              {/* PAYMENT BUTTON */}
+                </div>
+
+              )}
 
               <button
                 type="button"
@@ -2389,6 +2912,7 @@ export default function MyPlanPage() {
             </div>
 
           </div>
+
         )}
 
         {/* ======================================================
@@ -2397,6 +2921,7 @@ export default function MyPlanPage() {
 
         {showPayment &&
           selectedPlan && (
+
             <div className="my-plan-overlay">
 
               <div className="payment-modal">
@@ -2405,7 +2930,9 @@ export default function MyPlanPage() {
                   type="button"
                   className="my-plan-close"
                   onClick={() =>
-                    setShowPayment(false)
+                    setShowPayment(
+                      false
+                    )
                   }
                 >
                   <X size={22} />
@@ -2414,7 +2941,7 @@ export default function MyPlanPage() {
                 <div className="payment-header">
 
                   <span>
-                    DEMO PAYMENT
+                    PAYMENT
                   </span>
 
                   <h2>
@@ -2422,9 +2949,8 @@ export default function MyPlanPage() {
                   </h2>
 
                   <p>
-                    This is a demo payment
-                    interface. No real money
-                    will be transferred.
+                    Enter your payment details to continue.
+                    Payment status will remain pending until verified.
                   </p>
 
                 </div>
@@ -2434,14 +2960,23 @@ export default function MyPlanPage() {
                   <button
                     type="button"
                     className={
-                      paymentMethod === "upi"
+                      paymentMethod ===
+                      "upi"
                         ? "active"
                         : ""
                     }
                     onClick={() => {
-                      setPaymentMethod("upi");
-                      setPaymentValue("");
-                      setPaymentError("");
+                      setPaymentMethod(
+                        "upi"
+                      );
+
+                      setPaymentValue(
+                        ""
+                      );
+
+                      setPaymentError(
+                        ""
+                      );
                     }}
                   >
                     <Smartphone
@@ -2460,9 +2995,17 @@ export default function MyPlanPage() {
                         : ""
                     }
                     onClick={() => {
-                      setPaymentMethod("netbanking");
-                      setPaymentValue("");
-                      setPaymentError("");
+                      setPaymentMethod(
+                        "netbanking"
+                      );
+
+                      setPaymentValue(
+                        ""
+                      );
+
+                      setPaymentError(
+                        ""
+                      );
                     }}
                   >
                     <Building2
@@ -2475,14 +3018,23 @@ export default function MyPlanPage() {
                   <button
                     type="button"
                     className={
-                      paymentMethod === "card"
+                      paymentMethod ===
+                      "card"
                         ? "active"
                         : ""
                     }
                     onClick={() => {
-                      setPaymentMethod("card");
-                      setPaymentValue("");
-                      setPaymentError("");
+                      setPaymentMethod(
+                        "card"
+                      );
+
+                      setPaymentValue(
+                        ""
+                      );
+
+                      setPaymentError(
+                        ""
+                      );
                     }}
                   >
                     <CreditCard
@@ -2496,7 +3048,9 @@ export default function MyPlanPage() {
 
                 {/* UPI */}
 
-                {paymentMethod === "upi" && (
+                {paymentMethod ===
+                  "upi" && (
+
                   <div className="payment-input-area">
 
                     <label>
@@ -2517,12 +3071,14 @@ export default function MyPlanPage() {
                     />
 
                   </div>
+
                 )}
 
                 {/* NET BANKING */}
 
                 {paymentMethod ===
                   "netbanking" && (
+
                   <div className="payment-input-area">
 
                     <label>
@@ -2539,6 +3095,7 @@ export default function MyPlanPage() {
                         )
                       }
                     >
+
                       <option value="">
                         Select Bank
                       </option>
@@ -2562,15 +3119,18 @@ export default function MyPlanPage() {
                     </select>
 
                   </div>
+
                 )}
 
                 {/* CARD */}
 
-                {paymentMethod === "card" && (
+                {paymentMethod ===
+                  "card" && (
+
                   <div className="payment-input-area">
 
                     <label>
-                      Demo Card Number
+                      Card Number
                     </label>
 
                     <input
@@ -2597,6 +3157,7 @@ export default function MyPlanPage() {
                     />
 
                   </div>
+
                 )}
 
                 <div className="payment-total">
@@ -2613,96 +3174,80 @@ export default function MyPlanPage() {
 
                 </div>
 
-                {!paymentSuccess ? (
-                  <button
-                    type="button"
-                    className="demo-pay-btn"
-                    onClick={
-                      handleDemoPayment
-                    }
-                  >
-                    <WalletCards
-                      size={18}
-                    />
+                <button
+                  type="button"
+                  className="demo-pay-btn"
+                  onClick={
+                    handleDemoPayment
+                  }
+                >
+                  <WalletCards size={18} />
 
-                    Pay{" "}
-                    {formatPrice(
-                      totalAmount
-                    )}
-                  </button>
-                ) : (
-                  <div className="payment-success">
-
-                    <CheckCircle
-                      size={45}
-                    />
-
-                    <h3>
-                      Demo Payment Successful
-                    </h3>
-
-                    <p>
-                      Your demo payment was
-                      processed successfully.
-                    </p>
-
-                    <button
-                      type="button"
-                      className="confirm-trip-btn"
-                      onClick={handleConfirmTrip}
-                      disabled={savingBooking}
-                    >
-                      {savingBooking ? "Saving Booking…" : "Confirm Trip"}
-                    </button>
-
-                  </div>
-                )}
+                  Pay{" "}
+                  {formatPrice(
+                    totalAmount
+                  )}
+                </button>
 
               </div>
 
             </div>
+
           )}
 
         {/* ======================================================
             PAYMENT VALIDATION ERROR POPUP
         ====================================================== */}
 
-        {paymentError && selectedPlan && (
-          <div className="my-plan-overlay">
+        {paymentError &&
+          selectedPlan &&
+          !paymentSuccess && (
 
-            <div className="payment-error-modal">
+            <div className="my-plan-overlay">
 
-              <div className="payment-error-icon">
-                <X size={30} />
+              <div className="payment-error-modal">
+
+                <div className="payment-error-icon">
+                  <X size={30} />
+                </div>
+
+                <span className="payment-error-label">
+                  {paymentError ===
+                  "Date not selected"
+                    ? "TRIP DATE"
+                    : "PAYMENT CHECK"}
+                </span>
+
+                <h3>
+                  {paymentError ===
+                  "Date not selected"
+                    ? "Date not selected"
+                    : "Invalid Payment Details"}
+                </h3>
+
+                <p>
+                  {paymentError ===
+                  "Date not selected"
+                    ? "Please select your trip date from the calendar before proceeding to payment."
+                    : paymentError}
+                </p>
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    setPaymentError(
+                      ""
+                    )
+                  }
+                >
+                  Try Again
+                </button>
+
               </div>
-
-              <span className="payment-error-label">
-                {paymentError === "Date not selected" ? "TRIP DATE" : "PAYMENT CHECK"}
-              </span>
-
-              <h3>
-                {paymentError === "Date not selected"
-                  ? "Date not selected"
-                  : "Invalid Payment Details"}
-              </h3>
-
-              <p>
-                {paymentError === "Date not selected"
-                  ? "Please select your trip date from the calendar before proceeding to payment."
-                  : paymentError}
-              </p>
-
-              <button
-                type="button"
-                onClick={() => setPaymentError("")}
-              >
-                Try Again
-              </button>
 
             </div>
 
-          </div>
-        )}
+          )}
 
         {/* ======================================================
             PAYMENT CONFIRMATION POPUP
@@ -2710,6 +3255,7 @@ export default function MyPlanPage() {
 
         {showPaymentConfirm &&
           selectedPlan && (
+
             <div className="my-plan-overlay">
 
               <div className="payment-confirm-modal">
@@ -2723,7 +3269,11 @@ export default function MyPlanPage() {
                 </h3>
 
                 <p>
-                  Are you sure you want to pay {formatPrice(totalAmount)} for this trip?
+                  Are you sure you want to pay{" "}
+                  {formatPrice(
+                    totalAmount
+                  )}{" "}
+                  for this trip?
                 </p>
 
                 <div className="payment-confirm-actions">
@@ -2732,7 +3282,9 @@ export default function MyPlanPage() {
                     type="button"
                     className="payment-cancel-btn"
                     onClick={() =>
-                      setShowPaymentConfirm(false)
+                      setShowPaymentConfirm(
+                        false
+                      )
                     }
                   >
                     Cancel
@@ -2741,7 +3293,9 @@ export default function MyPlanPage() {
                   <button
                     type="button"
                     className="payment-confirm-btn"
-                    onClick={handleConfirmPayment}
+                    onClick={
+                      handleConfirmPayment
+                    }
                   >
                     Confirm & Pay
                   </button>
@@ -2751,6 +3305,7 @@ export default function MyPlanPage() {
               </div>
 
             </div>
+
           )}
 
         {/* ======================================================
@@ -2760,33 +3315,80 @@ export default function MyPlanPage() {
         {paymentSuccess &&
           selectedPlan &&
           !tripConfirmed && (
+
             <div className="my-plan-overlay">
 
               <div className="payment-success-modal">
+
+                <button
+                  type="button"
+                  className="my-plan-close payment-success-close"
+                  onClick={
+                    closeBooking
+                  }
+                  aria-label="Close payment confirmation"
+                  title="Close"
+                >
+                  <X size={22} />
+                </button>
 
                 <div className="payment-success-icon">
                   <CheckCircle size={32} />
                 </div>
 
                 <h3>
-                  Payment Successful!
+                  Payment Details Confirmed
                 </h3>
 
                 <p>
-                  Your payment of {formatPrice(totalAmount)} was processed successfully.
+                  Your trip amount is{" "}
+                  {formatPrice(
+                    totalAmount
+                  )}.
+                  Actual payment status has not been verified.
                 </p>
+
+                {paymentError && (
+
+                  <p
+                    className="confirm-trip-error"
+                    role="alert"
+                    aria-live="polite"
+                  >
+                    {paymentError}
+                  </p>
+
+                )}
 
                 <button
                   type="button"
-                  onClick={handleConfirmTrip}
-                  disabled={savingBooking}
+                  className="confirm-trip-action"
+                  onClick={(event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+
+                    if (
+                      !savingBooking
+                    ) {
+                      handleConfirmTrip();
+                    }
+                  }}
+                  disabled={
+                    savingBooking
+                  }
+                  aria-busy={
+                    savingBooking
+                  }
                 >
-                  {savingBooking ? "Saving Booking…" : "Confirm Trip"}
+                  {savingBooking
+                    ? "Saving Booking…"
+                    : "Confirm Trip"}
                 </button>
 
               </div>
 
             </div>
+
           )}
 
         {/* ======================================================
@@ -2795,14 +3397,17 @@ export default function MyPlanPage() {
 
         {tripConfirmed &&
           selectedPlan && (
+
             <div className="my-plan-overlay trip-confirmation-overlay">
 
               <div className="trip-success-modal">
 
                 <div className="trip-success-icon">
+
                   <CheckCircle
                     size={50}
                   />
+
                 </div>
 
                 <h2>
@@ -2810,133 +3415,333 @@ export default function MyPlanPage() {
                 </h2>
 
                 <p>
-                  Your booking has been saved to your Happy Mappy account. This was a demo payment only; no real money was transferred.
+                  Your booking has been saved to your Happy Mappy account.
+                  Your trip details are shown below.
+                  Payment status is pending verification.
                 </p>
 
                 <div className="trip-confirmed-details">
 
                   <div className="trip-confirmed-plan">
+
                     <div className="trip-confirmed-detail-icon">
                       <MapPin size={20} />
                     </div>
+
                     <div>
-                      <span>Travel Plan</span>
-                      <strong>{selectedPlan.title || "Happy Mappy Trip"}</strong>
+
+                      <span>
+                        Travel Plan
+                      </span>
+
+                      <strong>
+                        {selectedPlan.title ||
+                          "Happy Mappy Trip"}
+                      </strong>
+
                     </div>
+
                   </div>
 
                   <div className="trip-confirmed-detail-grid">
 
                     <div>
-                      <CalendarDays size={18} />
-                      <span>Trip Date</span>
-                      <strong>{formatTripDate(tripDate)}</strong>
-                    </div>
+                      <CalendarDays
+                        size={18}
+                      />
 
-                    <div>
-                      <Users size={18} />
-                      <span>Travelers</span>
-                      <strong>{people} {people === 1 ? "Person" : "People"}</strong>
-                    </div>
+                      <span>
+                        Trip Date
+                      </span>
 
-                    <div>
-                      <Clock size={18} />
-                      <span>Duration</span>
                       <strong>
-                        {selectedPlan.days || 1} {Number(selectedPlan.days) === 1 ? "Day" : "Days"}
-                        {selectedPlan.nights !== undefined ? ` · ${selectedPlan.nights} ${Number(selectedPlan.nights) === 1 ? "Night" : "Nights"}` : ""}
+                        {formatTripDate(
+                          tripDate
+                        )}
                       </strong>
                     </div>
 
                     <div>
-                      <WalletCards size={18} />
-                      <span>Price / Person</span>
-                      <strong>{formatPrice(pricePerPerson)}</strong>
+                      <Users size={18} />
+
+                      <span>
+                        Travelers
+                      </span>
+
+                      <strong>
+                        {people}{" "}
+                        {people === 1
+                          ? "Person"
+                          : "People"}
+                      </strong>
                     </div>
 
                     <div>
-                      <CreditCard size={18} />
-                      <span>Subtotal</span>
-                      <strong>{formatPrice(subtotal)}</strong>
+                      <Clock size={18} />
+
+                      <span>
+                        Duration
+                      </span>
+
+                      <strong>
+                        {selectedPlan.days ||
+                          1}{" "}
+                        {Number(
+                          selectedPlan.days
+                        ) === 1
+                          ? "Day"
+                          : "Days"}
+
+                        {selectedPlan.nights !==
+                        undefined
+                          ? ` · ${
+                              selectedPlan.nights
+                            } ${
+                              Number(
+                                selectedPlan.nights
+                              ) === 1
+                                ? "Night"
+                                : "Nights"
+                            }`
+                          : ""}
+                      </strong>
                     </div>
 
                     <div>
-                      <CheckCircle size={18} />
-                      <span>Group Discount</span>
-                      <strong>{discountRate > 0 ? `${discountRate}% · -${formatPrice(discountAmount)}` : "No discount"}</strong>
+                      <WalletCards
+                        size={18}
+                      />
+
+                      <span>
+                        Price / Person
+                      </span>
+
+                      <strong>
+                        {formatPrice(
+                          pricePerPerson
+                        )}
+                      </strong>
+                    </div>
+
+                    <div>
+                      <CreditCard
+                        size={18}
+                      />
+
+                      <span>
+                        Subtotal
+                      </span>
+
+                      <strong>
+                        {formatPrice(
+                          subtotal
+                        )}
+                      </strong>
+                    </div>
+
+                    <div>
+                      <CheckCircle
+                        size={18}
+                      />
+
+                      <span>
+                        Group Discount
+                      </span>
+
+                      <strong>
+                        {discountRate > 0
+                          ? `${discountRate}% · -${formatPrice(
+                              discountAmount
+                            )}`
+                          : "No discount"}
+                      </strong>
                     </div>
 
                     <div>
                       <MapPin size={18} />
-                      <span>Destination</span>
-                      <strong>{selectedPlan.destination || selectedPlan.destinationName || "Happy Mappy Destination"}</strong>
+
+                      <span>
+                        Destination
+                      </span>
+
+                      <strong>
+                        {selectedPlan.destination ||
+                          selectedPlan.destinationName ||
+                          "Happy Mappy Destination"}
+                      </strong>
                     </div>
 
                     <div>
                       <Users size={18} />
-                      <span>Booked For</span>
-                      <strong>{currentUser.name || currentUser.username || currentUser.email || "Traveler"}</strong>
+
+                      <span>
+                        Booked For
+                      </span>
+
+                      <strong>
+                        {currentUser.name ||
+                          currentUser.username ||
+                          currentUser.email ||
+                          "Traveler"}
+                      </strong>
                     </div>
 
                   </div>
 
                   <div className="trip-confirmed-contact">
+
                     <div>
-                      <span>Email</span>
-                      <strong>{currentUser.email || "Not available"}</strong>
+                      <span>
+                        Email
+                      </span>
+
+                      <strong>
+                        {currentUser.email ||
+                          "Not available"}
+                      </strong>
                     </div>
+
                     <div>
-                      <span>Phone</span>
-                      <strong>{currentUser.contact || currentUser.phone || currentUser.mobile || "Not available"}</strong>
+                      <span>
+                        Phone
+                      </span>
+
+                      <strong>
+                        {currentUser.contact ||
+                          currentUser.phone ||
+                          currentUser.mobile ||
+                          "Not available"}
+                      </strong>
                     </div>
+
                   </div>
 
                   <div className="trip-payment-details">
+
                     <div className="trip-payment-details-header">
-                      <CreditCard size={18} />
+
+                      <CreditCard
+                        size={18}
+                      />
+
                       <div>
-                        <span>Payment Details</span>
-                        <strong>{paymentMethodLabel}</strong>
+
+                        <span>
+                          Payment Details
+                        </span>
+
+                        <strong>
+                          {paymentMethodLabel}
+                        </strong>
+
                       </div>
+
                     </div>
 
                     <div className="trip-payment-detail-row">
-                      <span>Payment method</span>
-                      <strong>{paymentMethodLabel}</strong>
+
+                      <span>
+                        Payment method
+                      </span>
+
+                      <strong>
+                        {paymentMethodLabel}
+                      </strong>
+
                     </div>
 
                     <div className="trip-payment-detail-row">
-                      <span>{paymentMethod === "upi" ? "UPI ID" : paymentMethod === "netbanking" ? "Bank" : "Card Number"}</span>
-                      <strong>{paymentDetailLabel}</strong>
+
+                      <span>
+                        {paymentMethod ===
+                        "upi"
+                          ? "UPI ID"
+                          : paymentMethod ===
+                            "netbanking"
+                          ? "Bank"
+                          : "Card Number"}
+                      </span>
+
+                      <strong>
+                        {paymentDetailLabel}
+                      </strong>
+
                     </div>
 
                     <div className="trip-payment-detail-row">
-                      <span>Payment status</span>
-                      <strong className="trip-payment-paid">Payment successful</strong>
+
+                      <span>
+                        Payment status
+                      </span>
+
+                      <strong className="trip-payment-paid">
+                        Pending verification
+                      </strong>
+
                     </div>
 
                     <div className="trip-payment-detail-row">
-                      <span>Trip amount</span>
-                      <strong>{formatPrice(totalAmount)}</strong>
+
+                      <span>
+                        Trip amount
+                      </span>
+
+                      <strong>
+                        {formatPrice(
+                          totalAmount
+                        )}
+                      </strong>
+
                     </div>
+
                   </div>
 
                   <div className="trip-booking-reference">
-                    <span>Booking Reference</span>
-                    <strong>{bookingReference || "HM-PENDING"}</strong>
+
+                    <span>
+                      Booking Reference
+                    </span>
+
+                    <strong>
+                      {bookingReference ||
+                        "HM-PENDING"}
+                    </strong>
+
                   </div>
 
                   <div className="trip-payment-status">
-                    <CheckCircle size={17} />
-                    <span>Payment successful</span>
+
+                    <CheckCircle
+                      size={17}
+                    />
+
+                    <span>
+                      Booking confirmed —
+                      payment pending verification
+                    </span>
+
                   </div>
 
                   <div className="trip-total-banner">
+
                     <div>
-                      <span>Total Trip Amount</span>
-                      <small>Happy Mappy booking</small>
+
+                      <span>
+                        Total Trip Amount
+                      </span>
+
+                      <small>
+                        Happy Mappy booking
+                      </small>
+
                     </div>
-                    <strong>{formatPrice(totalAmount)}</strong>
+
+                    <strong>
+                      {formatPrice(
+                        totalAmount
+                      )}
+                    </strong>
+
                   </div>
 
                 </div>
@@ -2944,15 +3749,41 @@ export default function MyPlanPage() {
                 <button
                   type="button"
                   onClick={() => {
-                    setTripConfirmed(false);
-                    setShowPayment(false);
-                    setShowPaymentConfirm(false);
-                    setSelectedPlan(null);
-                    setPaymentSuccess(false);
-                    setPaymentError("");
-                    setPaymentValue("");
-                    setPaymentMethod("upi");
-                    setBookingReference("");
+                    setTripConfirmed(
+                      false
+                    );
+
+                    setShowPayment(
+                      false
+                    );
+
+                    setShowPaymentConfirm(
+                      false
+                    );
+
+                    setSelectedPlan(
+                      null
+                    );
+
+                    setPaymentSuccess(
+                      false
+                    );
+
+                    setPaymentError(
+                      ""
+                    );
+
+                    setPaymentValue(
+                      ""
+                    );
+
+                    setPaymentMethod(
+                      "upi"
+                    );
+
+                    setBookingReference(
+                      ""
+                    );
                   }}
                 >
                   Done
@@ -2961,6 +3792,7 @@ export default function MyPlanPage() {
               </div>
 
             </div>
+
           )}
 
         {/* ======================================================
@@ -2968,102 +3800,298 @@ export default function MyPlanPage() {
         ====================================================== */}
 
         {viewBooking && (
+
           <div
             className="my-plan-overlay"
-            onClick={() => setViewBooking(null)}
+            onClick={() =>
+              setViewBooking(null)
+            }
           >
+
             <div
               className="payment-success-modal booking-details-modal"
-              onClick={(event) => event.stopPropagation()}
+              onClick={(event) =>
+                event.stopPropagation()
+              }
             >
+
               <button
                 type="button"
                 className="my-plan-close booking-details-close"
-                onClick={() => setViewBooking(null)}
+                onClick={() =>
+                  setViewBooking(null)
+                }
                 aria-label="Close booking details"
               >
                 <X size={22} />
               </button>
 
               <div className="payment-success-icon">
-                <CheckCircle size={32} />
+
+                <CheckCircle
+                  size={32}
+                />
+
               </div>
-              <h3>Booking Details</h3>
-              <p>Your booking information saved in MongoDB.</p>
+
+              <h3>
+                Booking Details
+              </h3>
+
+              <p>
+                Your booking information saved in MongoDB.
+              </p>
 
               <div className="booking-user-grid">
-                <div><small>Travel Plan</small><strong>{viewBooking.planTitle || "Travel Plan"}</strong></div>
-                <div><small>Destination</small><strong>{viewBooking.destination || "Not available"}</strong></div>
-                <div><small>Booking Reference</small><strong>{viewBooking.bookingReference || "Not available"}</strong></div>
-                <div><small>Trip Date</small><strong>{formatTripDate(viewBooking.tripDate)}</strong></div>
-                <div><small>Travelers</small><strong>{viewBooking.people || 1}</strong></div>
-                <div><small>Price per person</small><strong>{formatPrice(viewBooking.pricePerPerson)}</strong></div>
-                <div><small>Subtotal</small><strong>{formatPrice(viewBooking.subtotal)}</strong></div>
-                <div><small>Group discount</small><strong>{Number(viewBooking.discountRate || 0)}% · {formatPrice(viewBooking.discountAmount)}</strong></div>
-                <div><small>Total amount</small><strong>{formatPrice(viewBooking.totalAmount)}</strong></div>
-                <div><small>Booking status</small><strong>{viewBooking.bookingStatus || "confirmed"}</strong></div>
 
-                <div>
-                  <small>Payment method</small>
-                  <strong>
-                    {viewBooking.paymentMethod === "upi"
-                      ? "UPI"
-                      : viewBooking.paymentMethod === "netbanking"
-                        ? "Net Banking"
-                        : viewBooking.paymentMethod === "card"
-                          ? "Debit / Credit Card"
-                          : "Not recorded"}
-                  </strong>
-                </div>
-
-                {/* CHANGE 2: Display the actual saved payment detail */}
                 <div>
                   <small>
-                    {viewBooking.paymentMethod === "upi"
-                      ? "UPI ID"
-                      : viewBooking.paymentMethod === "netbanking"
-                        ? "Bank name"
-                        : viewBooking.paymentMethod === "card"
-                          ? "Card number"
-                          : "Payment mode"}
+                    Travel Plan
                   </small>
 
                   <strong>
-                    {viewBooking.paymentMethod === "netbanking"
-                      ? ({
-                          SBI: "State Bank of India",
-                          HDFC: "HDFC Bank",
-                          ICICI: "ICICI Bank",
-                          AXIS: "Axis Bank",
-                        }[String(viewBooking.paymentDetail || "").toUpperCase()] ||
-                        viewBooking.paymentDetail ||
-                        "Bank name not recorded")
-                      : viewBooking.paymentMethod === "upi"
-                        ? viewBooking.paymentDetail || "UPI ID not recorded"
-                        : viewBooking.paymentMethod === "card"
-                          ? (() => {
-                              const savedCard = String(viewBooking.paymentDetail || "");
-                              const digits = savedCard.replace(/\D/g, "");
-
-                              return digits.length >= 4
-                                ? `•••• ${digits.slice(-4)}`
-                                : savedCard || "Card number not recorded";
-                            })()
-                          : "Not recorded"}
+                    {viewBooking.planTitle ||
+                      "Travel Plan"}
                   </strong>
                 </div>
 
                 <div>
-                  <small>Payment status</small>
-                  <strong className="trip-payment-paid">Payment successful</strong>
+                  <small>
+                    Destination
+                  </small>
+
+                  <strong>
+                    {viewBooking.destination ||
+                      "Not available"}
+                  </strong>
                 </div>
+
+                <div>
+                  <small>
+                    Booking Reference
+                  </small>
+
+                  <strong>
+                    {viewBooking.bookingReference ||
+                      "Not available"}
+                  </strong>
+                </div>
+
+                <div>
+                  <small>
+                    Trip Date
+                  </small>
+
+                  <strong>
+                    {formatTripDate(
+                      viewBooking.tripDate
+                    )}
+                  </strong>
+                </div>
+
+                <div>
+                  <small>
+                    Travelers
+                  </small>
+
+                  <strong>
+                    {viewBooking.people ||
+                      1}
+                  </strong>
+                </div>
+
+                <div>
+                  <small>
+                    Price per person
+                  </small>
+
+                  <strong>
+                    {formatPrice(
+                      viewBooking.pricePerPerson
+                    )}
+                  </strong>
+                </div>
+
+                <div>
+                  <small>
+                    Subtotal
+                  </small>
+
+                  <strong>
+                    {formatPrice(
+                      viewBooking.subtotal
+                    )}
+                  </strong>
+                </div>
+
+                <div>
+                  <small>
+                    Group discount
+                  </small>
+
+                  <strong>
+                    {Number(
+                      viewBooking.discountRate ||
+                        0
+                    )}
+                    % ·{" "}
+                    {formatPrice(
+                      viewBooking.discountAmount
+                    )}
+                  </strong>
+                </div>
+
+                <div>
+                  <small>
+                    Total amount
+                  </small>
+
+                  <strong>
+                    {formatPrice(
+                      viewBooking.totalAmount
+                    )}
+                  </strong>
+                </div>
+
+                <div>
+                  <small>
+                    Booking status
+                  </small>
+
+                  <strong>
+                    {viewBooking.bookingStatus ||
+                      "confirmed"}
+                  </strong>
+                </div>
+
+                <div>
+
+                  <small>
+                    Payment method
+                  </small>
+
+                  <strong>
+                    {viewBooking.paymentMethod ===
+                    "upi"
+                      ? "UPI"
+                      : viewBooking.paymentMethod ===
+                        "netbanking"
+                      ? "Net Banking"
+                      : viewBooking.paymentMethod ===
+                        "card"
+                      ? "Debit / Credit Card"
+                      : "Not recorded"}
+                  </strong>
+
+                </div>
+
+                <div>
+
+                  <small>
+                    {viewBooking.paymentMethod ===
+                    "upi"
+                      ? "UPI ID"
+                      : viewBooking.paymentMethod ===
+                        "netbanking"
+                      ? "Bank name"
+                      : viewBooking.paymentMethod ===
+                        "card"
+                      ? "Card number"
+                      : "Payment mode"}
+                  </small>
+
+                  <strong>
+
+                    {viewBooking.paymentMethod ===
+                    "netbanking"
+                      ? ({
+                          SBI:
+                            "State Bank of India",
+                          HDFC:
+                            "HDFC Bank",
+                          ICICI:
+                            "ICICI Bank",
+                          AXIS:
+                            "Axis Bank",
+                        }[
+                          String(
+                            viewBooking.paymentDetail ||
+                              ""
+                          ).toUpperCase()
+                        ] ||
+                          viewBooking.paymentDetail ||
+                          "Bank name not recorded")
+
+                      : viewBooking.paymentMethod ===
+                        "upi"
+                      ? viewBooking.paymentDetail ||
+                        "UPI ID not recorded"
+
+                      : viewBooking.paymentMethod ===
+                        "card"
+                      ? (() => {
+                          const savedCard =
+                            String(
+                              viewBooking.paymentDetail ||
+                                ""
+                            );
+
+                          const digits =
+                            savedCard.replace(
+                              /\D/g,
+                              ""
+                            );
+
+                          return digits.length >=
+                            4
+                            ? `•••• ${digits.slice(
+                                -4
+                              )}`
+                            : savedCard ||
+                              "Card number not recorded";
+                        })()
+
+                      : "Not recorded"}
+
+                  </strong>
+
+                </div>
+
+                <div>
+
+                  <small>
+                    Payment status
+                  </small>
+
+                  <strong className="trip-payment-paid">
+
+                    {viewBooking.paymentStatus ===
+                    "successful"
+                      ? "Successful"
+                      : viewBooking.paymentStatus ===
+                        "failed"
+                      ? "Failed"
+                      : "Pending verification"}
+
+                  </strong>
+
+                </div>
+
               </div>
 
-              <button type="button" onClick={() => setViewBooking(null)}>
+              <button
+                type="button"
+                onClick={() =>
+                  setViewBooking(null)
+                }
+              >
                 Close
               </button>
+
             </div>
+
           </div>
+
         )}
 
       </main>

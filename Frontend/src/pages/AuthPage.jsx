@@ -16,6 +16,7 @@ import {
   CheckCircle,
   AlertCircle,
   X,
+  LoaderCircle,
 } from "lucide-react";
 
 import {
@@ -28,7 +29,92 @@ import {
    HAPPY MAPPY BACKEND
 ================================================== */
 
-const API_BASE_URL = "http://localhost:5000";
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL || "http://localhost:5000";
+
+/* ==================================================
+   SAFE API RESPONSE HANDLER
+================================================== */
+
+const readApiResponse = async (response) => {
+  const contentType =
+    response.headers.get("content-type") || "";
+
+  if (
+    contentType.includes("application/json")
+  ) {
+    try {
+      return await response.json();
+    } catch (error) {
+      console.error(
+        "API JSON Parse Error:",
+        error
+      );
+
+      return {};
+    }
+  }
+
+  return {};
+};
+
+/* ==================================================
+   API ERROR MESSAGE HELPER
+================================================== */
+
+const getApiErrorMessage = (
+  response,
+  data,
+  fallbackMessage
+) => {
+  if (
+    data &&
+    typeof data.message === "string" &&
+    data.message.trim()
+  ) {
+    return data.message;
+  }
+
+  switch (response.status) {
+    case 400:
+      return "Please check the information you entered and try again.";
+
+    case 401:
+      return "Invalid email or password. Please check your login details and try again.";
+
+    case 403:
+      return "You are not allowed to perform this action.";
+
+    case 404:
+      return "The requested service could not be found. Please try again later.";
+
+    case 409:
+      return "An account with this email already exists.";
+
+    case 413:
+      return "The request is too large. Please check your information and try again.";
+
+    case 429:
+      return "Too many requests. Please wait a moment and try again.";
+
+    case 500:
+      return "Server error. Please try again later.";
+
+    case 503:
+      return "Happy Mappy services are temporarily unavailable. Please try again later.";
+
+    default:
+      return fallbackMessage;
+  }
+};
+
+/* ==================================================
+   NETWORK ERROR MESSAGE
+================================================== */
+
+const getNetworkErrorMessage = () => {
+  return "Unable to connect to the Happy Mappy server. Please make sure the backend is running and try again.";
+};
 
 export default function AuthPage() {
   const navigate = useNavigate();
@@ -39,6 +125,13 @@ export default function AuthPage() {
   ================================================== */
 
   const [isRegister, setIsRegister] =
+    useState(false);
+
+  /* ==================================================
+     LOADING STATE
+  ================================================== */
+
+  const [isLoading, setIsLoading] =
     useState(false);
 
   /* ==================================================
@@ -195,6 +288,14 @@ export default function AuthPage() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    /* ==================================================
+       PREVENT DUPLICATE SUBMISSIONS
+    ================================================== */
+
+    if (isLoading) {
+      return;
+    }
+
     const email =
       form.email
         .trim()
@@ -273,6 +374,12 @@ export default function AuthPage() {
       }
 
       /* ================================================
+         START REGISTRATION LOADING
+      ================================================ */
+
+      setIsLoading(true);
+
+      /* ================================================
          REGISTER WITH BACKEND
       ================================================ */
 
@@ -296,16 +403,26 @@ export default function AuthPage() {
         );
 
         /* ==============================================
-           READ RESPONSE
+           SAFE RESPONSE READING
         ============================================== */
 
-        const data = await response.json();
+        const data =
+          await readApiResponse(response);
 
         /* ==============================================
            BACKEND ERROR
         ============================================== */
 
         if (!response.ok) {
+          setIsLoading(false);
+
+          const errorMessage =
+            getApiErrorMessage(
+              response,
+              data,
+              "Unable to create your account. Please try again."
+            );
+
           showPopup({
             type:
               response.status === 409
@@ -315,11 +432,11 @@ export default function AuthPage() {
             title:
               response.status === 409
                 ? "Account Already Exists"
+                : response.status === 503
+                ? "Service Temporarily Unavailable"
                 : "Registration Failed",
 
-            message:
-              data.message ||
-              "Unable to create your account. Please try again.",
+            message: errorMessage,
 
             buttonText:
               response.status === 409
@@ -350,6 +467,8 @@ export default function AuthPage() {
         ============================================== */
 
         if (!data.token || !data.user) {
+          setIsLoading(false);
+
           showPopup({
             type: "error",
             title: "Registration Error",
@@ -397,6 +516,12 @@ export default function AuthPage() {
         );
 
         /* ==============================================
+           STOP LOADING
+        ============================================== */
+
+        setIsLoading(false);
+
+        /* ==============================================
            SUCCESS POPUP
         ============================================== */
 
@@ -427,11 +552,13 @@ export default function AuthPage() {
           error
         );
 
+        setIsLoading(false);
+
         showPopup({
           type: "error",
           title: "Connection Error",
           message:
-            "Unable to connect to the Happy Mappy server. Please make sure the backend is running and try again.",
+            getNetworkErrorMessage(),
           buttonText: "Try Again",
         });
       }
@@ -460,6 +587,12 @@ export default function AuthPage() {
     }
 
     /* ==================================================
+       START LOGIN LOADING
+    ================================================== */
+
+    setIsLoading(true);
+
+    /* ==================================================
        LOGIN WITH BACKEND
     ================================================== */
 
@@ -481,22 +614,41 @@ export default function AuthPage() {
       );
 
       /* ================================================
-         READ RESPONSE
+         SAFE RESPONSE READING
       ================================================ */
 
-      const data = await response.json();
+      const data =
+        await readApiResponse(response);
 
       /* ================================================
          LOGIN ERROR
       ================================================ */
 
       if (!response.ok) {
+        setIsLoading(false);
+
+        const errorMessage =
+          getApiErrorMessage(
+            response,
+            data,
+            "Invalid email or password. Please check your login details and try again."
+          );
+
         showPopup({
-          type: "error",
-          title: "Login Failed",
-          message:
-            data.message ||
-            "Invalid email or password. Please check your login details and try again.",
+          type:
+            response.status === 503
+              ? "warning"
+              : "error",
+
+          title:
+            response.status === 401
+              ? "Invalid Login Details"
+              : response.status === 503
+              ? "Service Temporarily Unavailable"
+              : "Login Failed",
+
+          message: errorMessage,
+
           buttonText: "Try Again",
         });
 
@@ -508,6 +660,8 @@ export default function AuthPage() {
       ================================================ */
 
       if (!data.token || !data.user) {
+        setIsLoading(false);
+
         showPopup({
           type: "error",
           title: "Login Error",
@@ -562,6 +716,12 @@ export default function AuthPage() {
         location.state?.from || "/";
 
       /* ================================================
+         STOP LOADING
+      ================================================ */
+
+      setIsLoading(false);
+
+      /* ================================================
          SUCCESS POPUP
       ================================================ */
 
@@ -589,11 +749,13 @@ export default function AuthPage() {
         error
       );
 
+      setIsLoading(false);
+
       showPopup({
         type: "error",
         title: "Connection Error",
         message:
-          "Unable to connect to the Happy Mappy server. Please make sure the backend is running and try again.",
+          getNetworkErrorMessage(),
         buttonText: "Try Again",
       });
     }
@@ -604,6 +766,10 @@ export default function AuthPage() {
   ================================================== */
 
   const switchMode = () => {
+    if (isLoading) {
+      return;
+    }
+
     setIsRegister(
       (current) => !current
     );
@@ -748,8 +914,9 @@ export default function AuthPage() {
                   ? "active"
                   : ""
               }
+              disabled={isLoading}
               onClick={() => {
-                if (isRegister) {
+                if (isRegister && !isLoading) {
                   switchMode();
                 }
               }}
@@ -764,8 +931,9 @@ export default function AuthPage() {
                   ? "active"
                   : ""
               }
+              disabled={isLoading}
               onClick={() => {
-                if (!isRegister) {
+                if (!isRegister && !isLoading) {
                   switchMode();
                 }
               }}
@@ -782,6 +950,7 @@ export default function AuthPage() {
           <form
             className="auth-form"
             onSubmit={handleSubmit}
+            aria-busy={isLoading}
           >
 
             {/* ================================================
@@ -807,6 +976,7 @@ export default function AuthPage() {
                     value={form.name}
                     onChange={handleChange}
                     required
+                    disabled={isLoading}
                   />
 
                 </div>
@@ -836,6 +1006,7 @@ export default function AuthPage() {
                   value={form.email}
                   onChange={handleChange}
                   required
+                  disabled={isLoading}
                 />
 
               </div>
@@ -868,6 +1039,7 @@ export default function AuthPage() {
                     maxLength={10}
                     pattern="[0-9]{10}"
                     required
+                    disabled={isLoading}
                   />
 
                 </div>
@@ -891,7 +1063,12 @@ export default function AuthPage() {
                   <button
                     type="button"
                     className="forgot-password"
+                    disabled={isLoading}
                     onClick={() => {
+                      if (isLoading) {
+                        return;
+                      }
+
                       showPopup({
                         type: "info",
                         title: "Forgot Password?",
@@ -924,11 +1101,13 @@ export default function AuthPage() {
                   onChange={handleChange}
                   required
                   minLength={6}
+                  disabled={isLoading}
                 />
 
                 <button
                   type="button"
                   className="password-toggle"
+                  disabled={isLoading}
                   onClick={() =>
                     setShowPassword(
                       (current) =>
@@ -977,11 +1156,13 @@ export default function AuthPage() {
                     onChange={handleChange}
                     required
                     minLength={6}
+                    disabled={isLoading}
                   />
 
                   <button
                     type="button"
                     className="password-toggle"
+                    disabled={isLoading}
                     onClick={() =>
                       setShowConfirmPassword(
                         (current) =>
@@ -1011,6 +1192,7 @@ export default function AuthPage() {
                 <input
                   type="checkbox"
                   required
+                  disabled={isLoading}
                 />
 
                 <span>
@@ -1037,12 +1219,36 @@ export default function AuthPage() {
             <button
               type="submit"
               className="primary-button auth-submit"
+              disabled={isLoading}
+              aria-disabled={isLoading}
             >
-              {isRegister
-                ? "Create Account"
-                : "Sign In"}
+              {isLoading ? (
+                <>
+                  <LoaderCircle
+                    size={17}
+                    style={{
+                      animation:
+                        "happyMappySpin 1s linear infinite",
+                    }}
+                  />
 
-              <ArrowRight size={17} />
+                  <span>
+                    {isRegister
+                      ? "Creating Account..."
+                      : "Signing In..."}
+                  </span>
+                </>
+              ) : (
+                <>
+                  <span>
+                    {isRegister
+                      ? "Create Account"
+                      : "Sign In"}
+                  </span>
+
+                  <ArrowRight size={17} />
+                </>
+              )}
             </button>
 
           </form>
@@ -1062,6 +1268,7 @@ export default function AuthPage() {
             <button
               type="button"
               onClick={switchMode}
+              disabled={isLoading}
             >
               {isRegister
                 ? "Sign In"
@@ -1073,6 +1280,11 @@ export default function AuthPage() {
           <Link
             to="/"
             className="auth-home-link"
+            onClick={(event) => {
+              if (isLoading) {
+                event.preventDefault();
+              }
+            }}
           >
             Continue without login
           </Link>
@@ -1145,6 +1357,24 @@ export default function AuthPage() {
 
         </div>
       )}
+
+      {/* ==================================================
+          LOADING SPINNER ANIMATION
+      ================================================== */}
+
+      <style>
+        {`
+          @keyframes happyMappySpin {
+            from {
+              transform: rotate(0deg);
+            }
+
+            to {
+              transform: rotate(360deg);
+            }
+          }
+        `}
+      </style>
 
     </main>
   );

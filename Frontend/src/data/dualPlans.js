@@ -63,8 +63,9 @@ const dualPlans = [
               {
                 time: "08:00 AM",
                 duration: "1 hr",
-                name: "Breakfast",
+                name: "Breakfast at Ramada by Wyndham Alleppey",
                 type: "food",
+                meal: "breakfast",
                 amount: 0,
                 description:
                   "Start your morning with a relaxed Kerala-style breakfast before beginning the day's sightseeing.",
@@ -90,8 +91,9 @@ const dualPlans = [
               {
                 time: "12:30 PM",
                 duration: "1 hr",
-                name: "Kerala Lunch",
+                name: "Lunch at Cassia Restaurant, Alappuzha",
                 type: "food",
+                meal: "lunch",
                 amount: 0,
                 description:
                   "Enjoy a traditional Kerala-style lunch with local flavours before continuing the afternoon sightseeing.",
@@ -115,16 +117,7 @@ const dualPlans = [
                   "Enjoy Marari's calm coastline, soft sandy surroundings and beautiful evening atmosphere away from busy city areas.",
               },
               {
-                time: "07:00 PM",
-                duration: "1 hr",
-                name: "Dinner",
-                type: "food",
-                amount: 0,
-                description:
-                  "Enjoy a relaxed Kerala dinner with local dishes after a full day of sightseeing.",
-              },
-              {
-                time: "08:30 PM",
+                time: "07:30 PM",
                 duration: "1.5 hrs",
                 name: "Alleppey Night Walk",
                 type: "activity",
@@ -133,15 +126,25 @@ const dualPlans = [
                   "Take a peaceful evening walk around the local town area and enjoy Alleppey's calm night atmosphere.",
               },
               {
-                time: "10:00 PM",
-                duration: "0 hr",
-                name: "Day End",
-                type: "activity",
+                time: "09:00 PM",
+                duration: "1 hr",
+                name: "Dinner at Harbour Restaurant, Alappuzha",
+                type: "food",
+                meal: "dinner",
                 amount: 0,
                 description:
-                  "Return to the accommodation, freshen up and relax after a full day of exploring Alleppey.",
+                  "Enjoy a relaxed Kerala dinner with local dishes after a full day of sightseeing.",
               },
-            ],
+              {
+                time: "10:00 PM",
+                duration: "Overnight",
+                name: "Night Stay - Punnamada Resort, Alleppey",
+                type: "hotel",
+                amount: 1200,
+                description:
+                  "Overnight stay at Punnamada Resort, Alleppey before continuing the journey the next day.",
+              },
+          ],
 
             planningTip:
               "Carry comfortable clothes, sunglasses and mosquito protection for the backwaters.",
@@ -157,8 +160,9 @@ const dualPlans = [
               {
                 time: "08:00 AM",
                 duration: "1 hr",
-                name: "Breakfast",
+                name: "Breakfast at Holiday Inn Cochin",
                 type: "food",
+                meal: "breakfast",
                 amount: 0,
                 description:
                   "Have a fresh breakfast before starting the day's Cochin heritage and sightseeing experience.",
@@ -184,8 +188,9 @@ const dualPlans = [
               {
                 time: "12:30 PM",
                 duration: "1 hr",
-                name: "Kerala Lunch",
+                name: "Lunch at Kashi Art Cafe, Fort Kochi",
                 type: "food",
+                meal: "lunch",
                 amount: 0,
                 description:
                   "Enjoy a traditional Kerala lunch in Cochin and take a short break before the afternoon sightseeing.",
@@ -218,16 +223,7 @@ const dualPlans = [
                   "Enjoy the evening waterfront atmosphere, scenic views and relaxing promenade along Marine Drive.",
               },
               {
-                time: "08:15 PM",
-                duration: "1 hr",
-                name: "Dinner",
-                type: "food",
-                amount: 0,
-                description:
-                  "Enjoy a comfortable dinner in Cochin before completing the final activities of the trip.",
-              },
-              {
-                time: "09:30 PM",
+                time: "07:30 PM",
                 duration: "0.5 hr",
                 name: "Cochin Night Drive",
                 type: "activity",
@@ -236,15 +232,16 @@ const dualPlans = [
                   "Enjoy a short evening drive through Cochin and see the city lights and waterfront areas at night.",
               },
               {
-                time: "10:00 PM",
-                duration: "0 hr",
-                name: "Trip End",
-                type: "activity",
+                time: "09:00 PM",
+                duration: "1 hr",
+                name: "Dinner at Fort House Restaurant, Fort Kochi",
+                type: "food",
+                meal: "dinner",
                 amount: 0,
                 description:
-                  "Complete the Cochin experience and prepare for departure or the next part of your journey.",
+                  "Enjoy a comfortable dinner in Cochin before completing the final activities of the trip.",
               },
-            ],
+          ],
 
             planningTip:
               "Wear comfortable footwear because Fort Kochi and Mattancherry involve walking.",
@@ -290,8 +287,9 @@ const dualPlans = [
               {
                 time: "08:00 AM",
                 duration: "1 hr",
-                name: "Breakfast",
+                name: "Breakfast at Ramada by Wyndham Alleppey",
                 type: "food",
+                meal: "breakfast",
                 amount: 0,
                 description:
                   "Start the morning with a fresh breakfast before heading out for the day's Alleppey experiences.",
@@ -317,8 +315,9 @@ const dualPlans = [
               {
                 time: "12:30 PM",
                 duration: "1 hr",
-                name: "Lunch",
+                name: "Lunch at Cassia Restaurant, Alappuzha",
                 type: "food",
+                meal: "lunch",
                 amount: 0,
                 description:
                   "Enjoy a delicious Kerala lunch and take some time to relax before the afternoon activities.",
@@ -351,16 +350,7 @@ const dualPlans = [
                   "Slow down in the evening and enjoy the changing colours of the sky along the coastal landscape.",
               },
               {
-                time: "08:00 PM",
-                duration: "1 hr",
-                name: "Dinner",
-                type: "food",
-                amount: 0,
-                description:
-                  "Enjoy a relaxed dinner featuring local Kerala flavours after the day's sightseeing.",
-              },
-              {
-                time: "09:15 PM",
+                time: "07:30 PM",
                 duration: "0.75 hr",
                 name: "Alleppey Night Walk",
                 type: "activity",
@@ -369,15 +359,25 @@ const dualPlans = [
                   "Take a comfortable evening walk around the town and enjoy the quieter side of Alleppey at night.",
               },
               {
-                time: "10:00 PM",
-                duration: "0 hr",
-                name: "Day End",
-                type: "activity",
+                time: "09:00 PM",
+                duration: "1 hr",
+                name: "Dinner at Harbour Restaurant, Alappuzha",
+                type: "food",
+                meal: "dinner",
                 amount: 0,
                 description:
-                  "Return to the accommodation and relax after a scenic day around Alleppey's backwaters and coast.",
+                  "Enjoy a relaxed dinner featuring local Kerala flavours after the day's sightseeing.",
               },
-            ],
+              {
+                time: "10:00 PM",
+                duration: "Overnight",
+                name: "Night Stay - Punnamada Resort, Alleppey",
+                type: "hotel",
+                amount: 1200,
+                description:
+                  "Overnight stay at Punnamada Resort, Alleppey before continuing the journey the next day.",
+              },
+          ],
 
             planningTip:
               "Keep the first evening relaxed after the backwater experience.",
@@ -393,8 +393,9 @@ const dualPlans = [
               {
                 time: "08:00 AM",
                 duration: "1 hr",
-                name: "Breakfast",
+                name: "Breakfast at Holiday Inn Cochin",
                 type: "food",
+                meal: "breakfast",
                 amount: 0,
                 description:
                   "Have a filling breakfast before starting the Cochin heritage sightseeing.",
@@ -420,8 +421,9 @@ const dualPlans = [
               {
                 time: "12:30 PM",
                 duration: "1 hr",
-                name: "Lunch",
+                name: "Lunch at Kashi Art Cafe, Fort Kochi",
                 type: "food",
+                meal: "lunch",
                 amount: 0,
                 description:
                   "Take a lunch break and enjoy local Kerala or coastal dishes in Cochin.",
@@ -454,16 +456,7 @@ const dualPlans = [
                   "Spend the evening beside the waterfront and enjoy the city skyline and relaxing promenade.",
               },
               {
-                time: "08:00 PM",
-                duration: "1 hr",
-                name: "Dinner",
-                type: "food",
-                amount: 0,
-                description:
-                  "Enjoy dinner in Cochin after completing the day's heritage sightseeing.",
-              },
-              {
-                time: "09:15 PM",
+                time: "07:30 PM",
                 duration: "0.75 hr",
                 name: "Cochin Night View",
                 type: "activity",
@@ -472,15 +465,25 @@ const dualPlans = [
                   "Enjoy Cochin's evening atmosphere with a short relaxed outing through the illuminated city.",
               },
               {
-                time: "10:00 PM",
-                duration: "0 hr",
-                name: "Day End",
-                type: "activity",
+                time: "09:00 PM",
+                duration: "1 hr",
+                name: "Dinner at Fort House Restaurant, Fort Kochi",
+                type: "food",
+                meal: "dinner",
                 amount: 0,
                 description:
-                  "Return to your accommodation and relax after a full day of exploring Cochin.",
+                  "Enjoy dinner in Cochin after completing the day's heritage sightseeing.",
               },
-            ],
+              {
+                time: "10:00 PM",
+                duration: "Overnight",
+                name: "Night Stay - Grand Hyatt Kochi Bolgatty",
+                type: "hotel",
+                amount: 1200,
+                description:
+                  "Overnight stay at Grand Hyatt Kochi Bolgatty before continuing the journey the next day.",
+              },
+          ],
 
             planningTip:
               "Carry comfortable footwear for walking.",
@@ -496,8 +499,9 @@ const dualPlans = [
               {
                 time: "08:00 AM",
                 duration: "1 hr",
-                name: "Breakfast",
+                name: "Breakfast at Radisson Blu Kochi",
                 type: "food",
+                meal: "breakfast",
                 amount: 0,
                 description:
                   "Start the final day with a relaxed breakfast before heading out for the last sightseeing activities.",
@@ -523,8 +527,9 @@ const dualPlans = [
               {
                 time: "12:30 PM",
                 duration: "1 hr",
-                name: "Lunch",
+                name: "Lunch at Malabar Junction, Fort Kochi",
                 type: "food",
+                meal: "lunch",
                 amount: 0,
                 description:
                   "Enjoy a relaxed lunch before continuing with the final afternoon sightseeing.",
@@ -541,7 +546,7 @@ const dualPlans = [
               {
                 time: "04:30 PM",
                 duration: "1.5 hrs",
-                name: "Marine Drive",
+                name: "Bolgatty Palace Area",
                 type: "place",
                 amount: 300,
                 description:
@@ -557,16 +562,7 @@ const dualPlans = [
                   "Enjoy the evening sky and take in the peaceful coastal atmosphere before the final dinner.",
               },
               {
-                time: "08:00 PM",
-                duration: "1 hr",
-                name: "Dinner",
-                type: "food",
-                amount: 0,
-                description:
-                  "Enjoy your final dinner in Cochin and take a relaxed break before departure.",
-              },
-              {
-                time: "09:15 PM",
+                time: "07:30 PM",
                 duration: "0.75 hr",
                 name: "Final Night Walk",
                 type: "activity",
@@ -575,15 +571,16 @@ const dualPlans = [
                   "Take a gentle final evening walk and enjoy the atmosphere before ending the trip.",
               },
               {
-                time: "10:00 PM",
-                duration: "0 hr",
-                name: "Trip End",
-                type: "activity",
+                time: "09:00 PM",
+                duration: "1 hr",
+                name: "Dinner at Oceanos Restaurant, Fort Kochi",
+                type: "food",
+                meal: "dinner",
                 amount: 0,
                 description:
-                  "Complete the trip and prepare for departure with your travel memories from Kerala.",
+                  "Enjoy your final dinner in Cochin and take a relaxed break before departure.",
               },
-            ],
+          ],
 
             planningTip:
               "Keep the final evening flexible for departure.",
@@ -656,8 +653,9 @@ const dualPlans = [
               {
                 time: "08:00 AM",
                 duration: "1 hr",
-                name: "Breakfast",
+                name: "Breakfast at Munroe Island Lake Resort",
                 type: "food",
+                meal: "breakfast",
                 amount: 0,
                 description:
                   "Start the morning with a relaxed breakfast before heading out to explore Munroe Island.",
@@ -683,8 +681,9 @@ const dualPlans = [
               {
                 time: "01:00 PM",
                 duration: "1 hr",
-                name: "Local Lunch",
+                name: "Lunch at Munroe Eco Camp, Munroe Island",
                 type: "food",
+                meal: "lunch",
                 amount: 0,
                 description:
                   "Enjoy a relaxed local lunch featuring Kerala-style dishes and fresh regional flavours.",
@@ -708,16 +707,7 @@ const dualPlans = [
                   "Enjoy the peaceful sunset over the island waterways and capture the beautiful evening scenery.",
               },
               {
-                time: "07:00 PM",
-                duration: "1 hr",
-                name: "Dinner",
-                type: "food",
-                amount: 0,
-                description:
-                  "Enjoy a relaxed local dinner after a full day of backwater and village experiences.",
-              },
-              {
-                time: "08:30 PM",
+                time: "07:30 PM",
                 duration: "1.5 hrs",
                 name: "Village Evening Experience",
                 type: "activity",
@@ -726,15 +716,25 @@ const dualPlans = [
                   "Spend a peaceful evening around the island and enjoy the quiet village atmosphere away from busy city areas.",
               },
               {
-                time: "10:00 PM",
-                duration: "0 hr",
-                name: "Day End",
-                type: "activity",
+                time: "09:00 PM",
+                duration: "1 hr",
+                name: "Dinner at Lake n River Resort, Munroe Island",
+                type: "food",
+                meal: "dinner",
                 amount: 0,
                 description:
-                  "Return to the accommodation, relax and prepare for the next day's Varkala experience.",
+                  "Enjoy a relaxed local dinner after a full day of backwater and village experiences.",
               },
-            ],
+              {
+                time: "10:00 PM",
+                duration: "Overnight",
+                name: "Night Stay - The Munroe Vibes Inn, Munroe Island",
+                type: "hotel",
+                amount: 1200,
+                description:
+                  "Overnight stay at The Munroe Vibes Inn, Munroe Island before continuing the journey the next day.",
+              },
+          ],
 
             planningTip:
               "Carry comfortable clothes and mosquito protection.",
@@ -750,8 +750,9 @@ const dualPlans = [
               {
                 time: "08:00 AM",
                 duration: "1 hr",
-                name: "Breakfast",
+                name: "Breakfast at Gateway Varkala - IHCL SeleQtions",
                 type: "food",
+                meal: "breakfast",
                 amount: 0,
                 description:
                   "Start the day with breakfast before heading out to explore Varkala's coastal attractions.",
@@ -777,8 +778,9 @@ const dualPlans = [
               {
                 time: "01:30 PM",
                 duration: "1 hr",
-                name: "Lunch",
+                name: "Lunch at Darjeeling Cafe, Varkala",
                 type: "food",
+                meal: "lunch",
                 amount: 0,
                 description:
                   "Enjoy a relaxed lunch near the beach before continuing the afternoon sightseeing.",
@@ -802,16 +804,7 @@ const dualPlans = [
                   "Enjoy the peaceful lake scenery and views of the surrounding coastal landscape during the evening.",
               },
               {
-                time: "07:00 PM",
-                duration: "1 hr",
-                name: "Dinner",
-                type: "food",
-                amount: 0,
-                description:
-                  "Enjoy a relaxed dinner after exploring Varkala and the Kappil coastal area.",
-              },
-              {
-                time: "08:30 PM",
+                time: "07:30 PM",
                 duration: "1.5 hrs",
                 name: "Varkala Evening Walk",
                 type: "activity",
@@ -820,15 +813,16 @@ const dualPlans = [
                   "Explore the cliff area in the evening, browse local surroundings and enjoy Varkala's lively night atmosphere.",
               },
               {
-                time: "10:00 PM",
-                duration: "0 hr",
-                name: "Trip End",
-                type: "activity",
+                time: "09:00 PM",
+                duration: "1 hr",
+                name: "Dinner at Clafouti Beach Resort, Varkala",
+                type: "food",
+                meal: "dinner",
                 amount: 0,
                 description:
-                  "Complete the Varkala experience and prepare for departure after enjoying the coastal highlights.",
+                  "Enjoy a relaxed dinner after exploring Varkala and the Kappil coastal area.",
               },
-            ],
+          ],
 
             planningTip:
               "Be careful around cliff edges and carry sunscreen.",
@@ -874,8 +868,9 @@ const dualPlans = [
               {
                 time: "08:00 AM",
                 duration: "1 hr",
-                name: "Breakfast",
+                name: "Breakfast at Munroe Island Lake Resort",
                 type: "food",
+                meal: "breakfast",
                 amount: 0,
                 description:
                   "Have breakfast and get ready for a peaceful day exploring the island backwaters.",
@@ -901,8 +896,9 @@ const dualPlans = [
               {
                 time: "01:00 PM",
                 duration: "1 hr",
-                name: "Lunch",
+                name: "Lunch at Munroe Eco Camp, Munroe Island",
                 type: "food",
+                meal: "lunch",
                 amount: 0,
                 description:
                   "Enjoy local Kerala food and take a comfortable break before continuing the afternoon activities.",
@@ -926,16 +922,7 @@ const dualPlans = [
                   "Enjoy the beautiful evening light and peaceful sunset views across the island waterways.",
               },
               {
-                time: "07:00 PM",
-                duration: "1 hr",
-                name: "Dinner",
-                type: "food",
-                amount: 0,
-                description:
-                  "Enjoy a relaxed dinner after a full day of backwater and village exploration.",
-              },
-              {
-                time: "08:30 PM",
+                time: "07:30 PM",
                 duration: "1.5 hrs",
                 name: "Village Evening",
                 type: "activity",
@@ -944,15 +931,25 @@ const dualPlans = [
                   "Relax around the village and enjoy the calm atmosphere of Munroe Island after sunset.",
               },
               {
-                time: "10:00 PM",
-                duration: "0 hr",
-                name: "Day End",
-                type: "activity",
+                time: "09:00 PM",
+                duration: "1 hr",
+                name: "Dinner at Lake n River Resort, Munroe Island",
+                type: "food",
+                meal: "dinner",
                 amount: 0,
                 description:
-                  "Return to the accommodation and relax before the next day's Varkala sightseeing.",
+                  "Enjoy a relaxed dinner after a full day of backwater and village exploration.",
               },
-            ],
+              {
+                time: "10:00 PM",
+                duration: "Overnight",
+                name: "Night Stay - The Munroe Vibes Inn, Munroe Island",
+                type: "hotel",
+                amount: 1200,
+                description:
+                  "Overnight stay at The Munroe Vibes Inn, Munroe Island before continuing the journey the next day.",
+              },
+          ],
 
             planningTip:
               "Keep the first evening relaxed.",
@@ -968,8 +965,9 @@ const dualPlans = [
               {
                 time: "08:00 AM",
                 duration: "1 hr",
-                name: "Breakfast",
+                name: "Breakfast at Gateway Varkala - IHCL SeleQtions",
                 type: "food",
+                meal: "breakfast",
                 amount: 0,
                 description:
                   "Have breakfast before starting a full day of coastal sightseeing around Varkala.",
@@ -995,8 +993,9 @@ const dualPlans = [
               {
                 time: "01:30 PM",
                 duration: "1 hr",
-                name: "Lunch",
+                name: "Lunch at Darjeeling Cafe, Varkala",
                 type: "food",
+                meal: "lunch",
                 amount: 0,
                 description:
                   "Enjoy lunch near the beach and take a short break before the afternoon activities.",
@@ -1020,16 +1019,7 @@ const dualPlans = [
                   "Find a comfortable viewpoint and enjoy the evening sea views as the sun begins to set.",
               },
               {
-                time: "07:00 PM",
-                duration: "1 hr",
-                name: "Dinner",
-                type: "food",
-                amount: 0,
-                description:
-                  "Enjoy a relaxed dinner after spending the day around Varkala's beaches and cliff area.",
-              },
-              {
-                time: "08:30 PM",
+                time: "07:30 PM",
                 duration: "1.5 hrs",
                 name: "Varkala Night Walk",
                 type: "activity",
@@ -1038,15 +1028,25 @@ const dualPlans = [
                   "Enjoy an evening walk around the cliff area, local shops and cafés while experiencing Varkala at night.",
               },
               {
-                time: "10:00 PM",
-                duration: "0 hr",
-                name: "Day End",
-                type: "activity",
+                time: "09:00 PM",
+                duration: "1 hr",
+                name: "Dinner at Clafouti Beach Resort, Varkala",
+                type: "food",
+                meal: "dinner",
                 amount: 0,
                 description:
-                  "Return to your accommodation and relax after a complete day of Varkala sightseeing.",
+                  "Enjoy a relaxed dinner after spending the day around Varkala's beaches and cliff area.",
               },
-            ],
+              {
+                time: "10:00 PM",
+                duration: "Overnight",
+                name: "Night Stay - Deshadan Cliff & Beach Resort, Varkala",
+                type: "hotel",
+                amount: 1200,
+                description:
+                  "Overnight stay at Deshadan Cliff & Beach Resort, Varkala before continuing the journey the next day.",
+              },
+          ],
 
             planningTip:
               "Carry sunscreen, water and comfortable footwear.",
@@ -1062,8 +1062,9 @@ const dualPlans = [
               {
                 time: "08:00 AM",
                 duration: "1 hr",
-                name: "Breakfast",
+                name: "Breakfast at Deshadan Cliff & Beach Resort, Varkala",
                 type: "food",
+                meal: "breakfast",
                 amount: 0,
                 description:
                   "Start the final day with breakfast before heading toward the Kappil coastal region.",
@@ -1089,8 +1090,9 @@ const dualPlans = [
               {
                 time: "01:00 PM",
                 duration: "1 hr",
-                name: "Lunch",
+                name: "Lunch at Coffee Temple, Varkala",
                 type: "food",
+                meal: "lunch",
                 amount: 0,
                 description:
                   "Enjoy lunch and take some time to relax before the final afternoon sightseeing.",
@@ -1114,16 +1116,7 @@ const dualPlans = [
                   "Spend some quiet time by the beach and enjoy the final coastal views before departure.",
               },
               {
-                time: "07:00 PM",
-                duration: "1 hr",
-                name: "Dinner",
-                type: "food",
-                amount: 0,
-                description:
-                  "Enjoy the final dinner of the trip and take a comfortable break before departure.",
-              },
-              {
-                time: "08:30 PM",
+                time: "07:30 PM",
                 duration: "1.5 hrs",
                 name: "Final Evening Walk",
                 type: "activity",
@@ -1132,15 +1125,16 @@ const dualPlans = [
                   "Take a relaxed final evening walk and enjoy the coastal atmosphere before ending the journey.",
               },
               {
-                time: "10:00 PM",
-                duration: "0 hr",
-                name: "Trip End",
-                type: "activity",
+                time: "09:00 PM",
+                duration: "1 hr",
+                name: "Dinner at Abba Restaurant, Varkala",
+                type: "food",
+                meal: "dinner",
                 amount: 0,
                 description:
-                  "Complete the trip and prepare for departure after exploring Munroe Island, Varkala and Kappil.",
+                  "Enjoy the final dinner of the trip and take a comfortable break before departure.",
               },
-            ],
+          ],
 
             planningTip:
               "Keep the final evening flexible for departure.",
@@ -1214,8 +1208,9 @@ const dualPlans = [
               {
                 time: "08:00 AM",
                 duration: "1 hr",
-                name: "Mysore Breakfast",
+                name: "Breakfast at Radisson Blu Plaza Hotel Mysore",
                 type: "food",
+                meal: "breakfast",
                 amount: 0,
                 description:
                   "Enjoy a traditional South Indian breakfast before starting your Mysore sightseeing.",
@@ -1241,8 +1236,9 @@ const dualPlans = [
               {
                 time: "01:00 PM",
                 duration: "1 hr",
-                name: "Lunch",
+                name: "Lunch at Mylari Hotel, Mysore",
                 type: "food",
+                meal: "lunch",
                 amount: 0,
                 description:
                   "Enjoy a Mysore-style lunch and take a short break before continuing the afternoon sightseeing.",
@@ -1268,15 +1264,6 @@ const dualPlans = [
               {
                 time: "07:30 PM",
                 duration: "1 hr",
-                name: "Dinner",
-                type: "food",
-                amount: 0,
-                description:
-                  "Enjoy dinner after a full day of exploring Mysore's royal and cultural attractions.",
-              },
-              {
-                time: "09:00 PM",
-                duration: "1 hr",
                 name: "Mysore Night Drive",
                 type: "activity",
                 amount: 200,
@@ -1284,15 +1271,25 @@ const dualPlans = [
                   "Enjoy a relaxed evening drive through Mysore and experience the illuminated city atmosphere.",
               },
               {
-                time: "10:00 PM",
-                duration: "0 hr",
-                name: "Day End",
-                type: "activity",
+                time: "09:00 PM",
+                duration: "1 hr",
+                name: "Dinner at Rrr Restaurant, Mysore",
+                type: "food",
+                meal: "dinner",
                 amount: 0,
                 description:
-                  "Return to the accommodation and relax before travelling toward Coorg the next day.",
+                  "Enjoy dinner after a full day of exploring Mysore's royal and cultural attractions.",
               },
-            ],
+              {
+                time: "10:00 PM",
+                duration: "Overnight",
+                name: "Night Stay - Fortune JP Palace, Mysore",
+                type: "hotel",
+                amount: 1200,
+                description:
+                  "Overnight stay at Fortune JP Palace, Mysore before continuing the journey the next day.",
+              },
+          ],
 
             planningTip:
               "Start early because Mysore Palace and Brindavan Gardens can get busy.",
@@ -1308,8 +1305,9 @@ const dualPlans = [
               {
                 time: "08:00 AM",
                 duration: "1 hr",
-                name: "Breakfast",
+                name: "Breakfast at Evolve Back, Coorg",
                 type: "food",
+                meal: "breakfast",
                 amount: 0,
                 description:
                   "Start the day with breakfast before heading out to explore the scenic coffee country of Coorg.",
@@ -1335,8 +1333,9 @@ const dualPlans = [
               {
                 time: "01:00 PM",
                 duration: "1 hr",
-                name: "Coorg Lunch",
+                name: "Lunch at Coorg Cuisine, Madikeri",
                 type: "food",
+                meal: "lunch",
                 amount: 0,
                 description:
                   "Enjoy a local Coorg-style lunch featuring regional flavours before continuing the sightseeing.",
@@ -1360,16 +1359,7 @@ const dualPlans = [
                   "Enjoy wide views of the surrounding coffee-country landscape and peaceful Western Ghats scenery.",
               },
               {
-                time: "07:00 PM",
-                duration: "1 hr",
-                name: "Dinner",
-                type: "food",
-                amount: 0,
-                description:
-                  "Enjoy a relaxed dinner after a scenic day exploring Coorg's plantations and hill attractions.",
-              },
-              {
-                time: "08:30 PM",
+                time: "07:30 PM",
                 duration: "1.5 hrs",
                 name: "Coorg Evening Experience",
                 type: "activity",
@@ -1378,15 +1368,16 @@ const dualPlans = [
                   "Enjoy a peaceful evening in the hills and take in Coorg's cool weather and relaxed atmosphere.",
               },
               {
-                time: "10:00 PM",
-                duration: "0 hr",
-                name: "Trip End",
-                type: "activity",
+                time: "09:00 PM",
+                duration: "1 hr",
+                name: "Dinner at Raintree Restaurant, Madikeri",
+                type: "food",
+                meal: "dinner",
                 amount: 0,
                 description:
-                  "Complete the Coorg experience and prepare for departure after exploring the coffee country and hills.",
+                  "Enjoy a relaxed dinner after a scenic day exploring Coorg's plantations and hill attractions.",
               },
-            ],
+          ],
 
             planningTip:
               "Carry comfortable shoes because waterfalls and viewpoints involve walking.",
@@ -1433,8 +1424,9 @@ const dualPlans = [
               {
                 time: "08:00 AM",
                 duration: "1 hr",
-                name: "Breakfast",
+                name: "Breakfast at Radisson Blu Plaza Hotel Mysore",
                 type: "food",
+                meal: "breakfast",
                 amount: 0,
                 description:
                   "Have breakfast and get ready for a full day of Mysore heritage sightseeing.",
@@ -1460,8 +1452,9 @@ const dualPlans = [
               {
                 time: "01:00 PM",
                 duration: "1 hr",
-                name: "Lunch",
+                name: "Lunch at Mylari Hotel, Mysore",
                 type: "food",
+                meal: "lunch",
                 amount: 0,
                 description:
                   "Enjoy a relaxed lunch featuring local South Indian flavours before continuing the day's sightseeing.",
@@ -1487,15 +1480,6 @@ const dualPlans = [
               {
                 time: "07:30 PM",
                 duration: "1 hr",
-                name: "Dinner",
-                type: "food",
-                amount: 0,
-                description:
-                  "Enjoy dinner after a complete day of exploring Mysore's historic and scenic attractions.",
-              },
-              {
-                time: "09:00 PM",
-                duration: "1 hr",
                 name: "Mysore Night Drive",
                 type: "activity",
                 amount: 200,
@@ -1503,15 +1487,25 @@ const dualPlans = [
                   "Take a relaxed evening drive and enjoy the illuminated streets and calm night atmosphere of Mysore.",
               },
               {
-                time: "10:00 PM",
-                duration: "0 hr",
-                name: "Day End",
-                type: "activity",
+                time: "09:00 PM",
+                duration: "1 hr",
+                name: "Dinner at Rrr Restaurant, Mysore",
+                type: "food",
+                meal: "dinner",
                 amount: 0,
                 description:
-                  "Return to the accommodation and relax before beginning the Coorg part of the journey.",
+                  "Enjoy dinner after a complete day of exploring Mysore's historic and scenic attractions.",
               },
-            ],
+              {
+                time: "10:00 PM",
+                duration: "Overnight",
+                name: "Night Stay - Fortune JP Palace, Mysore",
+                type: "hotel",
+                amount: 1200,
+                description:
+                  "Overnight stay at Fortune JP Palace, Mysore before continuing the journey the next day.",
+              },
+          ],
 
             planningTip:
               "Wear comfortable footwear.",
@@ -1527,8 +1521,9 @@ const dualPlans = [
               {
                 time: "08:00 AM",
                 duration: "1 hr",
-                name: "Breakfast",
+                name: "Breakfast at Evolve Back, Coorg",
                 type: "food",
+                meal: "breakfast",
                 amount: 0,
                 description:
                   "Have breakfast before starting the journey toward Coorg and its scenic coffee plantations.",
@@ -1554,8 +1549,9 @@ const dualPlans = [
               {
                 time: "01:30 PM",
                 duration: "1 hr",
-                name: "Lunch",
+                name: "Lunch at Coorg Cuisine, Madikeri",
                 type: "food",
+                meal: "lunch",
                 amount: 0,
                 description:
                   "Enjoy lunch with local flavours and take a short rest before the afternoon sightseeing.",
@@ -1581,15 +1577,6 @@ const dualPlans = [
               {
                 time: "07:30 PM",
                 duration: "1 hr",
-                name: "Dinner",
-                type: "food",
-                amount: 0,
-                description:
-                  "Enjoy dinner after a full day of coffee estate and waterfall exploration.",
-              },
-              {
-                time: "09:00 PM",
-                duration: "1 hr",
                 name: "Coorg Evening",
                 type: "activity",
                 amount: 200,
@@ -1597,15 +1584,25 @@ const dualPlans = [
                   "Relax in the peaceful hill environment and enjoy Coorg's cool evening atmosphere.",
               },
               {
-                time: "10:00 PM",
-                duration: "0 hr",
-                name: "Day End",
-                type: "activity",
+                time: "09:00 PM",
+                duration: "1 hr",
+                name: "Dinner at Raintree Restaurant, Madikeri",
+                type: "food",
+                meal: "dinner",
                 amount: 0,
                 description:
-                  "Return to the accommodation and relax before the final day of mountain sightseeing.",
+                  "Enjoy dinner after a full day of coffee estate and waterfall exploration.",
               },
-            ],
+              {
+                time: "10:00 PM",
+                duration: "Overnight",
+                name: "Night Stay - Hotel Coorg International, Madikeri",
+                type: "hotel",
+                amount: 1200,
+                description:
+                  "Overnight stay at Hotel Coorg International, Madikeri before continuing the journey the next day.",
+              },
+          ],
 
             planningTip:
               "Carry a light jacket because hill temperatures can change.",
@@ -1621,8 +1618,9 @@ const dualPlans = [
               {
                 time: "08:00 AM",
                 duration: "1 hr",
-                name: "Breakfast",
+                name: "Breakfast at Tamara Coorg",
                 type: "food",
+                meal: "breakfast",
                 amount: 0,
                 description:
                   "Start the final day with breakfast before heading toward the scenic mountain areas of Coorg.",
@@ -1639,8 +1637,9 @@ const dualPlans = [
               {
                 time: "12:00 PM",
                 duration: "1 hr",
-                name: "Lunch",
+                name: "Lunch at East End Hotel, Madikeri",
                 type: "food",
+                meal: "lunch",
                 amount: 0,
                 description:
                   "Enjoy lunch and take a comfortable break before continuing the final afternoon sightseeing.",
@@ -1673,16 +1672,7 @@ const dualPlans = [
                   "Enjoy the final hill sunset and take in the peaceful views across the surrounding mountains.",
               },
               {
-                time: "08:00 PM",
-                duration: "1 hr",
-                name: "Dinner",
-                type: "food",
-                amount: 0,
-                description:
-                  "Enjoy the final dinner of the trip and relax after a scenic day in the Coorg hills.",
-              },
-              {
-                time: "09:00 PM",
+                time: "07:30 PM",
                 duration: "1 hr",
                 name: "Final Evening",
                 type: "activity",
@@ -1691,15 +1681,16 @@ const dualPlans = [
                   "Spend a relaxed final evening in Coorg and prepare your belongings before departure.",
               },
               {
-                time: "10:00 PM",
-                duration: "0 hr",
-                name: "Trip End",
-                type: "activity",
+                time: "09:00 PM",
+                duration: "1 hr",
+                name: "Dinner at The Fort Mercara, Madikeri",
+                type: "food",
+                meal: "dinner",
                 amount: 0,
                 description:
-                  "Complete the Mysore and Coorg journey and prepare for your return trip.",
+                  "Enjoy the final dinner of the trip and relax after a scenic day in the Coorg hills.",
               },
-            ],
+          ],
 
             planningTip:
               "Keep the final evening flexible for your departure.",
@@ -1771,8 +1762,9 @@ const dualPlans = [
               {
                 time: "08:00 AM",
                 duration: "1 hr",
-                name: "Breakfast",
+                name: "Breakfast at Winter Vale Green Stay",
                 type: "food",
+                meal: "breakfast",
                 amount: 0,
                 description:
                   "Start the day with a relaxed breakfast before heading into Vagamon's green hill landscapes.",
@@ -1798,8 +1790,9 @@ const dualPlans = [
               {
                 time: "01:00 PM",
                 duration: "1 hr",
-                name: "Lunch",
+                name: "Lunch at Chillax Vagamon",
                 type: "food",
+                meal: "lunch",
                 amount: 0,
                 description:
                   "Enjoy a local Kerala lunch and take a short break before continuing the hill sightseeing.",
@@ -1823,16 +1816,7 @@ const dualPlans = [
                   "Relax near the peaceful hill lake and enjoy the surrounding greenery and cool mountain atmosphere.",
               },
               {
-                time: "07:00 PM",
-                duration: "1 hr",
-                name: "Dinner",
-                type: "food",
-                amount: 0,
-                description:
-                  "Enjoy a relaxed dinner after a full day exploring Vagamon's hills, forests and viewpoints.",
-              },
-              {
-                time: "08:30 PM",
+                time: "07:30 PM",
                 duration: "1.5 hrs",
                 name: "Vagamon Evening Walk",
                 type: "activity",
@@ -1841,15 +1825,25 @@ const dualPlans = [
                   "Take a peaceful evening walk through the hill town and enjoy Vagamon's cool night atmosphere.",
               },
               {
-                time: "10:00 PM",
-                duration: "0 hr",
-                name: "Day End",
-                type: "activity",
+                time: "09:00 PM",
+                duration: "1 hr",
+                name: "Dinner at 360 Degree Vagamon",
+                type: "food",
+                meal: "dinner",
                 amount: 0,
                 description:
-                  "Return to the accommodation and relax before continuing the journey toward Chikmagalur.",
+                  "Enjoy a relaxed dinner after a full day exploring Vagamon's hills, forests and viewpoints.",
               },
-            ],
+              {
+                time: "10:00 PM",
+                duration: "Overnight",
+                name: "Night Stay - The Kissing Mountains Resort, Vagamon",
+                type: "hotel",
+                amount: 1200,
+                description:
+                  "Overnight stay at The Kissing Mountains Resort, Vagamon before continuing the journey the next day.",
+              },
+          ],
 
             planningTip:
               "Carry a light jacket and rain protection.",
@@ -1865,8 +1859,9 @@ const dualPlans = [
               {
                 time: "08:00 AM",
                 duration: "1 hr",
-                name: "Breakfast",
+                name: "Breakfast at The Serai Chikmagalur",
                 type: "food",
+                meal: "breakfast",
                 amount: 0,
                 description:
                   "Start the morning with breakfast before exploring Chikmagalur's coffee and mountain attractions.",
@@ -1892,8 +1887,9 @@ const dualPlans = [
               {
                 time: "01:00 PM",
                 duration: "1 hr",
-                name: "Lunch",
+                name: "Lunch at Town Canteen, Chikmagalur",
                 type: "food",
+                meal: "lunch",
                 amount: 0,
                 description:
                   "Enjoy a local lunch and take a comfortable break before heading toward the mountain attractions.",
@@ -1919,15 +1915,6 @@ const dualPlans = [
               {
                 time: "07:30 PM",
                 duration: "1 hr",
-                name: "Dinner",
-                type: "food",
-                amount: 0,
-                description:
-                  "Enjoy dinner after a scenic day of coffee estate and mountain exploration.",
-              },
-              {
-                time: "09:00 PM",
-                duration: "1 hr",
                 name: "Coffee Town Evening",
                 type: "activity",
                 amount: 300,
@@ -1935,15 +1922,16 @@ const dualPlans = [
                   "Enjoy a relaxed evening around Chikmagalur town and experience its calm coffee-country atmosphere.",
               },
               {
-                time: "10:00 PM",
-                duration: "0 hr",
-                name: "Trip End",
-                type: "activity",
+                time: "09:00 PM",
+                duration: "1 hr",
+                name: "Dinner at Maharaja Restaurant, Chikmagalur",
+                type: "food",
+                meal: "dinner",
                 amount: 0,
                 description:
-                  "Complete the trip after experiencing Vagamon's hills and Chikmagalur's coffee and mountain landscapes.",
+                  "Enjoy dinner after a scenic day of coffee estate and mountain exploration.",
               },
-            ],
+          ],
 
             planningTip:
               "Allow extra travel time because the route between hill destinations can take longer.",
@@ -1989,8 +1977,9 @@ const dualPlans = [
               {
                 time: "08:00 AM",
                 duration: "1 hr",
-                name: "Breakfast",
+                name: "Breakfast at Winter Vale Green Stay",
                 type: "food",
+                meal: "breakfast",
                 amount: 0,
                 description:
                   "Start the morning with breakfast before heading out to explore Vagamon's peaceful hill landscapes.",
@@ -2016,8 +2005,9 @@ const dualPlans = [
               {
                 time: "01:00 PM",
                 duration: "1 hr",
-                name: "Lunch",
+                name: "Lunch at Chillax Vagamon",
                 type: "food",
+                meal: "lunch",
                 amount: 0,
                 description:
                   "Enjoy a relaxed lunch and recharge before continuing the afternoon hill sightseeing.",
@@ -2041,16 +2031,7 @@ const dualPlans = [
                   "Relax beside the peaceful lake and enjoy the greenery and cool mountain atmosphere.",
               },
               {
-                time: "07:00 PM",
-                duration: "1 hr",
-                name: "Dinner",
-                type: "food",
-                amount: 0,
-                description:
-                  "Enjoy dinner after a scenic day exploring the meadows, forests and viewpoints of Vagamon.",
-              },
-              {
-                time: "08:30 PM",
+                time: "07:30 PM",
                 duration: "1.5 hrs",
                 name: "Hill Town Evening",
                 type: "activity",
@@ -2059,15 +2040,25 @@ const dualPlans = [
                   "Enjoy the peaceful evening atmosphere around the hill town and take a relaxed walk before resting.",
               },
               {
-                time: "10:00 PM",
-                duration: "0 hr",
-                name: "Day End",
-                type: "activity",
+                time: "09:00 PM",
+                duration: "1 hr",
+                name: "Dinner at 360 Degree Vagamon",
+                type: "food",
+                meal: "dinner",
                 amount: 0,
                 description:
-                  "Return to the accommodation and relax after the first day of the hill journey.",
+                  "Enjoy dinner after a scenic day exploring the meadows, forests and viewpoints of Vagamon.",
               },
-            ],
+              {
+                time: "10:00 PM",
+                duration: "Overnight",
+                name: "Night Stay - The Kissing Mountains Resort, Vagamon",
+                type: "hotel",
+                amount: 1200,
+                description:
+                  "Overnight stay at The Kissing Mountains Resort, Vagamon before continuing the journey the next day.",
+              },
+          ],
 
             planningTip:
               "Carry light rain protection because hill weather can change quickly.",
@@ -2083,8 +2074,9 @@ const dualPlans = [
               {
                 time: "08:00 AM",
                 duration: "1 hr",
-                name: "Breakfast",
+                name: "Breakfast at The Serai Chikmagalur",
                 type: "food",
+                meal: "breakfast",
                 amount: 0,
                 description:
                   "Have breakfast before starting the day's coffee plantation and waterfall experiences.",
@@ -2110,8 +2102,9 @@ const dualPlans = [
               {
                 time: "01:00 PM",
                 duration: "1 hr",
-                name: "Lunch",
+                name: "Lunch at Town Canteen, Chikmagalur",
                 type: "food",
+                meal: "lunch",
                 amount: 0,
                 description:
                   "Enjoy lunch with local flavours and take a comfortable break before the afternoon adventure.",
@@ -2135,16 +2128,7 @@ const dualPlans = [
                   "Enjoy panoramic mountain views and take in the green valleys and coffee-growing landscapes around Chikmagalur.",
               },
               {
-                time: "07:00 PM",
-                duration: "1 hr",
-                name: "Dinner",
-                type: "food",
-                amount: 0,
-                description:
-                  "Enjoy a relaxed dinner after a full day of coffee plantation and mountain sightseeing.",
-              },
-              {
-                time: "08:30 PM",
+                time: "07:30 PM",
                 duration: "1.5 hrs",
                 name: "Coffee Town Evening",
                 type: "activity",
@@ -2153,15 +2137,25 @@ const dualPlans = [
                   "Relax and explore the town in the evening while enjoying Chikmagalur's calm coffee-country atmosphere.",
               },
               {
-                time: "10:00 PM",
-                duration: "0 hr",
-                name: "Day End",
-                type: "activity",
+                time: "09:00 PM",
+                duration: "1 hr",
+                name: "Dinner at Maharaja Restaurant, Chikmagalur",
+                type: "food",
+                meal: "dinner",
                 amount: 0,
                 description:
-                  "Return to the accommodation and relax before the final mountain experience.",
+                  "Enjoy a relaxed dinner after a full day of coffee plantation and mountain sightseeing.",
               },
-            ],
+              {
+                time: "10:00 PM",
+                duration: "Overnight",
+                name: "Night Stay - Java Rain Resort, Chikmagalur",
+                type: "hotel",
+                amount: 1200,
+                description:
+                  "Overnight stay at Java Rain Resort, Chikmagalur before continuing the journey the next day.",
+              },
+          ],
 
             planningTip:
               "Wear comfortable shoes for the waterfall and plantation areas.",
@@ -2177,8 +2171,9 @@ const dualPlans = [
               {
                 time: "08:00 AM",
                 duration: "1 hr",
-                name: "Breakfast",
+                name: "Breakfast at Java Rain Resort, Chikmagalur",
                 type: "food",
+                meal: "breakfast",
                 amount: 0,
                 description:
                   "Start the final day with breakfast before heading toward the mountain attractions of Chikmagalur.",
@@ -2195,8 +2190,9 @@ const dualPlans = [
               {
                 time: "12:00 PM",
                 duration: "1 hr",
-                name: "Lunch",
+                name: "Lunch at Hotel Mayura, Chikmagalur",
                 type: "food",
+                meal: "lunch",
                 amount: 0,
                 description:
                   "Enjoy lunch and take a short rest before continuing the final afternoon sightseeing.",
@@ -2229,16 +2225,7 @@ const dualPlans = [
                   "Enjoy the final hill sunset and watch the evening light spread across the surrounding mountain landscape.",
               },
               {
-                time: "08:00 PM",
-                duration: "1 hr",
-                name: "Dinner",
-                type: "food",
-                amount: 0,
-                description:
-                  "Enjoy the final dinner of the journey and relax after a memorable day in the Chikmagalur hills.",
-              },
-              {
-                time: "09:00 PM",
+                time: "07:30 PM",
                 duration: "1 hr",
                 name: "Final Evening",
                 type: "activity",
@@ -2247,15 +2234,16 @@ const dualPlans = [
                   "Spend a relaxed final evening preparing your belongings and enjoying the peaceful hill atmosphere.",
               },
               {
-                time: "10:00 PM",
-                duration: "0 hr",
-                name: "Trip End",
-                type: "activity",
+                time: "09:00 PM",
+                duration: "1 hr",
+                name: "Dinner at The Estate Cafe, Chikmagalur",
+                type: "food",
+                meal: "dinner",
                 amount: 0,
                 description:
-                  "Complete the Vagamon and Chikmagalur journey and prepare for your return trip.",
+                  "Enjoy the final dinner of the journey and relax after a memorable day in the Chikmagalur hills.",
               },
-            ],
+          ],
 
             planningTip:
               "Keep the final evening flexible for your departure.",

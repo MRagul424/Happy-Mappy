@@ -11,9 +11,9 @@ import {
   Ticket,
   X,
   CheckCircle,
+  AlertCircle,
   BedDouble,
   Calculator,
-  WalletCards,
 } from "lucide-react";
 
 import {
@@ -24,7 +24,9 @@ import {
 
 import { plans } from "../data/travelData";
 import { destinationPlans } from "../data/destinationPlans";
-import { saveMyPlan } from "../utils/myPlanStorage";
+
+const API_URL =
+  import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 export default function TravelPlansPage() {
   const navigate = useNavigate();
@@ -33,6 +35,8 @@ export default function TravelPlansPage() {
   const [category, setCategory] = useState("All");
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [successPlan, setSuccessPlan] = useState(null);
+  const [duplicateSavePopup, setDuplicateSavePopup] =
+    useState(false);
 
   const [searchParams] = useSearchParams();
 
@@ -73,8 +77,6 @@ export default function TravelPlansPage() {
       .trim()
       .toUpperCase();
 
-    // Read the FIRST time from both single times and ranges such as
-    // "8:00 AM - 9:00 AM".
     const match = value.match(
       /(\d{1,2}):(\d{2})\s*(AM|PM)?/
     );
@@ -97,10 +99,6 @@ export default function TravelPlansPage() {
   };
 
   /* =========================================================
-     ACTIVITY TYPE HELPERS
-  ========================================================= */
-
-  /* =========================================================
      MEAL HELPERS
   ========================================================= */
 
@@ -116,7 +114,6 @@ export default function TravelPlansPage() {
     /*
      * Hotel activities must never be classified as meals just because
      * their description contains words such as "after dinner".
-     * Actual food entries still keep priority because they use type="food".
      */
     if (
       type === "hotel" ||
@@ -139,20 +136,38 @@ export default function TravelPlansPage() {
       type === "restaurant" ||
       type === "cafe"
     ) {
-      const timeMatch = time.match(/(\d{1,2})(?::\d{2})?\s*(am|pm)/i);
-      const hour = timeMatch ? Number(timeMatch[1]) : null;
+      const timeMatch = time.match(
+        /(\d{1,2})(?::\d{2})?\s*(am|pm)/i
+      );
+
+      const hour = timeMatch
+        ? Number(timeMatch[1])
+        : null;
+
       const period = timeMatch?.[2]?.toLowerCase();
 
       if (hour !== null && period) {
-        if (period === "am" && hour >= 6 && hour <= 10) {
+        if (
+          period === "am" &&
+          hour >= 6 &&
+          hour <= 10
+        ) {
           return "breakfast";
         }
 
-        if (period === "pm" && hour >= 12 && hour <= 3) {
+        if (
+          period === "pm" &&
+          hour >= 12 &&
+          hour <= 3
+        ) {
           return "lunch";
         }
 
-        if (period === "pm" && hour >= 6 && hour <= 10) {
+        if (
+          period === "pm" &&
+          hour >= 6 &&
+          hour <= 10
+        ) {
           return "dinner";
         }
       }
@@ -163,7 +178,8 @@ export default function TravelPlansPage() {
     return null;
   };
 
-  const isFood = (activity) => Boolean(getMealType(activity));
+  const isFood = (activity) =>
+    Boolean(getMealType(activity));
 
   const isDinner = (activity) =>
     getMealType(activity) === "dinner";
@@ -177,9 +193,9 @@ export default function TravelPlansPage() {
   const isHotel = (activity) => {
     if (!activity) return false;
 
-    // Meals always have priority over hotel detection.
-    // Example: "Dinner - Marari Beach Resort Restaurant"
-    // contains "resort", but it is still a meal and must be orange.
+    /*
+     * Meals always have priority over hotel detection.
+     */
     if (isFood(activity)) {
       return false;
     }
@@ -217,25 +233,27 @@ export default function TravelPlansPage() {
       return plan;
     }
 
-    const matchingPlans = destinationPlans.filter(
-      (item) =>
-        normalize(
-          item.destinationName ||
-            item.destination
-        ) ===
-        normalize(
-          plan.destinationName ||
-            plan.destination
-        )
-    );
+    const matchingPlans =
+      destinationPlans.filter(
+        (item) =>
+          normalize(
+            item.destinationName ||
+              item.destination
+          ) ===
+          normalize(
+            plan.destinationName ||
+              plan.destination
+          )
+      );
 
     /* EXACT TITLE */
 
-    const exactTitle = matchingPlans.find(
-      (item) =>
-        normalize(item.title) ===
-        normalize(plan.title)
-    );
+    const exactTitle =
+      matchingPlans.find(
+        (item) =>
+          normalize(item.title) ===
+          normalize(plan.title)
+      );
 
     if (exactTitle) {
       return {
@@ -249,11 +267,12 @@ export default function TravelPlansPage() {
 
     /* EXACT DAYS */
 
-    const exactDays = matchingPlans.find(
-      (item) =>
-        Number(item.days || 0) ===
-        Number(plan.days || 0)
-    );
+    const exactDays =
+      matchingPlans.find(
+        (item) =>
+          Number(item.days || 0) ===
+          Number(plan.days || 0)
+      );
 
     if (exactDays) {
       return {
@@ -461,22 +480,20 @@ export default function TravelPlansPage() {
         ]?.time ||
         "Flexible finish",
 
-      mainStops:
-        normalPlaces.map((item) =>
+      mainStops: normalPlaces.map(
+        (item) =>
           typeof item === "string"
             ? item
             : item?.name
-        ),
+      ),
 
-      foodStops:
-        foodStops.map(
-          (item) => item?.name
-        ),
+      foodStops: foodStops.map(
+        (item) => item?.name
+      ),
 
-      hotelStops:
-        hotels.map(
-          (item) => item?.name
-        ),
+      hotelStops: hotels.map(
+        (item) => item?.name
+      ),
 
       tips: [
         "Keep a small time buffer between activities.",
@@ -512,8 +529,6 @@ export default function TravelPlansPage() {
 
     /*
      * Night stay must come immediately after dinner.
-     * This prevents an old/incorrect hotel time from placing the hotel
-     * before dinner. The actual hotel time is still displayed on the card.
      */
     const dinnerIndex = ordered.findIndex(
       (activity) => isDinner(activity)
@@ -525,13 +540,16 @@ export default function TravelPlansPage() {
       );
 
       if (firstHotel) {
-        const withoutHotels = ordered.filter(
-          (activity) => !isHotel(activity)
-        );
+        const withoutHotels =
+          ordered.filter(
+            (activity) =>
+              !isHotel(activity)
+          );
 
         const newDinnerIndex =
           withoutHotels.findIndex(
-            (activity) => isDinner(activity)
+            (activity) =>
+              isDinner(activity)
           );
 
         if (newDinnerIndex !== -1) {
@@ -726,10 +744,12 @@ export default function TravelPlansPage() {
   };
 
   /* =========================================================
-     SELECT PLAN
+     SELECT / SAVE PLAN
+
+     SAVED PLANS ARE STORED IN MONGODB.
   ========================================================= */
 
-  const selectPlan = (plan) => {
+  const selectPlan = async (plan) => {
     const currentUser =
       localStorage.getItem(
         "happyMappyCurrentUser"
@@ -751,10 +771,199 @@ export default function TravelPlansPage() {
       return;
     }
 
-    saveMyPlan(plan);
+    const token =
+      localStorage.getItem(
+        "happyMappyToken"
+      ) ||
+      localStorage.getItem(
+        "token"
+      );
 
-    setSelectedPlan(null);
-    setSuccessPlan(plan);
+    if (!token) {
+      setSelectedPlan(null);
+
+      navigate("/auth", {
+        state: {
+          requireLogin: true,
+          from:
+            window.location.pathname +
+            window.location.search,
+          planTitle: plan.title,
+        },
+      });
+
+      return;
+    }
+
+    try {
+      /*
+       * Use the same total amount that is displayed
+       * on the Travel Plans page.
+       */
+      const totalAmount =
+        getTotalAmount(plan);
+
+      const planKey = String(
+        plan.id ||
+          plan.planKey ||
+          plan.planId ||
+          ""
+      ).trim();
+
+      const payload = {
+        planKey,
+
+        planId: String(
+          plan.id ||
+            plan.planId ||
+            planKey
+        ),
+
+        title:
+          plan.title ||
+          "Happy Mappy Travel Plan",
+
+        destination:
+          plan.destination ||
+          plan.destinationName ||
+          "",
+
+        days: Number(
+          plan.days || 1
+        ),
+
+        nights: Number(
+          plan.nights || 0
+        ),
+
+        category:
+          plan.category || "",
+
+        price: Number(
+          totalAmount ||
+            plan.price ||
+            0
+        ),
+
+        image:
+          plan.image || "",
+      };
+
+      const response =
+        await fetch(
+          `${API_URL}/api/saved-plans`,
+          {
+            method: "POST",
+
+            headers: {
+              "Content-Type":
+                "application/json",
+
+              Authorization:
+                `Bearer ${token}`,
+            },
+
+            body:
+              JSON.stringify(
+                payload
+              ),
+          }
+        );
+
+      const data =
+        await response
+          .json()
+          .catch(
+            () => ({})
+          );
+
+      /*
+       * JWT expired / invalid.
+       */
+      if (
+        response.status === 401
+      ) {
+        localStorage.removeItem(
+          "happyMappyCurrentUser"
+        );
+
+        localStorage.removeItem(
+          "happyMappyToken"
+        );
+
+        localStorage.removeItem(
+          "token"
+        );
+
+        setSelectedPlan(null);
+
+        navigate("/auth", {
+          state: {
+            requireLogin: true,
+            from:
+              window.location.pathname +
+              window.location.search,
+          },
+        });
+
+        return;
+      }
+
+      /*
+       * Close the plan details
+       * popup after request finishes.
+       */
+      setSelectedPlan(null);
+
+      /*
+       * SUCCESS
+       */
+      if (response.ok) {
+        setSuccessPlan(plan);
+
+        window.dispatchEvent(
+          new Event(
+            "happyMappyPlansChanged"
+          )
+        );
+
+        return;
+      }
+
+      /*
+       * DUPLICATE PLAN
+       */
+      if (
+        response.status === 409 ||
+        data.reason ===
+          "ALREADY_EXISTS"
+      ) {
+        setDuplicateSavePopup(
+          true
+        );
+
+        return;
+      }
+
+      /*
+       * OTHER SERVER ERROR
+       */
+      window.alert(
+        data.message ||
+          "Unable to save this plan. Please try again."
+      );
+    } catch (error) {
+      console.error(
+        "Save Plan Error:",
+        error
+      );
+
+      setSelectedPlan(null);
+
+      window.alert(
+        "Unable to save this plan. Please check that the Happy Mappy backend is running and try again."
+      );
+    }
   };
 
   /* =========================================================
@@ -764,6 +973,13 @@ export default function TravelPlansPage() {
   const closeSuccessPopup = () => {
     setSuccessPlan(null);
   };
+
+  const closeDuplicateSavePopup =
+    () => {
+      setDuplicateSavePopup(
+        false
+      );
+    };
 
   /* =========================================================
      CLEAR FILTERS
@@ -2585,23 +2801,36 @@ export default function TravelPlansPage() {
 
                               /* =========================================
                                  FOOD / MEAL
-
-                                 IMPORTANT: Food is rendered BEFORE hotel.
-                                 This guarantees that names such as
-                                 "Dinner - Marari Beach Resort Restaurant"
-                                 can never become blue hotel cards.
                               ========================================= */
 
-                              if (isFood(activity)) {
+                              if (
+                                isFood(activity)
+                              ) {
 
-                                let foodLabel = "Meal";
+                                let foodLabel =
+                                  "Meal";
 
-                                if (isBreakfast(activity)) {
-                                  foodLabel = "Breakfast";
-                                } else if (isLunch(activity)) {
-                                  foodLabel = "Lunch";
-                                } else if (isDinner(activity)) {
-                                  foodLabel = "Dinner";
+                                if (
+                                  isBreakfast(
+                                    activity
+                                  )
+                                ) {
+                                  foodLabel =
+                                    "Breakfast";
+                                } else if (
+                                  isLunch(
+                                    activity
+                                  )
+                                ) {
+                                  foodLabel =
+                                    "Lunch";
+                                } else if (
+                                  isDinner(
+                                    activity
+                                  )
+                                ) {
+                                  foodLabel =
+                                    "Dinner";
                                 }
 
                                 return (
@@ -2611,26 +2840,47 @@ export default function TravelPlansPage() {
                                   >
 
                                     <div className="travel-plan-food-time">
-                                      <Clock size={15} />
+
+                                      <Clock
+                                        size={15}
+                                      />
 
                                       <strong>
-                                        {activity.time || "Time not set"}
+                                        {
+                                          activity.time ||
+                                          "Time not set"
+                                        }
                                       </strong>
 
                                       <span>
-                                        {activity.duration || "45-60 min"}
+                                        {
+                                          activity.duration ||
+                                          "45-60 min"
+                                        }
                                       </span>
+
                                     </div>
 
                                     <div className="travel-plan-food-content">
-                                      <Utensils size={20} />
+
+                                      <Utensils
+                                        size={20}
+                                      />
 
                                       <div>
+
                                         <strong>
-                                          {activity.name || foodLabel}
+                                          {
+                                            activity.name ||
+                                            foodLabel
+                                          }
                                         </strong>
 
-                                        <span>{foodLabel}</span>
+                                        <span>
+                                          {
+                                            foodLabel
+                                          }
+                                        </span>
 
                                         <p>
                                           {
@@ -2642,8 +2892,11 @@ export default function TravelPlansPage() {
                                         <span className="travel-plan-food-label">
                                           Food expense not included
                                         </span>
+
                                       </div>
+
                                     </div>
+
                                   </div>
                                 );
                               }
@@ -2892,17 +3145,6 @@ export default function TravelPlansPage() {
                     selectedPlan
                   );
 
-                /*
-                 * IMPORTANT:
-                 *
-                 * TOTAL AMOUNT =
-                 * PLACE / ACTIVITY
-                 * +
-                 * HOTEL
-                 * +
-                 * BASE TRIP AMOUNT
-                 */
-
                 const totalAmount =
                   placeCharges +
                   hotelCharges +
@@ -2910,6 +3152,7 @@ export default function TravelPlansPage() {
 
                 return (
                   <>
+
                     {/* =================================================
                         FOUR TOP TOTAL BOXES
                     ================================================= */}
@@ -2988,9 +3231,7 @@ export default function TravelPlansPage() {
 
                     <div className="travel-plan-amount-details">
 
-                      {/* =================================================
-                          BASE TRIP AMOUNT BOX
-                      ================================================= */}
+                      {/* BASE TRIP AMOUNT */}
 
                       <div className="travel-plan-base-box">
 
@@ -3224,6 +3465,50 @@ export default function TravelPlansPage() {
               })()}
 
             </div>
+
+          </div>
+
+        </div>
+      )}
+
+      {/* =====================================================
+          DUPLICATE SAVE POPUP
+      ===================================================== */}
+
+      {duplicateSavePopup && (
+        <div className="travel-plan-success-overlay">
+
+          <div className="travel-plan-success-popup">
+
+            <div
+              className="travel-plan-success-icon"
+              style={{
+                color: "#d97706",
+                background: "#fef3c7",
+              }}
+            >
+
+              <AlertCircle size={31} />
+
+            </div>
+
+            <h2>
+              Plan Already Saved
+            </h2>
+
+            <p>
+              This plan is already saved in My Plan.
+            </p>
+
+            <button
+              type="button"
+              className="primary-button"
+              onClick={
+                closeDuplicateSavePopup
+              }
+            >
+              OK
+            </button>
 
           </div>
 

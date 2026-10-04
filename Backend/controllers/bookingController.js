@@ -53,6 +53,25 @@ const createBooking = async (req, res) => {
       });
     }
 
+    // ============================================
+    // PREVENT DUPLICATE BOOKING
+    // Same user + same plan + same trip date
+    // ============================================
+
+    const existingBooking = await Booking.findOne({
+      user: req.userId,
+      planKey: String(planKey).trim(),
+      tripDate: date,
+      bookingStatus: { $ne: "cancelled" },
+    });
+
+    if (existingBooking) {
+      return res.status(409).json({
+        message: "This plan is already booked for the selected date.",
+        reason: "ALREADY_BOOKED",
+      });
+    }
+
     // Calculate pricing on the backend.
     const subtotal = price * travelers;
 

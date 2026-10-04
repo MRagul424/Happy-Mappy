@@ -23,23 +23,67 @@ export default function Navbar() {
 
   const profileRef = useRef(null);
 
-  /* =====================================================
-     CURRENT USER
-  ===================================================== */
+ /* =====================================================
+   CURRENT USER
+===================================================== */
 
+const [currentUser, setCurrentUser] = useState(() => {
   const currentUserRaw = localStorage.getItem(
     "happyMappyCurrentUser"
   );
 
-  let currentUser = null;
-
   try {
-    currentUser = currentUserRaw
+    return currentUserRaw
       ? JSON.parse(currentUserRaw)
       : null;
   } catch {
-    currentUser = null;
+    return null;
   }
+});
+
+/* =====================================================
+   LISTEN FOR LOGIN / LOGOUT CHANGES
+===================================================== */
+
+useEffect(() => {
+  const loadCurrentUser = () => {
+    const currentUserRaw = localStorage.getItem(
+      "happyMappyCurrentUser"
+    );
+
+    try {
+      setCurrentUser(
+        currentUserRaw
+          ? JSON.parse(currentUserRaw)
+          : null
+      );
+    } catch {
+      setCurrentUser(null);
+    }
+  };
+
+  window.addEventListener(
+    "happyMappyAuthChanged",
+    loadCurrentUser
+  );
+
+  window.addEventListener(
+    "storage",
+    loadCurrentUser
+  );
+
+  return () => {
+    window.removeEventListener(
+      "happyMappyAuthChanged",
+      loadCurrentUser
+    );
+
+    window.removeEventListener(
+      "storage",
+      loadCurrentUser
+    );
+  };
+}, []);
 
   /* =====================================================
      CLOSE PROFILE WHEN CLICKING OUTSIDE
@@ -71,16 +115,23 @@ export default function Navbar() {
   /* =====================================================
      LOGOUT
   ===================================================== */
+const handleLogout = () => {
+  localStorage.removeItem("happyMappyCurrentUser");
+  localStorage.removeItem("happyMappyToken");
+  localStorage.removeItem("token");
 
-  const handleLogout = () => {
-    localStorage.removeItem("happyMappyCurrentUser");
+  setCurrentUser(null);
 
-    setShowLogoutPopup(false);
-    setShowProfile(false);
-    setMenuOpen(false);
+  window.dispatchEvent(
+    new Event("happyMappyAuthChanged")
+  );
 
-    navigate("/");
-  };
+  setShowLogoutPopup(false);
+  setShowProfile(false);
+  setMenuOpen(false);
+
+  navigate("/");
+};
 
   /* =====================================================
      CLOSE MOBILE MENU

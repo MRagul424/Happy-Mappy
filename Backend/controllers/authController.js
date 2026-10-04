@@ -8,6 +8,16 @@ const User = require("../models/User");
 
 const registerUser = async (req, res) => {
   try {
+    // ========================================
+    // CHECK REQUEST BODY
+    // ========================================
+
+    if (!req.body || typeof req.body !== "object") {
+      return res.status(400).json({
+        message: "Invalid request data",
+      });
+    }
+
     const {
       name,
       email,
@@ -35,9 +45,20 @@ const registerUser = async (req, res) => {
     // CLEAN VALUES
     // ========================================
 
-    const cleanName = name.trim();
-    const cleanEmail = email.trim().toLowerCase();
-    const cleanContact = contact.trim();
+    const cleanName =
+      typeof name === "string"
+        ? name.trim()
+        : "";
+
+    const cleanEmail =
+      typeof email === "string"
+        ? email.trim().toLowerCase()
+        : "";
+
+    const cleanContact =
+      typeof contact === "string"
+        ? contact.trim()
+        : "";
 
     // ========================================
     // NAME VALIDATION
@@ -50,12 +71,20 @@ const registerUser = async (req, res) => {
     }
 
     // ========================================
+    // EMAIL VALIDATION
+    // ========================================
+
+    if (!cleanEmail) {
+      return res.status(400).json({
+        message: "Please provide a valid email address",
+      });
+    }
+
+    // ========================================
     // CONTACT VALIDATION
     // ========================================
 
-    if (
-      !/^\d{10}$/.test(cleanContact)
-    ) {
+    if (!/^\d{10}$/.test(cleanContact)) {
       return res.status(400).json({
         message:
           "Please provide a valid 10-digit contact number",
@@ -66,7 +95,10 @@ const registerUser = async (req, res) => {
     // PASSWORD VALIDATION
     // ========================================
 
-    if (password.length < 6) {
+    if (
+      typeof password !== "string" ||
+      password.length < 6
+    ) {
       return res.status(400).json({
         message:
           "Password must be at least 6 characters",
@@ -111,6 +143,21 @@ const registerUser = async (req, res) => {
     });
 
     // ========================================
+    // CHECK JWT CONFIGURATION
+    // ========================================
+
+    if (!process.env.JWT_SECRET) {
+      console.error(
+        "JWT_SECRET is missing from environment variables"
+      );
+
+      return res.status(500).json({
+        message:
+          "Server configuration error. Please try again later.",
+      });
+    }
+
+    // ========================================
     // CREATE JWT
     // ========================================
 
@@ -128,7 +175,7 @@ const registerUser = async (req, res) => {
     // RESPONSE
     // ========================================
 
-    res.status(201).json({
+    return res.status(201).json({
       message:
         "User registered successfully",
       token,
@@ -156,8 +203,53 @@ const registerUser = async (req, res) => {
       });
     }
 
-    res.status(500).json({
-      message: "Server error",
+    // ========================================
+    // MONGOOSE VALIDATION ERROR
+    // ========================================
+
+    if (error.name === "ValidationError") {
+      return res.status(400).json({
+        message:
+          "Please provide valid account details",
+      });
+    }
+
+    // ========================================
+    // MONGODB / DATABASE ERROR
+    // ========================================
+
+    if (
+      error.name === "MongoServerError" ||
+      error.name === "MongoNetworkError" ||
+      error.name === "MongooseError"
+    ) {
+      return res.status(503).json({
+        message:
+          "Database service is temporarily unavailable. Please try again later.",
+      });
+    }
+
+    // ========================================
+    // JWT ERROR
+    // ========================================
+
+    if (
+      error.name === "JsonWebTokenError" ||
+      error.name === "TokenError"
+    ) {
+      return res.status(500).json({
+        message:
+          "Authentication service is temporarily unavailable. Please try again later.",
+      });
+    }
+
+    // ========================================
+    // GENERAL SERVER ERROR
+    // ========================================
+
+    return res.status(500).json({
+      message:
+        "Server error. Please try again later.",
     });
   }
 };
@@ -168,6 +260,16 @@ const registerUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
   try {
+    // ========================================
+    // CHECK REQUEST BODY
+    // ========================================
+
+    if (!req.body || typeof req.body !== "object") {
+      return res.status(400).json({
+        message: "Invalid request data",
+      });
+    }
+
     const {
       email,
       password,
@@ -189,7 +291,16 @@ const loginUser = async (req, res) => {
     // ========================================
 
     const cleanEmail =
-      email.trim().toLowerCase();
+      typeof email === "string"
+        ? email.trim().toLowerCase()
+        : "";
+
+    if (!cleanEmail) {
+      return res.status(400).json({
+        message:
+          "Please provide a valid email address",
+      });
+    }
 
     // ========================================
     // FIND USER
@@ -199,6 +310,10 @@ const loginUser = async (req, res) => {
       await User.findOne({
         email: cleanEmail,
       });
+
+    // ========================================
+    // USER NOT FOUND
+    // ========================================
 
     if (!user) {
       return res.status(401).json({
@@ -225,6 +340,21 @@ const loginUser = async (req, res) => {
     }
 
     // ========================================
+    // CHECK JWT CONFIGURATION
+    // ========================================
+
+    if (!process.env.JWT_SECRET) {
+      console.error(
+        "JWT_SECRET is missing from environment variables"
+      );
+
+      return res.status(500).json({
+        message:
+          "Server configuration error. Please try again later.",
+      });
+    }
+
+    // ========================================
     // CREATE JWT
     // ========================================
 
@@ -242,7 +372,7 @@ const loginUser = async (req, res) => {
     // RESPONSE
     // ========================================
 
-    res.status(200).json({
+    return res.status(200).json({
       message:
         "Login successful",
       token,
@@ -260,8 +390,42 @@ const loginUser = async (req, res) => {
       error.message
     );
 
-    res.status(500).json({
-      message: "Server error",
+    // ========================================
+    // MONGODB / DATABASE ERROR
+    // ========================================
+
+    if (
+      error.name === "MongoServerError" ||
+      error.name === "MongoNetworkError" ||
+      error.name === "MongooseError"
+    ) {
+      return res.status(503).json({
+        message:
+          "Database service is temporarily unavailable. Please try again later.",
+      });
+    }
+
+    // ========================================
+    // JWT ERROR
+    // ========================================
+
+    if (
+      error.name === "JsonWebTokenError" ||
+      error.name === "TokenError"
+    ) {
+      return res.status(500).json({
+        message:
+          "Authentication service is temporarily unavailable. Please try again later.",
+      });
+    }
+
+    // ========================================
+    // GENERAL SERVER ERROR
+    // ========================================
+
+    return res.status(500).json({
+      message:
+        "Server error. Please try again later.",
     });
   }
 };

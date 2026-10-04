@@ -14,6 +14,7 @@ import DualPlansPage from "./pages/DualPlansPage";
 import MyPlanPage from "./pages/MyPlanPage";
 import AuthPage from "./pages/AuthPage";
 import ContactPage from "./pages/ContactPage";
+import NotFoundPage from "./pages/NotFoundPage";
 
 import "./App.css";
 import "./index.css";
@@ -76,6 +77,14 @@ function App() {
           <Route
             path="/contact"
             element={<ContactPage />}
+          />
+
+          {/* =====================================================
+              404 - PAGE NOT FOUND
+          ===================================================== */}
+          <Route
+            path="*"
+            element={<NotFoundPage />}
           />
 
         </Routes>
