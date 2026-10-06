@@ -642,48 +642,151 @@ export default function MyPlanPage() {
     );
   };
 
-  /* ============================================================
-     REMOVE PLAN
-  ============================================================ */
+ /* ============================================================
+   REMOVE PLAN
+============================================================ */
 
-  const handleRemovePlan =
-    async (plan) => {
-      if (!plan?._id) {
-        console.error(
-          "Saved plan ID is missing."
-        );
+const handleRemovePlan = async (plan) => {
+  // ----------------------------------------------------------
+  // IMPORTANT:
+  // Use the saved-plan ID first.
+  // Then MongoDB _id.
+  // Then planKey / planId for older records.
+  // ----------------------------------------------------------
 
-        return;
-      }
+  const deleteId =
+    plan?.saveId ||
+    plan?._id ||
+    plan?.planKey ||
+    plan?.planId ||
+    plan?.id;
 
-      try {
-        await apiRequest(
-          `/api/saved-plans/${plan._id}`,
-          {
-            method: "DELETE",
-          }
-        );
+  if (!deleteId) {
+    console.error(
+      "Unable to remove plan. No saved-plan identifier found:",
+      plan
+    );
 
-        await loadPlans();
+    window.alert(
+      "Unable to remove this plan because its saved-plan ID is missing."
+    );
 
-        window.dispatchEvent(
-          new Event(
-            "happyMappyPlansChanged"
+    return;
+  }
+
+  try {
+    // --------------------------------------------------------
+    // FIND THE PURCHASED BOOKING BEFORE REMOVING THE PLAN
+    //
+    // If this plan was already bought, its booking must also
+    // be removed from MongoDB. Otherwise the old booking would
+    // remain and the same plan would incorrectly show
+    // "View Booking" after saving it again.
+    // --------------------------------------------------------
+
+    const existingBooking =
+      findBookingForPlan(plan);
+
+    // --------------------------------------------------------
+    // DELETE THE BOOKING FROM MONGODB FIRST
+    //
+    // Only the logged-in user's matching booking can be
+    // deleted by the backend.
+    // --------------------------------------------------------
+
+    if (
+      existingBooking?.bookingReference
+    ) {
+      await apiRequest(
+        `/api/bookings/${encodeURIComponent(
+          String(
+            existingBooking.bookingReference
           )
-        );
-      } catch (error) {
-        console.error(
-          "Remove Saved Plan Error:",
-          error
-        );
+        )}`,
+        {
+          method: "DELETE",
+        }
+      );
 
-        window.alert(
-          error.message ||
-            "Unable to remove this plan. Please try again."
-        );
+      // Remove the deleted booking from the current screen.
+      setBookings((previousBookings) =>
+        previousBookings.filter(
+          (booking) =>
+            String(
+              booking.bookingReference || ""
+            ) !==
+            String(
+              existingBooking.bookingReference
+            )
+        )
+      );
+
+      // Close the booking-details popup if it is open.
+      setViewBooking(null);
+    }
+
+    // --------------------------------------------------------
+    // DELETE THE SAVED PLAN FROM MONGODB
+    // --------------------------------------------------------
+
+    await apiRequest(
+      `/api/saved-plans/${encodeURIComponent(
+        String(deleteId)
+      )}`,
+      {
+        method: "DELETE",
       }
-    };
+    );
 
+    // --------------------------------------------------------
+    // IMPORTANT:
+    // REMOVE IT FROM THE CURRENT SCREEN IMMEDIATELY
+    // --------------------------------------------------------
+
+    setPlans((previousPlans) =>
+      previousPlans.filter(
+        (item) => {
+          const itemId =
+            item?.saveId ||
+            item?._id ||
+            item?.planKey ||
+            item?.planId ||
+            item?.id;
+
+          return String(itemId) !==
+            String(deleteId);
+        }
+      )
+    );
+
+    // --------------------------------------------------------
+    // REFRESH FROM MONGODB
+    // --------------------------------------------------------
+
+    await loadPlans();
+    await loadBookings();
+
+    // --------------------------------------------------------
+    // NOTIFY OTHER COMPONENTS
+    // --------------------------------------------------------
+
+    window.dispatchEvent(
+      new Event(
+        "happyMappyPlansChanged"
+      )
+    );
+  } catch (error) {
+    console.error(
+      "Remove Plan Error:",
+      error
+    );
+
+    window.alert(
+      error.message ||
+        "Unable to remove this plan. Please try again."
+    );
+  }
+};
   /* ============================================================
      BUY PLAN
   ============================================================ */
@@ -2272,46 +2375,324 @@ export default function MyPlanPage() {
           }
         }
 
-        /* Booking details modal */
+    /* ============================================================
+   VIEW BOOKING DETAILS - CLEAN RECEIPT STYLE
+   UI ONLY - DOES NOT CHANGE BOOKING / API / PAYMENT LOGIC
+============================================================ */
 
-        .my-plan-page .booking-details-modal {
-          position: relative !important;
-          padding-top: 48px !important;
-        }
+.my-plan-page .booking-details-modal {
+  width: min(600px, 94vw) !important;
+  max-width: 600px !important;
+  max-height: calc(100vh - 40px) !important;
 
-        .my-plan-page .booking-details-modal .booking-details-close {
-          position: absolute !important;
-          top: 12px !important;
-          right: 12px !important;
-          left: auto !important;
-          bottom: auto !important;
-          z-index: 20 !important;
-          display: flex !important;
-          align-items: center !important;
-          justify-content: center !important;
-          width: 36px !important;
-          min-width: 36px !important;
-          max-width: 36px !important;
-          height: 36px !important;
-          min-height: 36px !important;
-          max-height: 36px !important;
-          margin: 0 !important;
-          padding: 0 !important;
-          border: 0 !important;
-          border-radius: 50% !important;
-          color: #334155 !important;
-          background: #e2e8f0 !important;
-          box-shadow: none !important;
-          line-height: 1 !important;
-          cursor: pointer !important;
-        }
+  margin: auto !important;
+  padding: 0 !important;
 
-        .my-plan-page .booking-details-modal .booking-details-close svg {
-          width: 20px !important;
-          height: 20px !important;
-          flex-shrink: 0 !important;
-        }
+  background: #ffffff !important;
+  border: 1px solid #dbeafe !important;
+  border-radius: 18px !important;
 
+  box-shadow: 0 30px 90px rgba(15, 23, 42, 0.30) !important;
+
+  text-align: left !important;
+
+  box-sizing: border-box !important;
+
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+
+  position: relative !important;
+}
+
+/* Header */
+
+.my-plan-page .booking-details-head {
+  width: 100%;
+
+  padding: 24px 24px 20px;
+
+  box-sizing: border-box;
+
+  text-align: center;
+
+  background: linear-gradient(
+    135deg,
+    #eff6ff,
+    #ecfeff
+  );
+
+  border-bottom: 1px solid #dbeafe;
+}
+
+.my-plan-page .booking-details-head-icon {
+  width: 54px;
+  height: 54px;
+
+  margin: 0 auto 10px;
+
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.my-plan-page .booking-details-eyebrow {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: #0f766e;
+
+  font-size: 13px;
+  font-weight: 800;
+
+  letter-spacing: 0.5px;
+}
+
+.my-plan-page .booking-details-head h3 {
+  margin: 0 !important;
+
+  color: #0f172a !important;
+
+  font-size: 24px !important;
+  font-weight: 800 !important;
+}
+
+.my-plan-page .booking-details-head p {
+  margin: 7px 0 0 !important;
+
+  color: #64748b !important;
+
+  font-size: 14px !important;
+
+  line-height: 1.5;
+}
+
+/* Details */
+
+.my-plan-page .booking-details-list {
+  width: 100%;
+
+  padding: 14px 22px;
+
+  box-sizing: border-box;
+}
+
+/* IMPORTANT:
+   Do NOT use booking-user-grid here.
+   That class is used by the booking form.
+*/
+
+.my-plan-page .booking-detail-row {
+  display: grid !important;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(150px, auto) !important;
+
+  align-items: center;
+
+  gap: 18px;
+
+  width: 100%;
+
+  min-height: 46px;
+
+  padding: 10px 2px;
+
+  box-sizing: border-box;
+
+  border-bottom: 1px solid #eef2f7;
+}
+
+.my-plan-page .booking-detail-row:last-child {
+  border-bottom: none;
+}
+
+.my-plan-page .booking-detail-row small {
+  display: block;
+
+  color: #64748b;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  line-height: 1.4;
+}
+
+.my-plan-page .booking-detail-row strong {
+  display: block;
+
+  color: #0f172a;
+
+  font-size: 14px;
+
+  font-weight: 800;
+
+  line-height: 1.4;
+
+  text-align: right;
+
+  overflow-wrap: anywhere;
+}
+
+/* Total */
+
+.my-plan-page .booking-detail-total {
+  margin: 7px 0;
+
+  padding: 13px 14px !important;
+
+  border: 1px solid #a7f3d0 !important;
+
+  border-radius: 12px !important;
+
+  background: linear-gradient(
+    135deg,
+    #ecfdf5,
+    #f0fdfa
+  ) !important;
+}
+
+.my-plan-page .booking-detail-total small {
+  color: #047857;
+}
+
+.my-plan-page .booking-detail-total strong {
+  color: #047857 !important;
+
+  font-size: 18px !important;
+}
+
+/* Confirmed badge */
+
+.my-plan-page .booking-status-badge {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  min-width: 92px;
+
+  padding: 6px 11px;
+
+  border-radius: 999px;
+
+  background: #dcfce7;
+
+  color: #15803d !important;
+
+  font-size: 12px !important;
+
+  font-weight: 800 !important;
+
+  letter-spacing: 0.4px;
+}
+
+/* Close button */
+
+.my-plan-page .booking-details-close-bottom {
+  display: block;
+
+  width: calc(100% - 44px);
+
+  min-height: 44px;
+
+  margin: 0 22px 22px;
+
+  padding: 11px 18px;
+
+  border: none !important;
+
+  border-radius: 10px !important;
+
+  background: linear-gradient(
+    135deg,
+    #0f766e,
+    #0891b2
+  ) !important;
+
+  color: #ffffff !important;
+
+  font-size: 14px !important;
+
+  font-weight: 800 !important;
+
+  text-align: center !important;
+
+  cursor: pointer;
+
+  box-sizing: border-box;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.my-plan-page .booking-details-close-bottom:hover {
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 8px 20px
+    rgba(8, 145, 178, 0.22);
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+  .my-plan-page .booking-details-modal {
+    width: 96vw !important;
+
+    max-width: 96vw !important;
+
+    max-height: calc(100vh - 20px) !important;
+
+    border-radius: 15px !important;
+  }
+
+  .my-plan-page .booking-details-head {
+    padding: 20px 18px 17px;
+  }
+
+  .my-plan-page .booking-details-head h3 {
+    font-size: 21px !important;
+  }
+
+  .my-plan-page .booking-details-list {
+    padding: 10px 18px;
+  }
+
+  .my-plan-page .booking-detail-row {
+    grid-template-columns: 1fr !important;
+
+    gap: 4px;
+
+    align-items: start;
+
+    padding: 10px 2px;
+  }
+
+  .my-plan-page .booking-detail-row strong {
+    text-align: left;
+  }
+
+  .my-plan-page .booking-detail-total {
+    padding: 12px !important;
+  }
+
+  .my-plan-page .booking-details-close-bottom {
+    width: calc(100% - 36px);
+
+    margin:
+      0 18px 18px;
+  }
+}
       `}</style>
 
       {/* ======================================================
@@ -3402,6 +3783,34 @@ export default function MyPlanPage() {
 
               <div className="trip-success-modal">
 
+                <button
+                  type="button"
+                  onClick={() => setTripConfirmed(false)}
+                  aria-label="Close trip confirmation"
+                  title="Close"
+                  style={{
+                    position: "absolute",
+                    top: "10px",
+                    right: "10px",
+                    width: "32px",
+                    height: "32px",
+                    minWidth: "32px",
+                    minHeight: "32px",
+                    padding: 0,
+                    border: "none",
+                    borderRadius: "50%",
+                    background: "#e2e8f0",
+                    color: "#334155",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    cursor: "pointer",
+                    zIndex: 10,
+                  }}
+                >
+                  <X size={19} />
+                </button>
+
                 <div className="trip-success-icon">
 
                   <CheckCircle
@@ -3795,304 +4204,360 @@ export default function MyPlanPage() {
 
           )}
 
-        {/* ======================================================
-            VIEW BOOKING DETAILS
-        ====================================================== */}
+{viewBooking && (
+  <div
+    className="my-plan-overlay"
+    onClick={() => setViewBooking(null)}
+  >
+    <div
+      className="payment-success-modal booking-details-modal"
+      onClick={(event) => event.stopPropagation()}
+    >
 
-        {viewBooking && (
+      <button
+        type="button"
+        onClick={() => setViewBooking(null)}
+        aria-label="Close booking details"
+        title="Close"
+        style={{
+          position: "absolute",
+          top: "10px",
+          right: "10px",
+          width: "32px",
+          height: "32px",
+          minWidth: "32px",
+          minHeight: "32px",
+          padding: 0,
+          border: "none",
+          borderRadius: "50%",
+          background: "#e2e8f0",
+          color: "#334155",
+          display: "inline-flex",
+          alignItems: "center",
+          justifyContent: "center",
+          cursor: "pointer",
+          zIndex: 20,
+        }}
+      >
+        <X size={19} />
+      </button>
 
-          <div
-            className="my-plan-overlay"
-            onClick={() =>
-              setViewBooking(null)
-            }
-          >
+      {/* =====================================================
+          BOOKING DETAILS HEADER
+      ===================================================== */}
 
-            <div
-              className="payment-success-modal booking-details-modal"
-              onClick={(event) =>
-                event.stopPropagation()
-              }
-            >
+      <div className="booking-details-head">
 
-              <button
-                type="button"
-                className="my-plan-close booking-details-close"
-                onClick={() =>
-                  setViewBooking(null)
-                }
-                aria-label="Close booking details"
-              >
-                <X size={22} />
-              </button>
+        <div className="booking-details-head-icon">
+          <CheckCircle size={28} />
+        </div>
 
-              <div className="payment-success-icon">
+        <span className="booking-details-eyebrow">
+          🎉 Booking Details
+        </span>
 
-                <CheckCircle
-                  size={32}
-                />
+        <h3>
+          Booking Confirmed
+        </h3>
 
-              </div>
+        <p>
+          Your trip booking has been successfully confirmed.
+        </p>
 
-              <h3>
-                Booking Details
-              </h3>
+      </div>
 
-              <p>
-                Your booking information saved in MongoDB.
-              </p>
 
-              <div className="booking-user-grid">
+      {/* =====================================================
+          BOOKING INFORMATION
+      ===================================================== */}
 
-                <div>
-                  <small>
-                    Travel Plan
-                  </small>
+      <div className="booking-details-list">
 
-                  <strong>
-                    {viewBooking.planTitle ||
-                      "Travel Plan"}
-                  </strong>
-                </div>
+        {/* BOOKING REFERENCE */}
 
-                <div>
-                  <small>
-                    Destination
-                  </small>
+        <div className="booking-detail-row">
 
-                  <strong>
-                    {viewBooking.destination ||
-                      "Not available"}
-                  </strong>
-                </div>
+          <small>
+            Booking Reference
+          </small>
 
-                <div>
-                  <small>
-                    Booking Reference
-                  </small>
+          <strong>
+            {viewBooking.bookingReference ||
+              "Not available"}
+          </strong>
 
-                  <strong>
-                    {viewBooking.bookingReference ||
-                      "Not available"}
-                  </strong>
-                </div>
+        </div>
 
-                <div>
-                  <small>
-                    Trip Date
-                  </small>
 
-                  <strong>
-                    {formatTripDate(
-                      viewBooking.tripDate
-                    )}
-                  </strong>
-                </div>
+        {/* TRIP DATE */}
 
-                <div>
-                  <small>
-                    Travelers
-                  </small>
+        <div className="booking-detail-row">
 
-                  <strong>
-                    {viewBooking.people ||
-                      1}
-                  </strong>
-                </div>
+          <small>
+            Trip Date
+          </small>
 
-                <div>
-                  <small>
-                    Price per person
-                  </small>
+          <strong>
+            {formatTripDate(
+              viewBooking.tripDate
+            )}
+          </strong>
 
-                  <strong>
-                    {formatPrice(
-                      viewBooking.pricePerPerson
-                    )}
-                  </strong>
-                </div>
+        </div>
 
-                <div>
-                  <small>
-                    Subtotal
-                  </small>
 
-                  <strong>
-                    {formatPrice(
-                      viewBooking.subtotal
-                    )}
-                  </strong>
-                </div>
+        {/* TRAVELERS */}
 
-                <div>
-                  <small>
-                    Group discount
-                  </small>
+        <div className="booking-detail-row">
 
-                  <strong>
-                    {Number(
-                      viewBooking.discountRate ||
-                        0
-                    )}
-                    % ·{" "}
-                    {formatPrice(
-                      viewBooking.discountAmount
-                    )}
-                  </strong>
-                </div>
+          <small>
+            Travelers
+          </small>
 
-                <div>
-                  <small>
-                    Total amount
-                  </small>
+          <strong>
+            {viewBooking.people || 1}
+          </strong>
 
-                  <strong>
-                    {formatPrice(
-                      viewBooking.totalAmount
-                    )}
-                  </strong>
-                </div>
+        </div>
 
-                <div>
-                  <small>
-                    Booking status
-                  </small>
 
-                  <strong>
-                    {viewBooking.bookingStatus ||
-                      "confirmed"}
-                  </strong>
-                </div>
+        {/* PRICE PER PERSON */}
 
-                <div>
+        <div className="booking-detail-row">
 
-                  <small>
-                    Payment method
-                  </small>
+          <small>
+            Price / Person
+          </small>
 
-                  <strong>
-                    {viewBooking.paymentMethod ===
-                    "upi"
-                      ? "UPI"
-                      : viewBooking.paymentMethod ===
-                        "netbanking"
-                      ? "Net Banking"
-                      : viewBooking.paymentMethod ===
-                        "card"
-                      ? "Debit / Credit Card"
-                      : "Not recorded"}
-                  </strong>
+          <strong>
+            {formatPrice(
+              viewBooking.pricePerPerson
+            )}
+          </strong>
 
-                </div>
+        </div>
 
-                <div>
 
-                  <small>
-                    {viewBooking.paymentMethod ===
-                    "upi"
-                      ? "UPI ID"
-                      : viewBooking.paymentMethod ===
-                        "netbanking"
-                      ? "Bank name"
-                      : viewBooking.paymentMethod ===
-                        "card"
-                      ? "Card number"
-                      : "Payment mode"}
-                  </small>
+        {/* SUBTOTAL */}
 
-                  <strong>
+        <div className="booking-detail-row">
 
-                    {viewBooking.paymentMethod ===
-                    "netbanking"
-                      ? ({
-                          SBI:
-                            "State Bank of India",
-                          HDFC:
-                            "HDFC Bank",
-                          ICICI:
-                            "ICICI Bank",
-                          AXIS:
-                            "Axis Bank",
-                        }[
-                          String(
-                            viewBooking.paymentDetail ||
-                              ""
-                          ).toUpperCase()
-                        ] ||
-                          viewBooking.paymentDetail ||
-                          "Bank name not recorded")
+          <small>
+            Subtotal
+          </small>
 
-                      : viewBooking.paymentMethod ===
-                        "upi"
-                      ? viewBooking.paymentDetail ||
-                        "UPI ID not recorded"
+          <strong>
+            {formatPrice(
+              viewBooking.subtotal
+            )}
+          </strong>
 
-                      : viewBooking.paymentMethod ===
-                        "card"
-                      ? (() => {
-                          const savedCard =
-                            String(
-                              viewBooking.paymentDetail ||
-                                ""
-                            );
+        </div>
 
-                          const digits =
-                            savedCard.replace(
-                              /\D/g,
-                              ""
-                            );
 
-                          return digits.length >=
-                            4
-                            ? `•••• ${digits.slice(
-                                -4
-                              )}`
-                            : savedCard ||
-                              "Card number not recorded";
-                        })()
+        {/* GROUP DISCOUNT */}
 
-                      : "Not recorded"}
+        <div className="booking-detail-row">
 
-                  </strong>
+          <small>
+            Group Discount
+          </small>
 
-                </div>
+          <strong>
+            {Number(
+              viewBooking.discountRate || 0
+            )}
+            % ·{" "}
+            {formatPrice(
+              viewBooking.discountAmount
+            )}
+          </strong>
 
-                <div>
+        </div>
 
-                  <small>
-                    Payment status
-                  </small>
 
-                  <strong className="trip-payment-paid">
+        {/* TOTAL */}
 
-                    {viewBooking.paymentStatus ===
-                    "successful"
-                      ? "Successful"
-                      : viewBooking.paymentStatus ===
-                        "failed"
-                      ? "Failed"
-                      : "Pending verification"}
+        <div
+          className="
+            booking-detail-row
+            booking-detail-total
+          "
+        >
 
-                  </strong>
+          <small>
+            Total Amount
+          </small>
 
-                </div>
+          <strong>
+            {formatPrice(
+              viewBooking.totalAmount
+            )}
+          </strong>
 
-              </div>
+        </div>
 
-              <button
-                type="button"
-                onClick={() =>
-                  setViewBooking(null)
-                }
-              >
-                Close
-              </button>
 
-            </div>
+        {/* BOOKING STATUS */}
 
-          </div>
+        <div className="booking-detail-row">
 
-        )}
+          <small>
+            Booking Status
+          </small>
+
+          <strong>
+
+            <span className="booking-status-badge">
+
+              {String(
+                viewBooking.bookingStatus ||
+                  "confirmed"
+              ).toUpperCase()}
+
+            </span>
+
+          </strong>
+
+        </div>
+
+
+        {/* PAYMENT METHOD */}
+
+        <div className="booking-detail-row">
+
+          <small>
+            Payment Method
+          </small>
+
+          <strong>
+
+            {viewBooking.paymentMethod ===
+            "upi"
+              ? "UPI"
+              : viewBooking.paymentMethod ===
+                "netbanking"
+              ? "Net Banking"
+              : viewBooking.paymentMethod ===
+                "card"
+              ? "Debit / Credit Card"
+              : "Not recorded"}
+
+          </strong>
+
+        </div>
+
+
+       {/* PAYMENT DETAIL */}
+
+<div className="booking-detail-row">
+
+  <small>
+
+    {viewBooking.paymentMethod ===
+    "upi"
+      ? "UPI ID"
+      : viewBooking.paymentMethod ===
+        "netbanking"
+      ? "Bank Name"
+      : viewBooking.paymentMethod ===
+        "card"
+      ? "Card Number"
+      : "Payment Mode"}
+
+  </small>
+
+  <strong>
+
+    {viewBooking.paymentMethod ===
+    "netbanking"
+      ? ({
+          SBI:
+            "State Bank of India",
+
+          HDFC:
+            "HDFC Bank",
+
+          ICICI:
+            "ICICI Bank",
+
+          AXIS:
+            "Axis Bank",
+        }[
+          String(
+            viewBooking.paymentDetail ||
+              viewBooking.paymentValue ||
+              ""
+          ).toUpperCase()
+        ] ||
+          viewBooking.paymentDetail ||
+          viewBooking.paymentValue ||
+          "Bank name not recorded")
+
+      : viewBooking.paymentMethod ===
+        "upi"
+      ? (
+          viewBooking.paymentDetail ||
+          viewBooking.paymentValue ||
+          viewBooking.upiId ||
+          viewBooking.upiID ||
+          viewBooking.payment?.upiId ||
+          viewBooking.payment?.upiID ||
+          viewBooking.paymentDetails?.upiId ||
+          viewBooking.paymentDetails?.upiID ||
+          "UPI ID not recorded"
+        )
+
+      : viewBooking.paymentMethod ===
+        "card"
+      ? (() => {
+
+          const savedCard =
+            String(
+              viewBooking.paymentDetail ||
+                viewBooking.paymentValue ||
+                ""
+            );
+
+          const digits =
+            savedCard.replace(
+              /\D/g,
+              ""
+            );
+
+          return digits.length >= 4
+            ? `•••• ${digits.slice(-4)}`
+            : savedCard ||
+              "Card number not recorded";
+
+        })()
+
+      : "Not recorded"}
+
+  </strong>
+
+</div>
+
+      </div>
+
+
+      {/* =====================================================
+          CLOSE
+      ===================================================== */}
+
+      <button
+        type="button"
+        className="booking-details-close-bottom"
+        onClick={() =>
+          setViewBooking(null)
+        }
+      >
+        Close
+      </button>
+
+    </div>
+  </div>
+)}
 
       </main>
 

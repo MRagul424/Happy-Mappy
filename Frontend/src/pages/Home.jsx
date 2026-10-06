@@ -14,11 +14,14 @@ import {
 } from "../data/travelData";
 import DestinationCard from "../components/DestinationCard";
 import PlanCard from "../components/PlanCard";
+
 export default function Home() {
   const featuredDestinations =
     destinations.slice(0, 6);
+
   const featuredPlans =
     plans.slice(0, 3);
+
   return (
     <main>
       {/* ==================================================
@@ -26,10 +29,12 @@ export default function Home() {
       ================================================== */}
       <section className="hero">
         <div className="hero-overlay"></div>
+
         <div className="hero-content">
           <span className="hero-badge">
             ✈️ Happy Mappy — Your journey starts here
           </span>
+
           <h1>
             Explore the world.
             <br />
@@ -37,11 +42,13 @@ export default function Home() {
               Make memories.
             </span>
           </h1>
+
           <p>
             Discover amazing destinations, explore beautiful
             places and create unforgettable experiences with
             Happy Mappy (HM) Tours & Travels.
           </p>
+
           <div className="hero-buttons">
             <Link
               to="/destinations"
@@ -50,6 +57,7 @@ export default function Home() {
               Explore Destinations
               <ArrowRight size={18} />
             </Link>
+
             <Link
               to="/travel-plans"
               className="secondary-button"
@@ -59,6 +67,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+
       {/* ==================================================
           DESTINATIONS
       ================================================== */}
@@ -68,10 +77,16 @@ export default function Home() {
             <span className="section-label">
               Popular Places
             </span>
-            <h2>
+
+            <h2
+              style={{
+                color: "#1a202c",
+              }}
+            >
               Explore destinations
             </h2>
           </div>
+
           <Link
             to="/destinations"
             className="view-all-link"
@@ -80,6 +95,7 @@ export default function Home() {
             <ArrowRight size={17} />
           </Link>
         </div>
+
         <div className="destination-grid">
           {featuredDestinations.map(
             (destination) => (
@@ -91,6 +107,7 @@ export default function Home() {
           )}
         </div>
       </section>
+
       {/* ==================================================
           TRAVEL PLANS
       ================================================== */}
@@ -100,10 +117,16 @@ export default function Home() {
             <span className="section-label">
               Travel Made Easy
             </span>
-            <h2>
+
+            <h2
+              style={{
+                color: "#1a202c",
+              }}
+            >
               Popular travel plans
             </h2>
           </div>
+
           <Link
             to="/travel-plans"
             className="view-all-link"
@@ -112,6 +135,7 @@ export default function Home() {
             <ArrowRight size={17} />
           </Link>
         </div>
+
         <div className="plan-grid">
           {featuredPlans.map(
             (plan) => (
@@ -123,19 +147,23 @@ export default function Home() {
           )}
         </div>
       </section>
+
       {/* ==================================================
           CTA
       ================================================== */}
       <section className="cta-section">
         <div className="cta-content">
           <Sparkles size={32} />
+
           <h2>
             Ready for your next adventure?
           </h2>
+
           <p>
             Explore our destinations and find your
             perfect travel plan with Happy Mappy.
           </p>
+
           <Link
             to="/travel-plans"
             className="primary-button"
@@ -145,6 +173,7 @@ export default function Home() {
           </Link>
         </div>
       </section>
+
       {/* ==================================================
           CONTACT
       ================================================== */}
@@ -166,6 +195,7 @@ export default function Home() {
           <span className="section-label">
             Get In Touch
           </span>
+
           <h2
             style={{
               fontSize: "2rem",
@@ -176,6 +206,7 @@ export default function Home() {
             Contact Happy Mappy
           </h2>
         </div>
+
         <div
           style={{
             display: "grid",
@@ -207,6 +238,7 @@ export default function Home() {
                 size={20}
                 style={{ color: "#008080" }}
               />
+
               <h3
                 style={{
                   margin: 0,
@@ -217,6 +249,7 @@ export default function Home() {
                 Headquarters
               </h3>
             </div>
+
             <p
               style={{
                 margin: 0,
@@ -234,6 +267,7 @@ export default function Home() {
               India
             </p>
           </div>
+
           {/* EMAIL */}
           <div
             style={{
@@ -255,6 +289,7 @@ export default function Home() {
                 size={20}
                 style={{ color: "#008080" }}
               />
+
               <h3
                 style={{
                   margin: 0,
@@ -265,6 +300,7 @@ export default function Home() {
                 Email Us
               </h3>
             </div>
+
             <p
               style={{
                 margin: 0,
@@ -278,12 +314,14 @@ export default function Home() {
               </strong>{" "}
               brindhajk@gmail.com
               <br />
+
               <strong>
                 Business:
               </strong>{" "}
               travelplanner@gmail.com
             </p>
           </div>
+
           {/* PHONE */}
           <div
             style={{
@@ -305,6 +343,7 @@ export default function Home() {
                 size={20}
                 style={{ color: "#008080" }}
               />
+
               <h3
                 style={{
                   margin: 0,
@@ -315,6 +354,7 @@ export default function Home() {
                 Phone & Hours
               </h3>
             </div>
+
             <p
               style={{
                 margin: 0,
@@ -328,6 +368,7 @@ export default function Home() {
               </strong>{" "}
               +91 9876543210
               <br />
+
               <strong>
                 Hours:
               </strong>{" "}

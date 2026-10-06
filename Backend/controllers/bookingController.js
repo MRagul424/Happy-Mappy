@@ -14,6 +14,7 @@ const createBooking = async (req, res) => {
       people,
       pricePerPerson,
       paymentMethod,
+      paymentDetail,
     } = req.body;
 
     if (
@@ -59,7 +60,7 @@ const createBooking = async (req, res) => {
     // ============================================
 
     const existingBooking = await Booking.findOne({
-      user: req.userId,
+      user: req.mongoUserId,
       planKey: String(planKey).trim(),
       tripDate: date,
       bookingStatus: { $ne: "cancelled" },
@@ -67,12 +68,16 @@ const createBooking = async (req, res) => {
 
     if (existingBooking) {
       return res.status(409).json({
-        message: "This plan is already booked for the selected date.",
+        message:
+          "This plan is already booked for the selected date.",
         reason: "ALREADY_BOOKED",
       });
     }
 
-    // Calculate pricing on the backend.
+    // ============================================
+    // CALCULATE PRICING ON THE BACKEND
+    // ============================================
+
     const subtotal = price * travelers;
 
     let discountRate = 0;
@@ -97,7 +102,9 @@ const createBooking = async (req, res) => {
       `HM-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
 
     const booking = await Booking.create({
-      user: req.userId,
+      userId: req.userId,
+      user: req.mongoUserId,
+
       planKey: String(planKey),
       planTitle: String(planTitle),
       destination: destination || "",
@@ -109,6 +116,7 @@ const createBooking = async (req, res) => {
       discountAmount,
       totalAmount,
       paymentMethod,
+      paymentDetail: String(paymentDetail || "").trim(),
       bookingReference,
 
       // This is a demo confirmation, not verified real payment.
@@ -121,7 +129,10 @@ const createBooking = async (req, res) => {
       booking,
     });
   } catch (error) {
-    console.error("Create Booking Error:", error.message);
+    console.error(
+      "Create Booking Error:",
+      error.message
+    );
 
     return res.status(500).json({
       message: "Unable to create booking",
@@ -136,12 +147,16 @@ const createBooking = async (req, res) => {
 const getMyBookings = async (req, res) => {
   try {
     const bookings = await Booking.find({
-      user: req.userId,
+      // Booking model uses MongoDB ObjectId
+      user: req.mongoUserId,
     }).sort({ createdAt: -1 });
 
     return res.status(200).json({ bookings });
   } catch (error) {
-    console.error("Get Bookings Error:", error.message);
+    console.error(
+      "Get Bookings Error:",
+      error.message
+    );
 
     return res.status(500).json({
       message: "Unable to retrieve bookings",
@@ -157,7 +172,9 @@ const getBookingByReference = async (req, res) => {
   try {
     const booking = await Booking.findOne({
       bookingReference: req.params.reference,
-      user: req.userId,
+
+      // Booking model uses MongoDB ObjectId
+      user: req.mongoUserId,
     });
 
     if (!booking) {
@@ -168,10 +185,47 @@ const getBookingByReference = async (req, res) => {
 
     return res.status(200).json({ booking });
   } catch (error) {
-    console.error("Get Booking Error:", error.message);
+    console.error(
+      "Get Booking Error:",
+      error.message
+    );
 
     return res.status(500).json({
       message: "Unable to retrieve booking",
+    });
+  }
+};
+
+// ============================================
+// DELETE ONE BOOKING
+// Only the logged-in user's booking can be deleted.
+// ============================================
+
+const deleteBooking = async (req, res) => {
+  try {
+    const booking = await Booking.findOneAndDelete({
+      bookingReference: req.params.reference,
+      user: req.mongoUserId,
+    });
+
+    if (!booking) {
+      return res.status(404).json({
+        message: "Booking not found",
+      });
+    }
+
+    return res.status(200).json({
+      message: "Booking deleted successfully",
+      booking,
+    });
+  } catch (error) {
+    console.error(
+      "Delete Booking Error:",
+      error.message
+    );
+
+    return res.status(500).json({
+      message: "Unable to delete booking",
     });
   }
 };
@@ -180,4 +234,5 @@ module.exports = {
   createBooking,
   getMyBookings,
   getBookingByReference,
+  deleteBooking,
 };

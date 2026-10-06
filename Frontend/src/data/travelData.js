@@ -307,6 +307,7 @@ export const plans = [
 
   {
     id: 1,
+    planCode: "HM-PLAN-001",
     title: "Kerala Dream Escape",
     destination: "Munnar • Alleppey • Kochi",
     days: 5,
@@ -340,13 +341,14 @@ export const plans = [
     ],
 
     itinerary: [
+
       {
         day: 1,
         title: "Arrival in Munnar",
 
         activities: [
           food(
-            "Breakfast - Saravana Bhavan Munnar",
+            "Breakfast at hotel",
             "8:00 AM - 9:00 AM",
             "breakfast"
           ),
@@ -364,7 +366,7 @@ export const plans = [
           ),
 
           food(
-            "Lunch - Radhika Pure Vegetarian",
+            "Lunch at local Kerala restaurant",
             "1:00 PM - 2:00 PM",
             "lunch"
           ),
@@ -380,12 +382,12 @@ export const plans = [
           ),
 
           food(
-            "Dinner - The Hornbill Restaurant",
+            "Dinner at hotel",
             "7:30 PM - 8:30 PM",
             "dinner"
           ),
 
-          hotel("Blanket Hotel & Spa"),
+          hotel("Munnar Hotel"),
         ],
       },
 
@@ -395,7 +397,7 @@ export const plans = [
 
         activities: [
           food(
-            "Breakfast - Grand Spices Restaurant",
+            "Breakfast at hotel",
             "8:00 AM - 9:00 AM",
             "breakfast"
           ),
@@ -412,7 +414,7 @@ export const plans = [
           ),
 
           food(
-            "Lunch - Munnar Samrudhi Restaurant",
+            "Lunch at local restaurant",
             "1:00 PM - 2:00 PM",
             "lunch"
           ),
@@ -430,12 +432,12 @@ export const plans = [
           ),
 
           food(
-            "Dinner - Parakkat Spice Merchant Restaurant",
+            "Dinner at hotel",
             "7:30 PM - 8:30 PM",
             "dinner"
           ),
 
-          hotel("Amber Dale Munnar"),
+          hotel("Munnar Hotel"),
         ],
       },
 
@@ -445,7 +447,7 @@ export const plans = [
 
         activities: [
           food(
-            "Breakfast - Rochas Restaurant Munnar",
+            "Breakfast at hotel",
             "8:00 AM - 9:00 AM",
             "breakfast"
           ),
@@ -457,7 +459,7 @@ export const plans = [
           ),
 
           food(
-            "Lunch - Thaff Restaurant, Alappuzha",
+            "Lunch at local restaurant",
             "1:00 PM - 2:00 PM",
             "lunch"
           ),
@@ -474,12 +476,12 @@ export const plans = [
           ),
 
           food(
-            "Dinner - Harbour Restaurant, Alappuzha",
+            "Dinner at hotel",
             "7:30 PM - 8:30 PM",
             "dinner"
           ),
 
-          hotel("Ramada by Wyndham Alleppey"),
+          hotel("Alleppey Hotel"),
         ],
       },
 
@@ -489,7 +491,7 @@ export const plans = [
 
         activities: [
           food(
-            "Breakfast - Mushroom Restaurant, Alappuzha",
+            "Breakfast at hotel",
             "8:00 AM - 9:00 AM",
             "breakfast"
           ),
@@ -507,7 +509,7 @@ export const plans = [
           ),
 
           food(
-            "Lunch - Kadaloram Seafood Restaurant, Kochi",
+            "Lunch at local restaurant",
             "1:00 PM - 2:00 PM",
             "lunch"
           ),
@@ -523,12 +525,12 @@ export const plans = [
           ),
 
           food(
-            "Dinner - Kashi Art Cafe, Kochi",
+            "Dinner at hotel",
             "7:30 PM - 8:30 PM",
             "dinner"
           ),
 
-          hotel("Eighth Bastion, Kochi"),
+          hotel("Kochi Hotel"),
         ],
       },
 
@@ -538,7 +540,7 @@ export const plans = [
 
         activities: [
           food(
-            "Breakfast - Kadaloram Restaurant, Kochi",
+            "Breakfast at hotel",
             "8:00 AM - 9:00 AM",
             "breakfast"
           ),
@@ -554,13 +556,13 @@ export const plans = [
           ),
 
           food(
-            "Lunch - Fort House Restaurant, Kochi",
+            "Lunch at local restaurant",
             "1:00 PM - 2:00 PM",
             "lunch"
           ),
 
           place(
-            "Kochi Local Market",
+            "Fort Kochi Shopping",
             "2:15 PM - 4:00 PM"
           ),
 
@@ -570,7 +572,7 @@ export const plans = [
           ),
 
           food(
-            "Dinner - Kerala Kitchen, Kochi",
+            "Dinner at hotel",
             "7:30 PM - 8:30 PM",
             "dinner"
           ),
@@ -586,6 +588,7 @@ export const plans = [
 
   {
     id: 2,
+    planCode: "HM-PLAN-002",
     title: "Tamil Nadu Heritage Explorer",
     destination:
       "Chennai • Mahabalipuram • Thanjavur • Madurai",
@@ -605,7 +608,7 @@ export const plans = [
     ],
 
     image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSe1geHESCKoUttZQW7mkdnCspWj2zW3G6KCUTT565DaQ&s=10",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5y6wGq6u7mX9bZ8uY5J7n2L6s4p8Q0t3H9r5s7w1Q&s=10",
 
     highlights: [
       "Chennai",
@@ -622,13 +625,15 @@ export const plans = [
     ],
 
     itinerary: [
+
+      // DAY 1
       {
         day: 1,
         title: "Chennai City Tour",
 
         activities: [
           food(
-            "Breakfast - Murugan Idli Shop, Chennai",
+            "Breakfast at hotel",
             "8:00 AM - 9:00 AM",
             "breakfast"
           ),
@@ -644,7 +649,7 @@ export const plans = [
           ),
 
           food(
-            "Lunch - Saravana Bhavan, Chennai",
+            "Lunch at local restaurant",
             "1:00 PM - 2:00 PM",
             "lunch"
           ),
@@ -661,22 +666,23 @@ export const plans = [
           ),
 
           food(
-            "Dinner - Buhari Hotel, Chennai",
+            "Dinner at hotel",
             "7:30 PM - 8:30 PM",
             "dinner"
           ),
 
-          hotel("The Park Chennai"),
+          hotel("Chennai Hotel"),
         ],
       },
 
+      // DAY 2
       {
         day: 2,
         title: "Chennai to Mahabalipuram",
 
         activities: [
           food(
-            "Breakfast - Adyar Ananda Bhavan, Chennai",
+            "Breakfast at hotel",
             "8:00 AM - 9:00 AM",
             "breakfast"
           ),
@@ -694,7 +700,7 @@ export const plans = [
           ),
 
           food(
-            "Lunch - Moonrakers, Mahabalipuram",
+            "Lunch at local restaurant",
             "1:00 PM - 2:00 PM",
             "lunch"
           ),
@@ -711,22 +717,23 @@ export const plans = [
           ),
 
           food(
-            "Dinner - The Wharf Restaurant, Mahabalipuram",
+            "Dinner at hotel",
             "7:30 PM - 8:30 PM",
             "dinner"
           ),
 
-          hotel("Radisson Blu Resort Temple Bay"),
+          hotel("Mahabalipuram Hotel"),
         ],
       },
 
+      // DAY 3
       {
         day: 3,
         title: "Mahabalipuram to Thanjavur",
 
         activities: [
           food(
-            "Breakfast - Hotel Mamalla Heritage",
+            "Breakfast at hotel",
             "8:00 AM - 9:00 AM",
             "breakfast"
           ),
@@ -738,7 +745,7 @@ export const plans = [
           ),
 
           food(
-            "Lunch - Sathars Restaurant, Thanjavur",
+            "Lunch at local restaurant",
             "1:00 PM - 2:00 PM",
             "lunch"
           ),
@@ -756,22 +763,23 @@ export const plans = [
           ),
 
           food(
-            "Dinner - Ideal Beach Restaurant, Thanjavur",
+            "Dinner at hotel",
             "7:30 PM - 8:30 PM",
             "dinner"
           ),
 
-          hotel("Hotel Gnanam"),
+          hotel("Thanjavur Hotel"),
         ],
       },
 
+      // DAY 4
       {
         day: 4,
         title: "Thanjavur Heritage",
 
         activities: [
           food(
-            "Breakfast - Hotel Karthik, Thanjavur",
+            "Breakfast at hotel",
             "8:00 AM - 9:00 AM",
             "breakfast"
           ),
@@ -788,7 +796,7 @@ export const plans = [
           ),
 
           food(
-            "Lunch - Hotel Parisutham, Thanjavur",
+            "Lunch at local restaurant",
             "1:00 PM - 2:00 PM",
             "lunch"
           ),
@@ -804,22 +812,23 @@ export const plans = [
           ),
 
           food(
-            "Dinner - Thanjavur Royal Kitchen",
+            "Dinner at hotel",
             "7:30 PM - 8:30 PM",
             "dinner"
           ),
 
-          hotel("Hotel Temple Tower"),
+          hotel("Madurai Hotel"),
         ],
       },
 
+      // DAY 5
       {
         day: 5,
         title: "Thanjavur to Madurai",
 
         activities: [
           food(
-            "Breakfast - Hotel Temple Tower Restaurant",
+            "Breakfast at hotel",
             "8:00 AM - 9:00 AM",
             "breakfast"
           ),
@@ -831,7 +840,7 @@ export const plans = [
           ),
 
           food(
-            "Lunch - Sree Sabarees, Madurai",
+            "Lunch at local restaurant",
             "1:00 PM - 2:00 PM",
             "lunch"
           ),
@@ -848,22 +857,23 @@ export const plans = [
           ),
 
           food(
-            "Dinner - Konar Mess, Madurai",
+            "Dinner at hotel",
             "7:30 PM - 8:30 PM",
             "dinner"
           ),
 
-          hotel("Gateway Madurai"),
+          hotel("Madurai Hotel"),
         ],
       },
 
+      // DAY 6
       {
         day: 6,
         title: "Madurai Temple Tour",
 
         activities: [
           food(
-            "Breakfast - Murugan Idli Shop, Madurai",
+            "Breakfast at hotel",
             "8:00 AM - 9:00 AM",
             "breakfast"
           ),
@@ -880,7 +890,7 @@ export const plans = [
           ),
 
           food(
-            "Lunch - Kumar Mess, Madurai",
+            "Lunch at local restaurant",
             "1:00 PM - 2:00 PM",
             "lunch"
           ),
@@ -896,38 +906,39 @@ export const plans = [
           ),
 
           food(
-            "Dinner - Amsavalli Bhavan, Madurai",
+            "Dinner at hotel",
             "7:30 PM - 8:30 PM",
             "dinner"
           ),
 
-          hotel("Courtyard by Marriott Madurai"),
+          hotel("Madurai Hotel"),
         ],
       },
 
+      // DAY 7 - FINAL
       {
         day: 7,
         title: "Madurai Departure",
 
         activities: [
           food(
-            "Breakfast - Sri Saravana Bhavan, Madurai",
+            "Breakfast at hotel",
             "8:00 AM - 9:00 AM",
             "breakfast"
           ),
 
           place(
-            "Puthu Mandapam",
+            "Morning Temple Visit",
             "9:15 AM - 10:45 AM"
           ),
 
           place(
-            "Madurai Gandhi Road Heritage Walk",
+            "Local Shopping",
             "11:00 AM - 12:30 PM"
           ),
 
           food(
-            "Lunch - Annapoorna Mithai, Madurai",
+            "Lunch at local restaurant",
             "1:00 PM - 2:00 PM",
             "lunch"
           ),
@@ -943,7 +954,7 @@ export const plans = [
           ),
 
           food(
-            "Dinner - Madurai Kumar Mess",
+            "Dinner at hotel",
             "7:30 PM - 8:30 PM",
             "dinner"
           ),
@@ -959,6 +970,7 @@ export const plans = [
 
   {
     id: 3,
+    planCode: "HM-PLAN-003",
     title: "Kerala Backwater Bliss",
     destination: "Alleppey • Kochi",
     days: 3,
@@ -992,13 +1004,14 @@ export const plans = [
     ],
 
     itinerary: [
+
       {
         day: 1,
         title: "Alleppey Arrival",
 
         activities: [
           food(
-            "Breakfast - Indian Coffee House, Alappuzha",
+            "Breakfast at hotel",
             "8:00 AM - 9:00 AM",
             "breakfast"
           ),
@@ -1015,7 +1028,7 @@ export const plans = [
           ),
 
           food(
-            "Lunch - Thaff Restaurant, Alappuzha",
+            "Lunch at local restaurant",
             "1:00 PM - 2:00 PM",
             "lunch"
           ),
@@ -1026,17 +1039,17 @@ export const plans = [
           ),
 
           place(
-            "Alappuzha Lighthouse",
+            "Evening Backwater Walk",
             "4:15 PM - 5:30 PM"
           ),
 
           food(
-            "Dinner - Harbour Restaurant, Alappuzha",
+            "Dinner at hotel",
             "7:30 PM - 8:30 PM",
             "dinner"
           ),
 
-          hotel("Sterling Lake Palace Alleppey"),
+          hotel("Alleppey Hotel"),
         ],
       },
 
@@ -1046,7 +1059,7 @@ export const plans = [
 
         activities: [
           food(
-            "Breakfast - Ramada by Wyndham Alleppey Restaurant",
+            "Breakfast at hotel",
             "8:00 AM - 9:00 AM",
             "breakfast"
           ),
@@ -1064,7 +1077,7 @@ export const plans = [
           ),
 
           food(
-            "Lunch - Kadaloram Restaurant, Kochi",
+            "Lunch at local restaurant",
             "1:00 PM - 2:00 PM",
             "lunch"
           ),
@@ -1080,12 +1093,12 @@ export const plans = [
           ),
 
           food(
-            "Dinner - Kashi Art Cafe, Kochi",
+            "Dinner at hotel",
             "7:30 PM - 8:30 PM",
             "dinner"
           ),
 
-          hotel("Forte Kochi"),
+          hotel("Kochi Hotel"),
         ],
       },
 
@@ -1095,7 +1108,7 @@ export const plans = [
 
         activities: [
           food(
-            "Breakfast - Fort House Restaurant, Kochi",
+            "Breakfast at hotel",
             "8:00 AM - 9:00 AM",
             "breakfast"
           ),
@@ -1111,23 +1124,23 @@ export const plans = [
           ),
 
           food(
-            "Lunch - Kerala Kitchen, Kochi",
+            "Lunch at local restaurant",
             "1:00 PM - 2:00 PM",
             "lunch"
           ),
 
           place(
-            "Kerala Folklore Museum",
+            "Fort Kochi Shopping",
             "2:15 PM - 4:00 PM"
           ),
 
           place(
-            "Marine Drive",
+            "Departure",
             "4:15 PM - 6:00 PM"
           ),
 
           food(
-            "Dinner - Dhe Puttu, Kochi",
+            "Dinner at hotel",
             "7:30 PM - 8:30 PM",
             "dinner"
           ),
@@ -1143,7 +1156,8 @@ export const plans = [
 
   {
     id: 4,
-    title: "Wayanad Adventure",
+    planCode: "HM-PLAN-004",
+    title: "Wayanad Adventure Escape",
     destination: "Wayanad",
     days: 3,
     nights: 2,
@@ -1166,7 +1180,7 @@ export const plans = [
     highlights: [
       "Edakkal Caves",
       "Soochipara Falls",
-      "Banasura Sagar Dam",
+      "Banasura Dam",
     ],
 
     places: [
@@ -1176,13 +1190,14 @@ export const plans = [
     ],
 
     itinerary: [
+
       {
         day: 1,
         title: "Wayanad Arrival",
 
         activities: [
           food(
-            "Breakfast - 1980's A Nostalgic Restaurant, Wayanad",
+            "Breakfast at hotel",
             "8:00 AM - 9:00 AM",
             "breakfast"
           ),
@@ -1194,44 +1209,44 @@ export const plans = [
           ),
 
           place(
-            "Ambukuthi Hills",
+            "Heritage Village",
             "11:15 AM - 12:30 PM"
           ),
 
           food(
-            "Lunch - Wilton Restaurant, Wayanad",
+            "Lunch at local restaurant",
             "1:00 PM - 2:00 PM",
             "lunch"
           ),
 
           place(
             "Soochipara Falls",
-            "2:15 PM - 4:00 PM",
+            "2:15 PM - 4:15 PM",
             100
           ),
 
           place(
-            "Wayanad View Point",
-            "4:15 PM - 5:30 PM"
+            "Tea Garden Visit",
+            "4:30 PM - 5:30 PM"
           ),
 
           food(
-            "Dinner - The Jubilee Restaurant, Wayanad",
+            "Dinner at hotel",
             "7:30 PM - 8:30 PM",
             "dinner"
           ),
 
-          hotel("Vythiri Village Resort"),
+          hotel("Wayanad Hotel"),
         ],
       },
 
       {
         day: 2,
-        title: "Wayanad Nature Tour",
+        title: "Wayanad Adventure",
 
         activities: [
           food(
-            "Breakfast - Udupi Restaurant, Wayanad",
+            "Breakfast at hotel",
             "8:00 AM - 9:00 AM",
             "breakfast"
           ),
@@ -1243,34 +1258,33 @@ export const plans = [
           ),
 
           place(
-            "Banasura Hills",
+            "Banasura Hill View",
             "11:15 AM - 12:30 PM"
           ),
 
           food(
-            "Lunch - The Coffee Grove Restaurant, Wayanad",
+            "Lunch at local restaurant",
             "1:00 PM - 2:00 PM",
             "lunch"
           ),
 
           place(
-            "Pookode Lake",
-            "2:15 PM - 4:00 PM",
-            50
+            "Chembra Peak Viewpoint",
+            "2:15 PM - 4:00 PM"
           ),
 
           place(
-            "Lakkidi View Point",
+            "Local Market",
             "4:15 PM - 5:30 PM"
           ),
 
           food(
-            "Dinner - Green Gates Restaurant, Wayanad",
+            "Dinner at hotel",
             "7:30 PM - 8:30 PM",
             "dinner"
           ),
 
-          hotel("Taj Wayanad Resort & Spa"),
+          hotel("Wayanad Hotel"),
         ],
       },
 
@@ -1280,29 +1294,29 @@ export const plans = [
 
         activities: [
           food(
-            "Breakfast - Wilton Restaurant Annex, Wayanad",
+            "Breakfast at hotel",
             "8:00 AM - 9:00 AM",
             "breakfast"
           ),
 
           place(
-            "Chembra Peak",
-            "9:15 AM - 11:00 AM"
+            "Morning Nature Walk",
+            "9:15 AM - 10:45 AM"
           ),
 
           place(
-            "Heart Lake",
-            "11:15 AM - 12:30 PM"
+            "Local Village Visit",
+            "11:00 AM - 12:30 PM"
           ),
 
           food(
-            "Lunch - The Wayanad Gate Restaurant",
+            "Lunch at local restaurant",
             "1:00 PM - 2:00 PM",
             "lunch"
           ),
 
           place(
-            "Wayanad Wildlife Sanctuary",
+            "Shopping",
             "2:15 PM - 3:45 PM"
           ),
 
@@ -1312,7 +1326,7 @@ export const plans = [
           ),
 
           food(
-            "Dinner - Udupi Restaurant, Wayanad",
+            "Dinner at hotel",
             "7:30 PM - 8:30 PM",
             "dinner"
           ),
@@ -1323,12 +1337,13 @@ export const plans = [
 
 
   // ==========================================================
-  // PLAN 5 - OOTY HILL ESCAPE
+  // PLAN 5 - OOTY HILLS
   // ==========================================================
 
   {
     id: 5,
-    title: "Ooty Hill Escape",
+    planCode: "HM-PLAN-005",
+    title: "Ooty Hills Retreat",
     destination: "Ooty",
     days: 3,
     nights: 2,
@@ -1350,8 +1365,8 @@ export const plans = [
 
     highlights: [
       "Ooty Lake",
-      "Botanical Garden",
       "Doddabetta Peak",
+      "Botanical Garden",
     ],
 
     places: [
@@ -1361,102 +1376,100 @@ export const plans = [
     ],
 
     itinerary: [
+
       {
         day: 1,
         title: "Ooty Arrival",
 
         activities: [
           food(
-            "Breakfast - Earl's Secret, Ooty",
+            "Breakfast at hotel",
             "8:00 AM - 9:00 AM",
             "breakfast"
           ),
 
           place(
             "Ooty Lake",
-            "9:15 AM - 10:45 AM",
-            100
+            "9:15 AM - 10:45 AM"
           ),
 
           place(
-            "St. Stephen's Church",
+            "Botanical Garden",
             "11:00 AM - 12:30 PM",
             50
           ),
 
           food(
-            "Lunch - Ascot Multi Cuisine Restaurant, Ooty",
+            "Lunch at local restaurant",
             "1:00 PM - 2:00 PM",
             "lunch"
           ),
 
           place(
-            "Botanical Garden",
-            "2:15 PM - 3:45 PM",
-            50
+            "Rose Garden",
+            "2:15 PM - 3:45 PM"
           ),
 
           place(
-            "Rose Garden",
+            "Ooty Market",
             "4:00 PM - 5:30 PM"
           ),
 
           food(
-            "Dinner - Nahar's Restaurant, Ooty",
+            "Dinner at hotel",
             "7:30 PM - 8:30 PM",
             "dinner"
           ),
 
-          hotel("Savoy Ooty"),
+          hotel("Ooty Hotel"),
         ],
       },
 
       {
         day: 2,
-        title: "Ooty Nature Tour",
+        title: "Ooty Sightseeing",
 
         activities: [
           food(
-            "Breakfast - Nahar's Sidewalk Cafe, Ooty",
+            "Breakfast at hotel",
             "8:00 AM - 9:00 AM",
             "breakfast"
           ),
 
           place(
             "Doddabetta Peak",
-            "9:15 AM - 10:45 AM",
-            50
+            "9:15 AM - 10:45 AM"
           ),
 
           place(
             "Tea Factory",
-            "11:00 AM - 12:30 PM",
-            100
+            "11:00 AM - 12:30 PM"
           ),
 
           food(
-            "Lunch - Place To Bee, Ooty",
+            "Lunch at local restaurant",
             "1:00 PM - 2:00 PM",
             "lunch"
           ),
 
           place(
-            "Pine Forest",
-            "2:15 PM - 3:45 PM"
+            "Nilgiri Mountain Railway",
+            "2:15 PM - 4:15 PM",
+            500
           ),
 
           place(
-            "Needle Rock View Point",
-            "4:00 PM - 5:30 PM"
+            "Tea Garden",
+            "4:30 PM - 5:30 PM"
           ),
 
           food(
-            "Dinner - Savoy Restaurant, Ooty",
+            "Dinner at hotel",
             "7:30 PM - 8:30 PM",
             "dinner"
           ),
 
-          hotel("Sterling Ooty Fern Hill"),
+          hotel("Ooty Hotel"),
         ],
       },
 
@@ -1466,40 +1479,39 @@ export const plans = [
 
         activities: [
           food(
-            "Breakfast - King's Star Restaurant, Ooty",
+            "Breakfast at hotel",
             "8:00 AM - 9:00 AM",
             "breakfast"
           ),
 
           place(
-            "Nilgiri Mountain Railway",
-            "9:15 AM - 11:00 AM",
-            500
+            "Morning Walk",
+            "9:15 AM - 10:45 AM"
           ),
 
           place(
-            "Coonoor Tea Gardens",
-            "11:15 AM - 12:30 PM"
+            "Local Shopping",
+            "11:00 AM - 12:30 PM"
           ),
 
           food(
-            "Lunch - Ascot Restaurant, Ooty",
+            "Lunch at local restaurant",
             "1:00 PM - 2:00 PM",
             "lunch"
           ),
 
           place(
-            "Ooty Local Market",
-            "2:15 PM - 3:45 PM"
+            "Departure Preparation",
+            "2:15 PM - 4:00 PM"
           ),
 
           place(
             "Departure",
-            "4:00 PM - 6:00 PM"
+            "4:15 PM - 6:00 PM"
           ),
 
           food(
-            "Dinner - Ooty Heritage Kitchen",
+            "Dinner at hotel",
             "7:30 PM - 8:30 PM",
             "dinner"
           ),
@@ -1515,6 +1527,7 @@ export const plans = [
 
   {
     id: 6,
+    planCode: "HM-PLAN-006",
     title: "Kodaikanal Nature Escape",
     destination: "Kodaikanal",
     days: 3,
@@ -1548,13 +1561,14 @@ export const plans = [
     ],
 
     itinerary: [
+
       {
         day: 1,
         title: "Kodaikanal Arrival",
 
         activities: [
           food(
-            "Breakfast - Tava Vegetarian Restaurant, Kodaikanal",
+            "Breakfast at hotel",
             "8:00 AM - 9:00 AM",
             "breakfast"
           ),
@@ -1570,7 +1584,7 @@ export const plans = [
           ),
 
           food(
-            "Lunch - Astoria Veg Restaurant, Kodaikanal",
+            "Lunch at local restaurant",
             "1:00 PM - 2:00 PM",
             "lunch"
           ),
@@ -1586,12 +1600,12 @@ export const plans = [
           ),
 
           food(
-            "Dinner - Cloud Street Restaurant, Kodaikanal",
+            "Dinner at hotel",
             "7:30 PM - 8:30 PM",
             "dinner"
           ),
 
-          hotel("The Carlton Kodaikanal"),
+          hotel("Kodaikanal Hotel"),
         ],
       },
 
@@ -1601,7 +1615,7 @@ export const plans = [
 
         activities: [
           food(
-            "Breakfast - Hilltop Inn Restaurant, Kodaikanal",
+            "Breakfast at hotel",
             "8:00 AM - 9:00 AM",
             "breakfast"
           ),
@@ -1618,7 +1632,7 @@ export const plans = [
           ),
 
           food(
-            "Lunch - Muncheez Restaurant, Kodaikanal",
+            "Lunch at local restaurant",
             "1:00 PM - 2:00 PM",
             "lunch"
           ),
@@ -1634,12 +1648,12 @@ export const plans = [
           ),
 
           food(
-            "Dinner - Tava Restaurant, Kodaikanal",
+            "Dinner at hotel",
             "7:30 PM - 8:30 PM",
             "dinner"
           ),
 
-          hotel("Sterling Kodai Lake"),
+          hotel("Kodaikanal Hotel"),
         ],
       },
 
@@ -1649,30 +1663,30 @@ export const plans = [
 
         activities: [
           food(
-            "Breakfast - The Royal Tibet Restaurant, Kodaikanal",
+            "Breakfast at hotel",
             "8:00 AM - 9:00 AM",
             "breakfast"
           ),
 
           place(
-            "Dolphin's Nose View Point",
+            "Morning Lake Walk",
             "9:15 AM - 10:45 AM"
           ),
 
           place(
-            "Kurinji Andavar Temple",
+            "Local Shopping",
             "11:00 AM - 12:30 PM"
           ),
 
           food(
-            "Lunch - Astoria Veg Restaurant, Kodaikanal",
+            "Lunch at local restaurant",
             "1:00 PM - 2:00 PM",
             "lunch"
           ),
 
           place(
-            "Chettiar Park",
-            "2:15 PM - 3:45 PM"
+            "Departure Preparation",
+            "2:15 PM - 4:00 PM"
           ),
 
           place(
@@ -1681,7 +1695,7 @@ export const plans = [
           ),
 
           food(
-            "Dinner - The Carlton Restaurant, Kodaikanal",
+            "Dinner at hotel",
             "7:30 PM - 8:30 PM",
             "dinner"
           ),
@@ -1694,6 +1708,7 @@ export const plans = [
   // ==========================================================
   // PLAN 7 - CHENNAI ONE DAY
   // ==========================================================
+  // IMPORTANT:
   // NO HOTEL
   // NO EVENING SNACK
   // NO COFFEE CARD
@@ -1702,6 +1717,7 @@ export const plans = [
 
   {
     id: 7,
+    planCode: "HM-PLAN-007",
     title: "Chennai City Explorer",
     destination: "Chennai",
     days: 1,
@@ -1740,12 +1756,15 @@ export const plans = [
         title: "Chennai City Tour",
 
         activities: [
+
+          // 8:00 AM
           food(
-            "Breakfast - Murugan Idli Shop, Chennai",
+            "Breakfast at local hotel",
             "8:00 AM - 9:00 AM",
             "breakfast"
           ),
 
+          // Morning
           place(
             "Marina Beach",
             "9:15 AM - 10:45 AM"
@@ -1756,12 +1775,14 @@ export const plans = [
             "11:00 AM - 12:30 PM"
           ),
 
+          // Lunch
           food(
-            "Lunch - Saravana Bhavan, Chennai",
+            "Lunch at local restaurant",
             "1:00 PM - 2:00 PM",
             "lunch"
           ),
 
+          // Afternoon
           place(
             "Fort St George",
             "2:15 PM - 3:45 PM",
@@ -1774,17 +1795,18 @@ export const plans = [
           ),
 
           place(
-            "Besant Nagar Beach Sunset",
-            "5:30 PM - 6:15 PM"
-          ),
-
-          place(
             "Chennai Local Market",
             "6:15 PM - 7:00 PM"
           ),
 
+          place(
+            "Besant Nagar Beach Sunset",
+            "5:30 PM - 6:15 PM"
+          ),
+
+          // Dinner
           food(
-            "Dinner - Buhari Hotel, Chennai",
+            "Dinner - Saravana Bhavan",
             "8:00 PM - 9:00 PM",
             "dinner"
           ),
@@ -1804,6 +1826,7 @@ export const plans = [
 
   {
     id: 8,
+    planCode: "HM-PLAN-008",
     title: "Mahabalipuram Heritage",
     destination: "Mahabalipuram",
     days: 1,
@@ -1842,12 +1865,15 @@ export const plans = [
         title: "Mahabalipuram Heritage Tour",
 
         activities: [
+
+          // Breakfast
           food(
-            "Breakfast - Hotel Mamalla Heritage",
+            "Breakfast at local hotel",
             "8:00 AM - 9:00 AM",
             "breakfast"
           ),
 
+          // Morning
           place(
             "Shore Temple",
             "9:15 AM - 10:45 AM",
@@ -1860,12 +1886,14 @@ export const plans = [
             40
           ),
 
+          // Lunch
           food(
-            "Lunch - Moonrakers, Mahabalipuram",
+            "Lunch at local restaurant",
             "1:00 PM - 2:00 PM",
             "lunch"
           ),
 
+          // Afternoon
           place(
             "Arjuna's Penance",
             "2:15 PM - 3:45 PM",
@@ -1887,8 +1915,9 @@ export const plans = [
             "6:45 PM - 7:45 PM"
           ),
 
+          // Dinner
           food(
-            "Dinner - The Wharf Restaurant, Mahabalipuram",
+            "Dinner - Sea View Restaurant",
             "8:00 PM - 9:00 PM",
             "dinner"
           ),
@@ -1908,6 +1937,7 @@ export const plans = [
 
   {
     id: 9,
+    planCode: "HM-PLAN-009",
     title: "Madurai Cultural Journey",
     destination: "Madurai",
     days: 1,
@@ -1946,12 +1976,15 @@ export const plans = [
         title: "Madurai Cultural Tour",
 
         activities: [
+
+          // Breakfast
           food(
-            "Breakfast - Murugan Idli Shop, Madurai",
+            "Breakfast at local hotel",
             "8:00 AM - 9:00 AM",
             "breakfast"
           ),
 
+          // Morning
           place(
             "Meenakshi Amman Temple",
             "9:15 AM - 10:45 AM"
@@ -1963,12 +1996,14 @@ export const plans = [
             50
           ),
 
+          // Lunch
           food(
-            "Lunch - Kumar Mess, Madurai",
+            "Lunch at local restaurant",
             "1:00 PM - 2:00 PM",
             "lunch"
           ),
 
+          // Afternoon
           place(
             "Gandhi Memorial Museum",
             "2:15 PM - 3:45 PM",
@@ -1990,8 +2025,9 @@ export const plans = [
             "7:00 PM - 7:45 PM"
           ),
 
+          // Dinner
           food(
-            "Dinner - Amsavalli Bhavan, Madurai",
+            "Dinner - Murugan Idli Shop",
             "8:00 PM - 9:00 PM",
             "dinner"
           ),
@@ -2007,6 +2043,7 @@ export const plans = [
 
   {
     id: 10,
+    planCode: "HM-PLAN-010",
     title: "Thanjavur Heritage Trail",
     destination: "Thanjavur",
     days: 2,
@@ -2040,13 +2077,14 @@ export const plans = [
     ],
 
     itinerary: [
+
       {
         day: 1,
         title: "Temple and Palace",
 
         activities: [
           food(
-            "Breakfast - Hotel Parisutham Restaurant",
+            "Breakfast at hotel",
             "8:00 AM - 9:00 AM",
             "breakfast"
           ),
@@ -2063,7 +2101,7 @@ export const plans = [
           ),
 
           food(
-            "Lunch - Sathars Restaurant, Thanjavur",
+            "Lunch at local restaurant",
             "1:00 PM - 2:00 PM",
             "lunch"
           ),
@@ -2080,12 +2118,12 @@ export const plans = [
           ),
 
           food(
-            "Dinner - Thanjavur Maratha Restaurant",
+            "Dinner at hotel",
             "7:30 PM - 8:30 PM",
             "dinner"
           ),
 
-          hotel("Hotel Gnanam"),
+          hotel("Thanjavur Hotel"),
         ],
       },
 
@@ -2095,7 +2133,7 @@ export const plans = [
 
         activities: [
           food(
-            "Breakfast - Hotel Karthik Restaurant",
+            "Breakfast at hotel",
             "8:00 AM - 9:00 AM",
             "breakfast"
           ),
@@ -2107,33 +2145,28 @@ export const plans = [
           ),
 
           place(
-            "Thanjavur Maratha Palace Courtyard",
+            "Thanjavur Local Shopping",
             "11:00 AM - 12:30 PM"
           ),
 
           food(
-            "Lunch - Ideal Kitchen Restaurant, Thanjavur",
+            "Lunch at local restaurant",
             "1:00 PM - 2:00 PM",
             "lunch"
           ),
 
           place(
-            "Thanjavur Local Shopping",
-            "2:15 PM - 3:45 PM"
-          ),
-
-          place(
             "Departure Preparation",
-            "4:00 PM - 5:00 PM"
+            "2:15 PM - 4:00 PM"
           ),
 
           place(
             "Departure",
-            "5:15 PM - 6:00 PM"
+            "4:15 PM - 6:00 PM"
           ),
 
           food(
-            "Dinner - Ideal Beach Restaurant, Thanjavur",
+            "Dinner at hotel",
             "7:30 PM - 8:30 PM",
             "dinner"
           ),

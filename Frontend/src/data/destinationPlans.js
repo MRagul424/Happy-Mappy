@@ -531,13 +531,13 @@ const itineraryData = {
  
         place( 
           "10:30 AM", 
-          "Kapaleeshwarar Temple", 
+          "Vivekananda House", 
           0 
         ), 
  
         place( 
           "12:00 PM", 
-          "Fort St. George", 
+          "Arignar Anna Memorial", 
           25 
         ), 
  
@@ -549,25 +549,25 @@ const itineraryData = {
  
         place( 
           "02:00 PM", 
-          "San Thome Basilica", 
+          "MGR Memorial", 
           0 
         ), 
  
         place( 
           "03:30 PM", 
-          "Government Museum", 
+          "Kalakshetra Foundation", 
           50 
         ), 
  
         place( 
           "05:00 PM", 
-          "Elliot's Beach", 
+          "Ripon Building", 
           0 
         ), 
  
         place( 
           "06:00 PM", 
-          "T Nagar Shopping", 
+          "Cholamandal Artists' Village", 
           0 
         ), 
  
@@ -675,13 +675,13 @@ const itineraryData = {
  
         place( 
           "10:30 AM", 
-          "Krishna's Butter Ball", 
+          "Mamallapuram Shore Heritage Walk", 
           0 
         ), 
  
         place( 
           "12:00 PM", 
-          "Mahabalipuram Lighthouse", 
+          "Sadras Fort", 
           10 
         ), 
  
@@ -711,7 +711,7 @@ const itineraryData = {
  
         place( 
           "06:00 PM", 
-          "Mahabalipuram Beach", 
+          "Crocodile Bank", 
           0 
         ), 
  
@@ -736,13 +736,13 @@ const itineraryData = {
  
         place( 
           "09:00 AM", 
-          "Cave Temples", 
+          "Mahabalipuram Heritage Museum", 
           40 
         ), 
  
         place( 
           "10:30 AM", 
-          "Varaha Cave Temple", 
+          "DakshinaChitra", 
           0 
         ), 
  
@@ -760,25 +760,25 @@ const itineraryData = {
  
         place( 
           "02:00 PM", 
-          "Local Stone Sculpture Street", 
+          "Sculpture Museum", 
           0 
         ), 
  
         place( 
           "03:30 PM", 
-          "Shore Temple", 
+          "Sadras Beach", 
           40 
         ), 
  
         place( 
           "05:00 PM", 
-          "Pancha Rathas", 
+          "Tiger Cave Heritage Area", 
           40 
         ), 
  
         place( 
           "06:00 PM", 
-          "Mahabalipuram Beach", 
+          "Mutukadu Boat House", 
           0 
         ), 
  
@@ -880,13 +880,13 @@ const itineraryData = {
  
         place( 
           "09:00 AM", 
-          "Gandhi Memorial Museum", 
+          "Thirupparankundram Temple", 
           20 
         ), 
  
         place( 
           "10:30 AM", 
-          "Koodal Azhagar Temple", 
+          "Alagar Hills", 
           0 
         ), 
  
@@ -910,19 +910,19 @@ const itineraryData = {
  
         place( 
           "03:30 PM", 
-          "Meenakshi Amman Temple", 
+          "Madurai Gandhi Museum", 
           0 
         ), 
  
         place( 
           "05:00 PM", 
-          "Puthu Mandapam", 
+          "Thirumalai Nayakkar Mahal Courtyard", 
           0 
         ), 
  
         place( 
           "06:00 PM", 
-          "Madurai Local Market", 
+          "Vandiyur Lake", 
           0 
         ), 
  
@@ -977,19 +977,19 @@ const itineraryData = {
  
         place( 
           "03:30 PM", 
-          "Meenakshi Amman Temple", 
+          "Kazimar Big Mosque", 
           0 
         ), 
  
         place( 
           "05:00 PM", 
-          "Vandiyur Mariamman Teppakulam", 
+          "St Mary's Cathedral", 
           0 
         ), 
  
         place( 
           "06:00 PM", 
-          "Puthu Mandapam", 
+          "Athisayam Theme Park", 
           0 
         ), 
  
@@ -1091,19 +1091,19 @@ const itineraryData = {
  
         place( 
           "09:00 AM", 
-          "Alappuzha Beach", 
+          "Mannarasala Snake Temple", 
           0 
         ), 
  
         place( 
           "10:30 AM", 
-          "Canoe Ride through Village Canals", 
+          "Ambalappuzha Village Walk", 
           700 
         ), 
  
         place( 
           "12:00 PM", 
-          "Pathiramanal Island", 
+          "Marari Fishing Village", 
           100 
         ), 
  
@@ -1158,19 +1158,19 @@ const itineraryData = {
  
         place( 
           "09:00 AM", 
-          "Marari Beach", 
+          "Kuttanad Paddy Fields", 
           0 
         ), 
  
         place( 
           "10:30 AM", 
-          "Ambalappuzha Sree Krishna Temple", 
+          "Karumadi Canal Walk", 
           0 
         ), 
  
         place( 
           "12:00 PM", 
-          "Krishnapuram Palace", 
+          "Alleppey Lighthouse", 
           75 
         ), 
  
@@ -1225,13 +1225,13 @@ const itineraryData = {
  
         place( 
           "09:00 AM", 
-          "Vembanad Lake Viewpoint", 
+          "Vembanad Lake Cruise", 
           0 
         ), 
  
         place( 
           "10:30 AM", 
-          "Karumadi Kuttan", 
+          "Krishnapuram Heritage Museum", 
           0 
         ), 
  
@@ -1249,25 +1249,25 @@ const itineraryData = {
  
         place( 
           "02:00 PM", 
-          "Punnamada Lake", 
+          "Thakazhi Museum", 
           0 
         ), 
  
         place( 
           "03:30 PM", 
-          "Alleppey Backwaters", 
+          "Pathiramanal Bird Sanctuary", 
           150 
         ), 
  
         place( 
           "05:00 PM", 
-          "Houseboat Cruise", 
+          "R Block Kuttanad", 
           1200 
         ), 
  
         place( 
           "06:00 PM", 
-          "Alappuzha Beach", 
+          "Alleppey Canal Walk", 
           0 
         ), 
  
@@ -1369,13 +1369,13 @@ const itineraryData = {
  
         place( 
           "09:00 AM", 
-          "St. Francis Church", 
+          "Kochi-Muziris Biennale Pavilion", 
           0 
         ), 
  
         place( 
           "10:30 AM", 
-          "Santa Cruz Basilica", 
+          "Kerala History Museum", 
           0 
         ), 
  
@@ -1393,25 +1393,25 @@ const itineraryData = {
  
         place( 
           "02:00 PM", 
-          "Princess Street", 
+          "Mattancherry Jewish Cemetery", 
           0 
         ), 
  
         place( 
           "03:30 PM", 
-          "Fort Kochi", 
+          "Dutch Cemetery", 
           0 
         ), 
  
         place( 
           "05:00 PM", 
-          "Chinese Fishing Nets", 
+          "Vasco da Gama Square", 
           0 
         ), 
  
         place( 
           "06:00 PM", 
-          "Jew Town", 
+          "Kochi Marine Aquarium", 
           0 
         ), 
  
@@ -1503,19 +1503,19 @@ const itineraryData = {
  
         place( 
           "09:00 AM", 
-          "Willingdon Island", 
+          "Paradesi Synagogue", 
           0 
         ), 
  
         place( 
           "10:30 AM", 
-          "Vypin Lighthouse", 
+          "Chottanikkara Temple", 
           20 
         ), 
  
         place( 
           "12:00 PM", 
-          "Cherai Beach", 
+          "Subhash Park", 
           0 
         ), 
  
@@ -1533,19 +1533,19 @@ const itineraryData = {
  
         place( 
           "03:30 PM", 
-          "Marine Drive", 
+          "Kumbalangi Integrated Tourism Village", 
           0 
         ), 
  
         place( 
           "05:00 PM", 
-          "Fort Kochi", 
+          "Kerala Kathakali Museum", 
           0 
         ), 
  
         place( 
           "06:00 PM", 
-          "Chinese Fishing Nets", 
+          "Cherai Fishing Village", 
           0 
         ), 
  
@@ -1647,13 +1647,13 @@ const itineraryData = {
  
         place( 
           "09:00 AM", 
-          "Soochipara Falls", 
+          "Wayanad Heritage Museum", 
           50 
         ), 
  
         place( 
           "10:30 AM", 
-          "Kanthanpara Falls", 
+          "Pakshipathalam Bird Sanctuary", 
           40 
         ), 
  
@@ -1671,7 +1671,7 @@ const itineraryData = {
  
         place( 
           "02:00 PM", 
-          "Sunset Viewpoint", 
+          "Muthanga Wildlife Sanctuary", 
           0 
         ), 
  
@@ -1714,7 +1714,7 @@ const itineraryData = {
  
         place( 
           "09:00 AM", 
-          "Banasura Sagar Dam", 
+          "Karlad Lake", 
           40 
         ), 
  
@@ -1726,7 +1726,7 @@ const itineraryData = {
  
         place( 
           "12:00 PM", 
-          "Pookode Lake", 
+          "Neelimala Viewpoint", 
           40 
         ), 
  
@@ -1738,25 +1738,25 @@ const itineraryData = {
  
         place( 
           "02:00 PM", 
-          "Lakkidi Viewpoint", 
+          "Tholpetty Wildlife Sanctuary", 
           0 
         ), 
  
         place( 
           "03:30 PM", 
-          "Edakkal Caves", 
+          "Kurumbalakotta Peak", 
           50 
         ), 
  
         place( 
           "05:00 PM", 
-          "Phantom Rock", 
+          "Cheengeri Hills", 
           0 
         ), 
  
         place( 
           "06:00 PM", 
-          "Ambukuthi Hills", 
+          "Priyadarshini Tea Estate", 
           0 
         ), 
  
@@ -1811,19 +1811,19 @@ const itineraryData = {
  
         place( 
           "03:30 PM", 
-          "Banasura Sagar Dam", 
+          "Kanthanpara Viewpoint", 
           40 
         ), 
  
         place( 
           "05:00 PM", 
-          "Pookode Lake", 
+          "Aranamala Peak", 
           40 
         ), 
  
         place( 
           "06:00 PM", 
-          "Lakkidi Viewpoint", 
+          "Chembra Tea Estate", 
           0 
         ), 
  
@@ -1925,19 +1925,19 @@ const itineraryData = {
  
         place( 
           "09:00 AM", 
-          "Doddabetta Peak", 
+          "Coonoor Tea Estate", 
           15 
         ), 
  
         place( 
           "10:30 AM", 
-          "Tea Factory and Tea Museum", 
+          "Nilgiri Mountain Railway", 
           20 
         ), 
  
         place( 
           "12:00 PM", 
-          "Thread Garden", 
+          "Ketti Valley View", 
           30 
         ), 
  
@@ -1955,19 +1955,19 @@ const itineraryData = {
  
         place( 
           "03:30 PM", 
-          "Ooty Lake", 
+          "Lamb's Rock View", 
           15 
         ), 
  
         place( 
           "05:00 PM", 
-          "Government Botanical Garden", 
+          "Coonoor Sim's Park", 
           30 
         ), 
  
         place( 
           "06:00 PM", 
-          "Charing Cross", 
+          "Hidden Valley Viewpoint", 
           0 
         ), 
  
@@ -2022,19 +2022,19 @@ const itineraryData = {
  
         place( 
           "03:30 PM", 
-          "Government Rose Garden", 
+          "Elk Hill Murugan Temple", 
           40 
         ), 
  
         place( 
           "05:00 PM", 
-          "Ooty Lake", 
+          "Coonoor Market", 
           15 
         ), 
  
         place( 
           "06:00 PM", 
-          "Charing Cross", 
+          "Wellington Golf Course", 
           0 
         ), 
  
@@ -2089,19 +2089,19 @@ const itineraryData = {
  
         place( 
           "03:30 PM", 
-          "Tea Factory and Tea Museum", 
+          "Lady Canning's Seat", 
           20 
         ), 
  
         place( 
           "05:00 PM", 
-          "Government Botanical Garden", 
+          "Needle Rock Viewpoint", 
           30 
         ), 
  
         place( 
           "06:00 PM", 
-          "Ooty Lake", 
+          "Coonoor Lamb's Rock", 
           15 
         ), 
  
@@ -2203,19 +2203,19 @@ const itineraryData = {
  
         place( 
           "09:00 AM", 
-          "Pillar Rocks", 
+          "Pambar Falls", 
           20 
         ), 
  
         place( 
           "10:30 AM", 
-          "Guna Caves Viewpoint", 
+          "Devil's Kitchen", 
           30 
         ), 
  
         place( 
           "12:00 PM", 
-          "Pine Forest", 
+          "Kurinji Andavar Temple", 
           0 
         ), 
  
@@ -2270,13 +2270,13 @@ const itineraryData = {
  
         place( 
           "09:00 AM", 
-          "Silver Cascade Falls", 
+          "Bear Shola Falls", 
           0 
         ), 
  
         place( 
           "10:30 AM", 
-          "Berijam Lake", 
+          "Pillar Rocks View Trail", 
           100 
         ), 
  
@@ -2294,7 +2294,7 @@ const itineraryData = {
  
         place( 
           "02:00 PM", 
-          "Silent Valley View", 
+          "Chettiar Park", 
           0 
         ), 
  
@@ -2337,19 +2337,19 @@ const itineraryData = {
  
         place( 
           "09:00 AM", 
-          "Poombarai Village", 
+          "Moir Point Forest Trail", 
           0 
         ), 
  
         place( 
           "10:30 AM", 
-          "Mannavanur Lake", 
+          "Guna Cave Forest Walk", 
           20 
         ), 
  
         place( 
           "12:00 PM", 
-          "Kukkal Lake View", 
+          "Silver Cascade Viewpoint", 
           0 
         ), 
  
@@ -2367,19 +2367,19 @@ const itineraryData = {
  
         place( 
           "03:30 PM", 
-          "Kodaikanal Lake", 
+          "Dolphin's Nose Kodaikanal", 
           0 
         ), 
  
         place( 
           "05:00 PM", 
-          "Coaker's Walk", 
+          "Misty Mountain View", 
           30 
         ), 
  
         place( 
           "06:00 PM", 
-          "Bryant Park", 
+          "Kodaikanal Pine Woods", 
           30 
         ), 
  
@@ -2481,13 +2481,13 @@ const itineraryData = {
  
         place( 
           "09:00 AM", 
-          "Eravikulam National Park", 
+          "Blossom Park", 
           200 
         ), 
  
         place( 
           "10:30 AM", 
-          "Kundala Lake", 
+          "Attukad Waterfall", 
           20 
         ), 
  
@@ -2505,7 +2505,7 @@ const itineraryData = {
  
         place( 
           "02:00 PM", 
-          "Photo Point", 
+          "Kolukkumalai Tea Estate", 
           0 
         ), 
  
@@ -2548,19 +2548,19 @@ const itineraryData = {
  
         place( 
           "09:00 AM", 
-          "Top Station", 
+          "Rose Garden Munnar", 
           40 
         ), 
  
         place( 
           "10:30 AM", 
-          "Anamudi Viewpoint", 
+          "Pothamedu View Point", 
           0 
         ), 
  
         place( 
           "12:00 PM", 
-          "Lockhart Gap Viewpoint", 
+          "Chithirapuram Palace View", 
           0 
         ), 
  
@@ -2615,19 +2615,19 @@ const itineraryData = {
  
         place( 
           "09:00 AM", 
-          "Chinnar Wildlife Sanctuary", 
+          "Power House Waterfalls", 
           300 
         ), 
  
         place( 
           "10:30 AM", 
-          "Lakkam Waterfalls", 
+          "Lockhart Tea Estate", 
           20 
         ), 
  
         place( 
           "12:00 PM", 
-          "Rajamalai Viewpoint", 
+          "Anakulam Elephant Viewpoint", 
           0 
         ), 
  
@@ -2645,19 +2645,19 @@ const itineraryData = {
  
         place( 
           "03:30 PM", 
-          "Munnar Tea Gardens", 
+          "Viripara Waterfalls", 
           0 
         ), 
  
         place( 
           "05:00 PM", 
-          "Mattupetty Dam", 
+          "Letchmi Hills", 
           10 
         ), 
  
         place( 
           "06:00 PM", 
-          "Echo Point", 
+          "Anayirangal Dam", 
           10 
         ), 
  
@@ -2759,13 +2759,13 @@ const itineraryData = {
  
         place( 
           "09:00 AM", 
-          "Schwartz Church", 
+          "Thanjavur Art Gallery", 
           0 
         ), 
  
         place( 
           "10:30 AM", 
-          "Sangeetha Mahal", 
+          "Manimandapam", 
           0 
         ), 
  
@@ -2783,25 +2783,25 @@ const itineraryData = {
  
         place( 
           "02:00 PM", 
-          "Sivaganga Park", 
+          "Punnainallur Mariamman Temple", 
           10 
         ), 
  
         place( 
           "03:30 PM", 
-          "Brihadeeswarar Temple", 
+          "Sivaganga Park, Thanjavur", 
           0 
         ), 
  
         place( 
           "05:00 PM", 
-          "Thanjavur Royal Palace", 
+          "Thanjavur Old Palace Museum", 
           50 
         ), 
  
         place( 
           "06:00 PM", 
-          "Art Gallery", 
+          "Rajarajan Manimandapam", 
           20 
         ), 
  
@@ -2856,19 +2856,19 @@ const itineraryData = {
  
         place( 
           "03:30 PM", 
-          "Brihadeeswarar Temple", 
+          "Thiruvaiyaru Sangeetha Mahal", 
           0 
         ), 
  
         place( 
           "05:00 PM", 
-          "Thanjavur Royal Palace", 
+          "Kumbakonam Temple Street", 
           50 
         ), 
  
         place( 
           "06:00 PM", 
-          "Saraswathi Mahal Library", 
+          "Sangeetha Mahal Heritage Walk", 
           0 
         ), 
  

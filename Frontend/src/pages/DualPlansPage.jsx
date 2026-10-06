@@ -16,6 +16,8 @@ import {
 import { useNavigate, useSearchParams } from "react-router-dom";
 import dualPlans from "../data/dualPlans";
 
+const API_URL = "http://localhost:5000";
+
 export default function DualPlansPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -238,6 +240,51 @@ export default function DualPlansPage() {
   };
 
   /* =================================================
+     CREATE DEFAULT MEALS
+  ================================================= */
+
+  const createMeal = (
+    mealType,
+    hotelName = "Hotel"
+  ) => {
+    const meals = {
+      breakfast: {
+        name: `Breakfast at ${hotelName}`,
+        time: "8:00 AM - 9:00 AM",
+        description:
+          `Start your day with a fresh breakfast at ${hotelName} before continuing your journey.`,
+      },
+
+      lunch: {
+        name: `Lunch at ${hotelName}`,
+        time: "1:00 PM - 2:00 PM",
+        description:
+          `Enjoy a delicious lunch at ${hotelName} and recharge for the afternoon.`,
+      },
+
+      dinner: {
+        name: `Dinner at ${hotelName}`,
+        time: "7:30 PM - 8:30 PM",
+        description:
+          `Enjoy dinner at ${hotelName} and relax after the day's sightseeing.`,
+      },
+    };
+
+    const item = meals[mealType];
+
+    return {
+      id: `generated-${mealType}`,
+      name: item.name,
+      time: item.time,
+      amount: 0,
+      type: "food",
+      meal: mealType,
+      duration: "1 hr",
+      description: item.description,
+    };
+  };
+
+  /* =================================================
      GET PLACES
   ================================================= */
 
@@ -270,6 +317,112 @@ export default function DualPlansPage() {
     }
 
     return [];
+  };
+
+  /* =================================================
+     DEFAULT HOTEL
+
+     HOTEL NAMES ARE CONTROLLED HERE.
+
+     These names are used for:
+       - Hotel stay
+       - Breakfast
+       - Dinner
+
+     We support both plan ID and destination text
+     so the names work even if the IDs in dualPlans.js
+     are different.
+  ================================================= */
+
+  const getDefaultHotelName = (plan, day) => {
+    const hotelNames = {
+      /* Destination based names */
+      "Alleppey + Cochin":
+        "Alleppey Comfort Stay",
+
+      "Munroe Island + Varkala":
+        "Varkala Beach Stay",
+
+      "Mysore + Coorg":
+        "Mysore Heritage Stay",
+
+      "Vagamon + Chikmagalur":
+        "Vagamon Hills Stay",
+
+      /* Plan ID based names */
+      "dual-alleppey-cochin":
+        "Alleppey Comfort Stay",
+
+      "dual-munroe-varkala":
+        "Varkala Beach Stay",
+
+      "dual-mysore-coorg":
+        "Mysore Heritage Stay",
+
+      "dual-vagamon-chikmagalur":
+        "Vagamon Hills Stay",
+    };
+
+    const planId =
+      String(plan?.id || "").trim();
+
+    const planDestination =
+      String(
+        plan?.destination || ""
+      ).trim();
+
+    /* Check plan ID first */
+    if (hotelNames[planId]) {
+      return hotelNames[planId];
+    }
+
+    /* Check destination */
+    if (hotelNames[planDestination]) {
+      return hotelNames[planDestination];
+    }
+
+    /* Original fallback logic */
+    const places = getPlaces(plan);
+
+    const dayTitle =
+      day?.title ||
+      day?.heading ||
+      "";
+
+    const destination =
+      places[0] ||
+      plan?.destinationName ||
+      plan?.destination ||
+      dayTitle ||
+      "Destination";
+
+    return `${destination} Hotel`;
+  };
+
+  /* =================================================
+     CREATE DEFAULT HOTEL
+  ================================================= */
+
+  const createDefaultHotel = (
+    plan,
+    day
+  ) => {
+    const hotelName =
+      getDefaultHotelName(
+        plan,
+        day
+      );
+
+    return {
+      id: `generated-hotel-${Date.now()}-${Math.random()}`,
+      name: hotelName,
+      time: "09:15 PM",
+      amount: 1200,
+      type: "hotel",
+      duration: "Overnight",
+      description:
+        `Overnight stay at ${hotelName}.`,
+    };
   };
 
   /* =================================================
@@ -373,7 +526,12 @@ export default function DualPlansPage() {
        Dinner only (NO HOTEL)
   ================================================= */
 
-  const buildDayActivities = (day) => {
+  const buildDayActivities = (
+    day,
+    dayIndex,
+    plan,
+    totalDays
+  ) => {
     const rawActivities =
       Array.isArray(day?.activities)
         ? day.activities
@@ -381,30 +539,190 @@ export default function DualPlansPage() {
         ? day.items
         : [];
 
-    /*
-       IMPORTANT:
-       Food and hotel/stay entries come ONLY from dualPlans.js.
+    const isFinalDay =
+      dayIndex === totalDays - 1;
 
-       This page does NOT:
-       - create breakfast
-       - create lunch
-       - create dinner
-       - create a default hotel
-       - remove duplicate meals
-       - rename food entries
-       - rename hotel entries
-
-       It only removes legacy Day End cards and orders
-       the activities that already exist in dualPlans.js.
-    */
+    /* Remove legacy day-end cards. */
     const activitiesWithoutDayEnd =
       rawActivities.filter(
         (activity) => !isDayEnd(activity)
       );
 
-    return getOrderedActivities(
-      activitiesWithoutDayEnd
-    );
+    /* Food always wins over hotel classification. */
+    const hotels =
+      activitiesWithoutDayEnd.filter(isHotel);
+
+    const nonHotelActivities =
+      activitiesWithoutDayEnd.filter(
+        (activity) => !isHotel(activity)
+      );
+
+    /* -------------------------------------------------
+       GET HOTEL NAME
+
+       IMPORTANT:
+       Always use our mapped hotel name.
+       Do NOT allow an old hotel name from
+       dualPlans.js to override it.
+    ------------------------------------------------- */
+
+    const hotelName =
+      getDefaultHotelName(
+        plan,
+        day
+      );
+
+    /* Keep exactly one breakfast, lunch and dinner. */
+    const mealSeen = {
+      breakfast: false,
+      lunch: false,
+      dinner: false,
+    };
+
+    const cleanedActivities = [];
+
+    nonHotelActivities.forEach((activity) => {
+      const mealType = getMealType(activity);
+
+      if (
+        mealType === "breakfast" ||
+        mealType === "lunch" ||
+        mealType === "dinner"
+      ) {
+        if (mealSeen[mealType]) {
+          return;
+        }
+
+        mealSeen[mealType] = true;
+
+        const mealTemplate = createMeal(
+          mealType,
+          hotelName
+        );
+
+        cleanedActivities.push({
+          ...activity,
+          name: mealTemplate.name,
+          description: mealTemplate.description,
+          type: "food",
+          meal: mealType,
+        });
+
+        return;
+      }
+
+      cleanedActivities.push(activity);
+    });
+
+    /* Add missing meals. */
+    if (!mealSeen.breakfast) {
+      cleanedActivities.push(
+        createMeal(
+          "breakfast",
+          hotelName
+        )
+      );
+    }
+
+    if (!mealSeen.lunch) {
+      cleanedActivities.push(
+        createMeal(
+          "lunch",
+          hotelName
+        )
+      );
+    }
+
+    if (!mealSeen.dinner) {
+      cleanedActivities.push(
+        createMeal(
+          "dinner",
+          hotelName
+        )
+      );
+    }
+
+    /* Pull Dinner out so NOTHING can appear after it. */
+    const dinnerActivity =
+      cleanedActivities.find(isDinner) ||
+      createMeal(
+        "dinner",
+        hotelName
+      );
+
+    const activitiesBeforeDinner =
+      cleanedActivities.filter(
+        (activity) => !isDinner(activity)
+      );
+
+    /* Chronological order applies only before Dinner. */
+    const orderedDayActivities =
+      getOrderedActivities(
+        activitiesBeforeDinner
+      );
+
+    /* Final day: Dinner is the absolute last card. */
+    if (isFinalDay) {
+      return [
+        ...orderedDayActivities,
+        dinnerActivity,
+      ];
+    }
+
+    /* Non-final day: choose exactly one hotel. */
+    const existingHotel =
+      hotels.find(
+        (hotel) =>
+          Number(hotel?.amount || 0) > 0
+      ) ||
+      hotels[0];
+
+    const selectedHotel =
+      existingHotel ||
+      createDefaultHotel(
+        plan,
+        day
+      );
+
+    /*
+       IMPORTANT:
+       Force the mapped hotel name here.
+       This prevents the old name from dualPlans.js
+       from appearing.
+    */
+    const selectedHotelName =
+      hotelName;
+
+    const hotelActivity = {
+      ...selectedHotel,
+
+      type: "hotel",
+
+      name: selectedHotelName,
+
+      time:
+        selectedHotel.time ||
+        "09:15 PM",
+
+      amount:
+        Number(selectedHotel.amount || 0) > 0
+          ? Number(selectedHotel.amount)
+          : 1200,
+
+      duration:
+        selectedHotel.duration ||
+        "Overnight",
+
+      description:
+        `Overnight stay at ${selectedHotelName}.`,
+    };
+
+    /* Non-final day: Dinner -> Hotel, and NOTHING after Hotel. */
+    return [
+      ...orderedDayActivities,
+      dinnerActivity,
+      hotelActivity,
+    ];
   };
 
   /* =================================================
@@ -560,6 +878,7 @@ export default function DualPlansPage() {
           plan.destination,
           plan.destinationName,
           plan.category,
+          plan.planCode,
           ...places,
         ]
           .filter(Boolean)
@@ -808,8 +1127,14 @@ const selectPlan = async (plan) => {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          planKey: String(plan.id),
-          planId: String(plan.id),
+          planKey: String(
+            plan.planCode ||
+              plan.id
+          ),
+          planId: String(
+            plan.planCode ||
+              plan.id
+          ),
           title: plan.title,
           destination:
             plan.destination ||
@@ -899,16 +1224,11 @@ const selectPlan = async (plan) => {
 
         <div className="dual-plans-hero-content">
 
-          <div className="dual-plans-hero-eyebrow">
-            <CalendarDays size={16} />
-            <span>PLAN YOUR JOURNEY</span>
-          </div>
-
           <h1>
             Explore Two Destinations
             <br />
             <span>
-              In One Amazing Trip
+              Dual Plan
             </span>
           </h1>
 
@@ -1048,6 +1368,7 @@ const selectPlan = async (plan) => {
                   <article
                     className="dual-plan-card"
                     key={
+                      plan.planCode ||
                       plan.id ||
                       plan.title
                     }
@@ -2159,18 +2480,24 @@ const selectPlan = async (plan) => {
           color: #ffffff;
         }
 
-        .dual-plans-hero-eyebrow {
+        .dual-plans-badge {
           display: inline-flex;
           align-items: center;
-          justify-content: center;
-          gap: 6px;
+          gap: 5px;
+
+          padding: 8px 14px;
+
+          border: 1px solid rgba(255, 255, 255, 0.55);
+          border-radius: 999px;
+
+          background: rgba(255, 255, 255, 0.82);
+
+          color: #087d57;
+
+          font-size: 12px;
+          font-weight: 800;
 
           margin-bottom: 18px;
-
-          color: #0b8fd3;
-
-          font-size: 16px;
-          font-weight: 700;
         }
 
         .dual-plans-hero h1 {
@@ -2204,6 +2531,40 @@ const selectPlan = async (plan) => {
 
           font-size: 15px;
           line-height: 1.65;
+        }
+
+        .dual-plans-hero-features {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 12px;
+
+          margin-top: 25px;
+        }
+
+        .dual-plans-hero-features div {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+
+          padding: 9px 13px;
+
+          border: 1px solid
+            rgba(8, 125, 87, 0.18);
+
+          border-radius: 10px;
+
+          background: rgba(
+            255,
+            255,
+            255,
+            0.84
+          );
+
+          color: #087d57;
+
+          font-size: 13px;
+          font-weight: 700;
         }
 
         /* =================================================

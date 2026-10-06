@@ -133,6 +133,14 @@ const registerUser = async (req, res) => {
 
     // ========================================
     // CREATE USER
+    //
+    // User.js automatically generates:
+    //
+    // HM-USER-001
+    // HM-USER-002
+    // HM-USER-003
+    //
+    // through the pre-save middleware.
     // ========================================
 
     const user = await User.create({
@@ -159,6 +167,12 @@ const registerUser = async (req, res) => {
 
     // ========================================
     // CREATE JWT
+    //
+    // IMPORTANT:
+    // Keep MongoDB _id inside the JWT.
+    //
+    // Existing authentication middleware uses
+    // this value to identify the user.
     // ========================================
 
     const token = jwt.sign(
@@ -173,19 +187,28 @@ const registerUser = async (req, res) => {
 
     // ========================================
     // RESPONSE
+    //
+    // userId is the readable ID:
+    // HM-USER-001
+    //
+    // id remains MongoDB ObjectId.
     // ========================================
 
     return res.status(201).json({
       message:
         "User registered successfully",
+
       token,
+
       user: {
         id: user._id,
+        userId: user.userId,
         name: user.name,
         email: user.email,
         contact: user.contact,
       },
     });
+
   } catch (error) {
     console.error(
       "Register Error:",
@@ -193,13 +216,36 @@ const registerUser = async (req, res) => {
     );
 
     // ========================================
-    // DUPLICATE EMAIL SAFETY
+    // DUPLICATE KEY SAFETY
     // ========================================
 
     if (error.code === 11000) {
+
+      // --------------------------------------
+      // Duplicate email
+      // --------------------------------------
+
+      if (error.keyPattern?.email) {
+        return res.status(409).json({
+          message:
+            "An account with this email already exists",
+        });
+      }
+
+      // --------------------------------------
+      // Duplicate readable user ID
+      // --------------------------------------
+
+      if (error.keyPattern?.userId) {
+        return res.status(409).json({
+          message:
+            "Unable to generate a unique user ID. Please try again.",
+        });
+      }
+
       return res.status(409).json({
         message:
-          "An account with this email already exists",
+          "Account details already exist",
       });
     }
 
@@ -253,6 +299,7 @@ const registerUser = async (req, res) => {
     });
   }
 };
+
 
 // ============================================
 // LOGIN USER
@@ -356,6 +403,11 @@ const loginUser = async (req, res) => {
 
     // ========================================
     // CREATE JWT
+    //
+    // IMPORTANT:
+    // Keep MongoDB _id here so existing
+    // authentication middleware continues
+    // working correctly.
     // ========================================
 
     const token = jwt.sign(
@@ -370,20 +422,30 @@ const loginUser = async (req, res) => {
 
     // ========================================
     // RESPONSE
+    //
+    // Include both:
+    //
+    // id     → MongoDB ObjectId
+    // userId → HM-USER-xxx
+    //
     // ========================================
 
     return res.status(200).json({
       message:
         "Login successful",
+
       token,
+
       user: {
         id: user._id,
+        userId: user.userId,
         name: user.name,
         email: user.email,
         contact:
           user.contact || "",
       },
     });
+
   } catch (error) {
     console.error(
       "Login Error:",
@@ -429,6 +491,7 @@ const loginUser = async (req, res) => {
     });
   }
 };
+
 
 // ============================================
 // EXPORT
