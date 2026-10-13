@@ -1154,7 +1154,7 @@ export default function TravelPlansPage() {
           .travel-plan-modal-overlay {
             position: fixed;
             inset: 0;
-            z-index: 1000;
+            z-index: 99999;
             display: flex;
             align-items: center;
             justify-content: center;

@@ -318,7 +318,7 @@ export default function Home() {
               <strong>
                 Business:
               </strong>{" "}
-              travelplanner@gmail.com
+              happymappy@gmail.com
             </p>
           </div>
 
